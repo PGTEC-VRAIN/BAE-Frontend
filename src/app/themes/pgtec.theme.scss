@@ -1,0 +1,24 @@
+body.theme-pgtec {
+  /* HEX: #007BFF - Vibrant Blue */
+  --theme-primary-50: 0 123 255;
+  /* HEX: #0056b3 - Deep Primary */
+  --theme-primary-100: 0 86 179;
+
+  /* HEX: #e7f1ff - Very Light Blue Mist */
+  --theme-secondary-50: 231 241 255;
+  /* HEX: #1a3a5a - Dark Slate Blue */
+  --theme-secondary-100: 26 58 90;
+  /* HEX: #102a43 - Deep Navy */
+  --theme-secondary-200: 16 42 67;
+  /* HEX: #243b53 - Steel Blue */
+  --theme-secondary-300: 36 59 83;
+  /* HEX: #0a2540 - Rich Midnight */
+  --theme-secondary-400: 10 37 64;
+  /* HEX: #1b262d - Dark Gray-Blue */
+  --theme-secondary-500: 27 38 45;
+
+  /* BG COLOR - Deep Charcoal Blue */
+  --theme-tertiary-50: 20 26 31;
+  /* CARD/MODAL BG COLOR - Dark Navy Grey */
+  --theme-tertiary-100: 27 38 45;
+}

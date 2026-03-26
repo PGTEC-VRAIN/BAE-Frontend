@@ -1,0 +1,56 @@
+<section
+  class="buy-options-section relative isolate flex w-full flex-col items-center justify-center gap-10 overflow-hidden px-5 py-16 font-[Blinker] sm:px-8 sm:py-20 lg:gap-[56px] lg:px-[80px] lg:py-[100px] xl:px-[160px]">
+  <div class="buy-options-blur buy-options-blur-left" aria-hidden="true"></div>
+  <div class="buy-options-blur buy-options-blur-right" aria-hidden="true"></div>
+
+  <div class="relative z-[2] flex w-full max-w-[421px] flex-col items-center gap-4">
+    <h2
+      class="m-0 w-full text-center text-[32px] font-bold leading-[40px] text-white sm:text-[40px] sm:leading-[48px] lg:w-[407px] lg:text-[48px] lg:leading-[58px]">
+      {{ 'LANDINGPAGE.customers.buyOptions._title' | translate }}
+    </h2>
+
+    <p
+      class="m-0 w-full text-center text-[18px] font-normal leading-[30px] text-white sm:text-[20px] sm:leading-[32px] lg:w-[421px]">
+      {{ 'LANDINGPAGE.customers.buyOptions._subtitle' | translate }}
+    </p>
+  </div>
+
+  <div
+    class="relative z-[3] flex w-full max-w-[1120px] flex-col items-stretch gap-5 md:gap-6 lg:flex-row lg:items-stretch">
+    @for (card of cards; track card.key) {
+    <article
+      class="buy-card relative isolate flex min-h-[280px] w-full flex-col overflow-hidden rounded-[16px] px-5 py-5 sm:min-h-[300px] sm:px-6 sm:py-6 lg:h-[320px] lg:w-[357.33px]"
+      [class.buy-card-featured]="card.featured">
+      <div class="buy-card-line" aria-hidden="true"></div>
+
+      @if (card.featured) {
+      <div class="buy-card-inner-glow" aria-hidden="true"></div>
+      }
+
+      <div class="relative z-[4] min-h-[32px]">
+        @if (card.badgeKey) {
+        <span
+          class="buy-card-badge inline-flex h-6 items-center justify-center rounded-full px-[10px] py-1 text-[14px] font-semibold leading-4">
+          {{ card.badgeKey | translate }}
+        </span>
+        }
+      </div>
+
+      <div class="mt-6 flex flex-1 flex-col">
+        <h3 class="buy-card-title min-h-[118px] pb-5">
+          <span class="block">
+            {{ ('LANDINGPAGE.customers.buyOptions.cards.' + card.key + '._titleLine1') | translate }}
+          </span>
+          <span class="block">
+            {{ ('LANDINGPAGE.customers.buyOptions.cards.' + card.key + '._titleLine2') | translate }}
+          </span>
+        </h3>
+
+        <p class="buy-card-text mt-4">
+          {{ ('LANDINGPAGE.customers.buyOptions.cards.' + card.key + '._description') | translate }}
+        </p>
+      </div>
+    </article>
+    }
+  </div>
+</section>

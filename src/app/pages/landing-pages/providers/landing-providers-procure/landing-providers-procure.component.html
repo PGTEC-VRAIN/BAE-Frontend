@@ -1,0 +1,38 @@
+<section class="providers-steps-section w-full bg-[#EBF0F7] font-[Blinker]">
+  <div
+    class="mx-auto w-full max-w-[1440px] px-6 py-16 sm:px-8 sm:py-20 lg:px-16 lg:py-[80px] xl:px-[160px] xl:py-[100px]">
+    <div class="providers-steps-layout">
+      <div class="providers-steps-copy">
+        <h2 class="text-[32px] sm:text-[40px] xl:text-[48px] font-bold leading-[1.2] xl:leading-[58px] text-[#0B1528]"
+          [innerHTML]="'LANDINGPAGE.providers.procureSteps.title' | translate">
+        </h2>
+
+        <p class="mt-4 text-[18px] sm:text-[20px] leading-[1.6] xl:leading-[32px] text-[#0B1528]">
+          {{ 'LANDINGPAGE.providers.procureSteps.subtitle' | translate }}
+        </p>
+      </div>
+
+      <div class="providers-steps-cards">
+        @for (step of steps; track step.number) {
+        <div class="providers-step-wrapper">
+          <div class="providers-step-card">
+            <fa-icon [icon]="step.icon" class="providers-step-icon"></fa-icon>
+
+            <div class="providers-step-number gradient-number">
+              {{ step.number }}
+            </div>
+
+            <div class="providers-step-text">
+              {{ step.textKey | translate }}
+            </div>
+          </div>
+        </div>
+
+        @if (step.number < steps.length) { <div class="providers-step-separator">
+      </div>
+      }
+      }
+    </div>
+  </div>
+  </div>
+</section>

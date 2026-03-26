@@ -1,8 +1,19 @@
-<section class="hero-shell relative h-[890px] overflow-hidden">
+<section class="hero-shell relative isolate w-full overflow-hidden font-[Blinker]">
   <div class="hero-bg absolute inset-0"></div>
 
+  <div class="hero-blur hero-blur-main" aria-hidden="true"></div>
+  <div class="hero-blur hero-blur-core" aria-hidden="true"></div>
+
+  <div class="earth-wrapper" aria-hidden="true">
+    <img src="assets/images/dashboard/hero.png" alt="" />
+  </div>
+
+  <div class="hero-fade hero-fade-left" aria-hidden="true"></div>
+  <div class="hero-fade hero-fade-right" aria-hidden="true"></div>
+
   <div
-    class="relative z-10 mx-auto flex min-h-screen max-w-[1200px] flex-col items-center justify-center px-6 py-14 text-center">
+    class="relative z-[5] mx-auto flex h-[840px] w-full max-w-[1440px] flex-col items-center px-5 pt-[144px] pb-[80px] text-center sm:px-8 lg:px-[160px]">
+
     <h1 class="hero-title text-white">
       <span class="block">
         {{ 'DASHBOARD.hero._titleLine1Part1' | translate }}
@@ -12,33 +23,46 @@
       <span class="block">{{ 'DASHBOARD.hero._titleLine3' | translate }}</span>
     </h1>
 
-    <p class="hero-sub mt-6 max-w-[820px]">
+    <p class="hero-sub mt-8">
       {{ 'DASHBOARD.hero._subtitleLine1' | translate }}
       <br class="hidden sm:block" />
       {{ 'DASHBOARD.hero._subtitleLine2' | translate }}
     </p>
 
-    <div class="mt-10 flex flex-col items-center gap-4 sm:flex-row">
-      <a [href]="customersLink()" target="_blank" class="hero-btn hero-btn--primary">
+    <div class="hero-actions mt-8 flex w-full max-w-[548px] flex-col gap-4 sm:flex-row sm:gap-6">
+      <a [href]="customersLink()" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn--primary">
         {{ 'DASHBOARD.hero._customerCta' | translate }}
       </a>
 
-      <a [href]="providersLink()" target="_blank" class="hero-btn hero-btn--ghost">
+      <a [href]="providersLink()" target="_blank" rel="noopener noreferrer" class="hero-btn hero-btn--secondary">
         {{ 'DASHBOARD.hero._providerCta' | translate }}
       </a>
     </div>
 
-    <!-- <div class="mt-14 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 opacity-60">
-      <div class="logo-ph w-[92px] sm:w-[110px]">LOGO</div>
-      <div class="logo-ph w-[92px] sm:w-[110px]">LOGO</div>
-      <div class="logo-ph w-[120px] sm:w-[140px]">LOGO</div>
-      <div class="logo-ph w-[132px] sm:w-[150px]">LOGO</div>
-      <div class="logo-ph w-[118px] sm:w-[140px]">LOGO</div>
-      <div class="logo-ph w-[132px] sm:w-[150px]">LOGO</div>
-    </div> -->
-  </div>
+    <!-- <div class="hero-logos mt-8" aria-label="Partner logos">
+      <div class="hero-logo-item">
+        <img src="assets/dome_logo.PNG" alt="ENG" />
+      </div>
 
-  <div class="earth-wrapper">
-    <img src="assets/images/dashboard/hero.png" alt="" aria-hidden="true" />
+      <div class="hero-logo-item">
+        <img src="assets/dome_logo.PNG" alt="Beia" />
+      </div>
+
+      <div class="hero-logo-item">
+        <img src="assets/dome_logo.PNG" alt="ALA/Tria" />
+      </div>
+
+      <div class="hero-logo-item">
+        <img src="assets/dome_logo.PNG" alt="activage.org" />
+      </div>
+
+      <div class="hero-logo-item hero-logo-item--cyfronet">
+        <img src="assets/dome_logo.PNG" alt="CYFRONET" />
+      </div>
+
+      <div class="hero-logo-item">
+        <img src="assets/dome_logo.PNG" alt="activage.org" />
+      </div>
+    </div> -->
   </div>
 </section>

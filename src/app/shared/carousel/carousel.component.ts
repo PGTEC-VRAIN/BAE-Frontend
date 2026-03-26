@@ -1,40 +1,60 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faChevronLeft,
+  faChevronRight
+} from '@fortawesome/pro-solid-svg-icons';
 
 /**
- * Generic carousel component.
+ * Generic reusable horizontal carousel.
  *
- * This component provides the structural and behavioral logic for a horizontal carousel.
- * It does NOT define the content of the slides. Instead, the slide content is provided
- * by the parent component using Angular content projection (`ng-content`).
+ * Core responsibilities:
  *
- * The carousel works by:
- * 1. Rendering a horizontal flex container (the "track").
- * 2. Moving the track using `translateX` when the index changes.
- * 3. Showing a fixed number of visible items (`visible`).
- * 4. Allowing navigation through arrows or dots.
+ * - Handles horizontal scrolling logic.
+ * - Calculates navigation limits.
+ * - Applies translateX transform to the track.
+ * - Renders navigation arrows.
+ * - Renders pagination dots.
  *
- * The parent component is responsible for:
- * - Passing the `items` array (used only to calculate the carousel bounds).
- * - Rendering each slide via `@for` inside the `<app-carousel>` tag.
- * - Setting the width of each slide (usually `100 / visible`).
+ * This component DOES NOT render slide content directly.
+ * Instead, it uses Angular content projection (`ng-content`).
  *
- * Example usage:
+ * This allows the parent component to fully control:
  *
- * <app-carousel [items]="products" [visible]="3">
+ * - Slide layout
+ * - Slide styling
+ * - Slide structure
  *
- *   @for (product of products; track product.id) {
- *     <div class="shrink-0 px-4" [style.width.%]="100 / 3">
- *       <!-- custom slide content -->
+ * while the carousel manages:
+ *
+ * - scrolling
+ * - navigation
+ * - pagination
+ *
+ * Typical usage:
+ *
+ * <app-carousel
+ *   [items]="cards"
+ *   [visible]="3">
+ *
+ *   @for (card of cards) {
+ *     <div
+ *       class="shrink-0 px-4"
+ *       [style.width.%]="100 / 3">
+ *
+ *       <!-- slide content -->
+ *
  *     </div>
  *   }
  *
  * </app-carousel>
- *
- * Important:
- * The carousel itself does not know anything about the structure of the items.
- * It only controls scrolling and pagination.
  */
 
 @Component({
@@ -43,93 +63,252 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/pro-solid-svg-icons'
   templateUrl: './carousel.component.html',
   imports: [FontAwesomeModule]
 })
-export class CarouselComponent<T> {
-  /**
-   * Array of items rendered inside the carousel.
-   *
-   * The carousel does not directly render these items.
-   * The array is used only to calculate:
-   * - how many slides exist
-   * - the maximum scroll index
-   * - the number of pagination dots
-   */
-  @Input({ required: true }) items!: T[];
+export class CarouselComponent<T> implements OnChanges {
 
   /**
-   * Number of elements visible at the same time.
+   * Items array.
    *
-   * Example:
-   * visible = 3 → three cards visible in the viewport
+   * IMPORTANT:
+   * The carousel does NOT render these items.
+   *
+   * The array is used only to:
+   *
+   * - calculate total number of slides
+   * - determine navigation bounds
+   * - compute pagination dots
    */
-  @Input({ required: true }) visible: number;
+  @Input({ required: true })
+  items!: T[];
 
   /**
-   * Current scroll index.
+   * Number of visible slides at once.
    *
-   * This represents the first visible element in the viewport.
    * Example:
-   * index = 0 → show items 0,1,2
-   * index = 1 → show items 1,2,3
+   *
+   * visible = 3
+   *
+   * viewport shows:
+   *
+   * [0] [1] [2]
+   *
+   * Then scroll moves:
+   *
+   * [1] [2] [3]
+   */
+  @Input({ required: true })
+  visible = 3;
+
+  /**
+   * Arrow visual theme.
+   *
+   * light:
+   * - white background
+   * - dark icon
+   *
+   * dark:
+   * - transparent background
+   * - white border + icon
+   */
+  @Input()
+  arrowTheme: 'light' | 'dark' = 'light';
+
+  /**
+   * Pagination dots theme.
+   *
+   * light:
+   * default dashboard style
+   *
+   * accent:
+   * landing accent color (#00ADD3)
+   */
+  @Input()
+  dotsTheme: 'light' | 'accent' = 'light';
+
+  /**
+   * Enables horizontal padding around the carousel.
+   *
+   * Useful when arrows should sit
+   * outside content boundaries.
+   */
+  @Input()
+  sidePadding = true;
+
+  /**
+   * Current visible index.
+   *
+   * Represents the FIRST visible item.
+   *
+   * Example:
+   *
+   * index = 0
+   * visible = 3
+   *
+   * visible items:
+   * 0,1,2
    */
   index = 0;
 
+  /**
+   * Navigation icons.
+   */
   faChevronRight = faChevronRight;
-  faChevronLeft = faChevronLeft
+  faChevronLeft = faChevronLeft;
 
   /**
-   * Maximum scroll position.
+   * Maximum allowed scroll index.
+   *
+   * Prevents overflow scrolling.
    *
    * Example:
-   * items = 10
+   *
+   * items = 5
    * visible = 3
    *
-   * maxIndex = 7
-   *
-   * This prevents the carousel from scrolling past the last element.
+   * maxIndex = 2
    */
   get maxIndex(): number {
     return Math.max(0, this.items.length - this.visible);
   }
 
   /**
-   * Number of pagination dots.
+   * Total number of pagination pages.
    *
-   * Each dot represents a possible starting position.
+   * Each page corresponds to a possible index.
    */
   get pages(): number {
     return this.maxIndex + 1;
   }
 
   /**
-   * CSS transform applied to the carousel track.
+   * CSS transform applied to the track.
    *
-   * The track is moved horizontally using translateX.
-   * The movement step corresponds to the width of a single item.
+   * Moves content horizontally.
+   *
+   * Movement step:
+   *
+   * 100 / visible
+   *
+   * Example:
+   *
+   * visible = 3
+   * index = 1
+   *
+   * translateX(-33.33%)
    */
   get trackTransform(): string {
     return `translateX(-${this.index * (100 / this.visible)}%)`;
   }
 
   /**
-   * Move carousel forward by one element.
+   * Wrapper dynamic class.
+   *
+   * Controls outer horizontal padding.
    */
-  next() {
-    this.index = Math.min(this.index + 1, this.maxIndex);
+  get wrapperClass(): string {
+    return this.sidePadding
+      ? 'relative px-0 sm:px-4 md:px-12 lg:px-16 xl:px-20'
+      : 'relative';
   }
 
   /**
-   * Move carousel backward by one element.
+   * Left arrow style selector.
+   *
+   * Changes based on theme.
    */
-  prev() {
-    this.index = Math.max(this.index - 1, 0);
+  get leftButtonClass(): string {
+    return this.arrowTheme === 'dark'
+      ? 'absolute left-2 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-white/90 bg-transparent text-white transition hover:bg-white/10 disabled:opacity-40'
+      : 'absolute left-2 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-900 shadow-md transition disabled:opacity-40';
   }
 
   /**
-   * Jump directly to a specific index.
+   * Right arrow style selector.
+   */
+  get rightButtonClass(): string {
+    return this.arrowTheme === 'dark'
+      ? 'absolute right-2 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-white/90 bg-transparent text-white transition hover:bg-white/10 disabled:opacity-40'
+      : 'absolute right-2 top-1/2 z-10 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-900 shadow-md transition disabled:opacity-40';
+  }
+
+  /**
+   * Returns correct dot color class.
+   *
+   * Depends on:
+   *
+   * - active state
+   * - theme
+   */
+  dotClass(active: boolean): string {
+
+    if (this.dotsTheme === 'accent') {
+      return active
+        ? 'bg-[#00ADD3]'
+        : 'bg-[#D1F7FF]';
+    }
+
+    return active
+      ? 'bg-blue-700'
+      : 'bg-slate-300';
+  }
+
+  /**
+   * Move forward by one step.
+   */
+  next(): void {
+    this.index = Math.min(
+      this.index + 1,
+      this.maxIndex
+    );
+  }
+
+  /**
+   * Move backward by one step.
+   */
+  prev(): void {
+    this.index = Math.max(
+      this.index - 1,
+      0
+    );
+  }
+
+  /**
+   * Jump to specific index.
+   *
    * Used by pagination dots.
    */
-  goTo(i: number) {
-    this.index = Math.max(0, Math.min(i, this.maxIndex));
+  goTo(i: number): void {
+    this.index = Math.max(
+      0,
+      Math.min(i, this.maxIndex)
+    );
   }
 
+  /**
+   * Ensures index never exceeds bounds
+   * when inputs change.
+   */
+  ngOnChanges(
+    changes: SimpleChanges
+  ): void {
+
+    this.index = Math.min(
+      this.index,
+      this.maxIndex
+    );
+  }
+
+  /**
+   * Re-validates index on window resize.
+   *
+   * Necessary when `visible`
+   * changes responsively.
+   */
+  @HostListener('window:resize')
+  onResize(): void {
+
+    this.index = Math.min(
+      this.index,
+      this.maxIndex
+    );
+  }
 }

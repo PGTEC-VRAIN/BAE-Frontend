@@ -1,0 +1,46 @@
+<section
+  class="provider-contact-section relative isolate flex w-full items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#0C182D_0%,#1A3360_100%)] font-[Blinker]">
+
+  <div
+    class="provider-contact-blur-left absolute left-[-140px] top-[-80px] z-0 h-[280px] w-[280px] rounded-full bg-[#234481] opacity-30 sm:left-[-180px] sm:top-[-60px] sm:h-[380px] sm:w-[380px] lg:left-[-252px] lg:top-[-73px] lg:h-[561px] lg:w-[561px]">
+  </div>
+
+  <div
+    class="provider-contact-blur-right absolute bottom-[-60px] right-[-80px] z-[1] h-[220px] w-[220px] rounded-full bg-[#234481] opacity-30 sm:bottom-[-80px] sm:right-[-100px] sm:h-[300px] sm:w-[300px] lg:bottom-auto lg:left-[1187px] lg:top-[268px] lg:h-[440px] lg:w-[440px]">
+  </div>
+
+  <div
+    class="relative z-[2] flex w-full max-w-[1440px] flex-col items-start justify-center gap-10 px-5 py-16 sm:px-8 sm:py-20 md:gap-12 lg:gap-[93px] lg:px-[80px] lg:pb-[80px] lg:pt-[160px] xl:px-[160px] xl:pt-[200px]">
+    <div class="flex w-full max-w-[1120px] flex-col items-start gap-6">
+      <span
+        class="flex min-h-[38px] items-center justify-center whitespace-nowrap rounded-[50px] border-[0.666667px] border-[rgba(0,173,211,0.25)] bg-[rgba(0,173,211,0.15)] px-4 py-2 sm:min-h-[45px] sm:px-6">
+        <span class="text-[16px] font-bold leading-none text-[#00ADD3] sm:text-[20px] lg:text-[24px]">
+          {{ 'LANDINGPAGE.providers.badge' | translate }}
+        </span>
+      </span>
+
+      <h2
+        class="m-0 w-full max-w-[1120px] text-[34px] font-extrabold leading-[1.08] tracking-[0.2px] text-white sm:text-[46px] sm:tracking-[0.4px] md:text-[56px] lg:text-[70px] lg:leading-[84px] lg:tracking-[1px]">
+        {{ 'LANDINGPAGE.providers.titleLine1' | translate }}<br />
+        <span class="text-[#00ADD3]">{{ 'LANDINGPAGE.providers.titleHighlight' | translate }}</span>
+        {{ 'LANDINGPAGE.providers.titleLine2' | translate }}
+      </h2>
+
+      <p
+        class="m-0 w-full max-w-[1120px] text-[18px] font-normal leading-[1.6] text-white sm:text-[22px] md:text-[26px] lg:text-[32px] lg:leading-[48px]">
+        {{ 'LANDINGPAGE.providers.description' | translate }}
+      </p>
+
+      <div
+        class="flex w-full max-w-[548px] flex-col items-stretch gap-4 pt-2 sm:pt-4 md:flex-row md:items-center md:gap-6 lg:pt-8">
+        <a [href]="url()" class="provider-btn provider-btn--primary">
+          {{ 'LANDINGPAGE.providers.primaryCta' | translate }}
+        </a>
+
+        <a href="/contact-us" class="provider-btn provider-btn--secondary">
+          {{ 'LANDINGPAGE.providers.secondaryCta' | translate }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

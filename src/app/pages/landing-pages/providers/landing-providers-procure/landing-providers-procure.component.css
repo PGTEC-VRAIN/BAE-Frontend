@@ -1,0 +1,158 @@
+:host {
+  display: block;
+}
+
+.providers-steps-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.providers-steps-copy {
+  max-width: 1120px;
+}
+
+.providers-steps-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.providers-step-wrapper {
+  width: 100%;
+}
+
+.providers-step-card {
+  position: relative;
+  width: 100%;
+  min-height: 190px;
+  background: #f7f9fd;
+  border: 1px solid rgba(216, 218, 222, 0.6);
+  border-radius: 16px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.providers-step-icon {
+  position: absolute;
+  right: -8px;
+  bottom: -8px;
+  font-size: 72px;
+  color: #2d58a7;
+  opacity: 0.07;
+}
+
+.providers-step-number {
+  display: inline-block;
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.providers-step-text {
+  max-width: 180px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #0b1528;
+}
+
+.providers-step-separator {
+  display: none;
+}
+
+.gradient-number {
+  background: linear-gradient(180deg, #1a3360 0%, #00add3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+@media (min-width: 640px) {
+  .providers-step-card {
+    min-height: 220px;
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .providers-step-icon {
+    right: -16px;
+    bottom: -16px;
+    font-size: 96px;
+  }
+
+  .providers-step-number {
+    font-size: 72px;
+  }
+
+  .providers-step-text {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .providers-steps-cards {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .providers-step-wrapper {
+    width: calc(50% - 12px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .providers-steps-layout {
+    gap: 40px;
+  }
+
+  .providers-steps-cards {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .providers-step-wrapper {
+    width: auto;
+    flex: 0 0 auto;
+  }
+
+  .providers-step-card {
+    width: 226px;
+    min-height: 240px;
+    padding: 24px;
+  }
+
+  .providers-step-icon {
+    right: -22px;
+    bottom: -20px;
+    font-size: 120px;
+  }
+
+  .providers-step-number {
+    font-size: 96px;
+  }
+
+  .providers-step-text {
+    font-size: 20px;
+  }
+
+  .providers-step-separator {
+    display: block;
+    width: 56px;
+    height: 2px;
+    align-self: center;
+    flex: 0 0 auto;
+    background: linear-gradient(90deg, #ebf0f7 0%, #00add3 50%, #ebf0f7 100%);
+  }
+}

@@ -1,0 +1,38 @@
+<section class="faq-section w-full font-[Blinker]">
+  <div class="mx-auto w-full max-w-[1440px] px-5 py-[64px] sm:px-8 sm:py-[80px] lg:px-[160px] lg:py-[100px]">
+    <div class="mx-auto flex w-full max-w-[1120px] flex-col gap-8 lg:gap-10">
+
+      <h2 class="faq-heading">
+        {{ 'LANDINGPAGE.providers.faqs.title' | translate }}
+      </h2>
+
+      <div class="flex flex-col gap-4 lg:gap-6">
+        @for (faq of faqs; track faq.id) {
+        <article class="faq-card" [class.faq-card--open]="isOpen(faq.id)">
+          <button type="button" class="faq-question" (click)="toggleFaq(faq.id)" [attr.aria-expanded]="isOpen(faq.id)">
+            <span class="faq-question__title">
+              {{ faq.questionKey | translate }}
+            </span>
+
+            <span class="faq-icon" [class.faq-icon--open]="isOpen(faq.id)">
+              <fa-icon [icon]="isOpen(faq.id) ? faMinus : faPlus">
+              </fa-icon>
+            </span>
+          </button>
+
+          <div class="faq-answer" [class.faq-answer--open]="isOpen(faq.id)">
+            <div class="faq-answer__inner">
+              <div class="faq-divider"></div>
+
+              <div class="faq-answer__content">
+                <div [innerHTML]="faq.answerKey | translate"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+        }
+      </div>
+
+    </div>
+  </div>
+</section>

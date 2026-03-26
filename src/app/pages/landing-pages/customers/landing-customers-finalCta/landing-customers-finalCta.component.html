@@ -1,0 +1,32 @@
+<section class="final-cta-section w-full font-[Blinker]">
+  <div class="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-[160px] py-[64px] sm:py-[80px] lg:py-[100px]">
+    <div class="final-cta-shell mx-auto w-full max-w-[1120px]">
+      <div class="final-cta-glow" aria-hidden="true"></div>
+
+      <div class="final-cta-content">
+        <div class="final-cta-text">
+          <h2 class="final-cta-title flex">
+            {{ 'LANDINGPAGE.customers.finalCta.titleStart' | translate }}
+            <span class="final-cta-title-accent ml-3">
+              {{ 'LANDINGPAGE.customers.finalCta.titleAccent' | translate }}
+            </span>{{ 'LANDINGPAGE.customers.finalCta.titleEnd' | translate }}
+          </h2>
+
+          <p class="final-cta-description">
+            {{ 'LANDINGPAGE.customers.finalCta.description' | translate }}
+          </p>
+        </div>
+
+        <div class="final-cta-actions">
+          <a [href]="url()" class="final-cta-btn final-cta-btn--primary">
+            {{ 'LANDINGPAGE.customers.finalCta.primaryCta' | translate }}
+          </a>
+
+          <a href="/contact-us" class="final-cta-btn final-cta-btn--secondary">
+            {{ 'LANDINGPAGE.customers.finalCta.secondaryCta' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

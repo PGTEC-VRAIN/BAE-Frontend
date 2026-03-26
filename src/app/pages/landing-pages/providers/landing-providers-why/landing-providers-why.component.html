@@ -1,0 +1,40 @@
+<section class="why-join-section relative isolate flex w-full justify-center overflow-hidden font-[Blinker]">
+  <div class="why-join-glow why-join-glow--left" aria-hidden="true"></div>
+  <div class="why-join-glow why-join-glow--right" aria-hidden="true"></div>
+
+  <div
+    class="relative z-[2] flex w-full max-w-[1440px] flex-col items-center gap-10 px-5 py-16 sm:px-8 sm:py-20 lg:gap-14 lg:px-[80px] lg:py-[100px] xl:px-[160px]">
+    <div class="why-join-header flex max-w-[729px] flex-col items-center gap-4 text-center">
+      <h2 class="why-join-title">
+        {{ 'LANDINGPAGE.providers.whyJoinDome.title' | translate }}
+      </h2>
+
+      <p class="why-join-subtitle">
+        {{ 'LANDINGPAGE.providers.whyJoinDome.subtitle' | translate }}
+      </p>
+    </div>
+
+    <div class="grid w-full max-w-[1120px] grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+      @for (card of cards; track card.titleKey) {
+      <article class="why-card relative flex h-[360px] flex-col justify-between overflow-hidden rounded-2xl p-6">
+        <div class="why-card-line" aria-hidden="true"></div>
+        <div class="why-card-blur" aria-hidden="true"></div>
+
+        <div class="relative z-[2] flex flex-col gap-0">
+          <span class="why-card-title">
+            {{ card.titleKey | translate }}
+          </span>
+
+          <span class="why-card-highlight">
+            {{ card.highlightKey | translate }}
+          </span>
+        </div>
+
+        <p class="relative z-[2] why-card-description">
+          {{ card.descriptionKey | translate }}
+        </p>
+      </article>
+      }
+    </div>
+  </div>
+</section>

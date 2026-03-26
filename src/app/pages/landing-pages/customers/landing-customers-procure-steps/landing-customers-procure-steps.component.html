@@ -1,0 +1,38 @@
+<section
+  class="procure-steps-section w-full font-[Blinker] px-5 py-16 sm:px-8 sm:py-20 lg:px-[80px] lg:py-[100px] xl:px-[160px]">
+  <div class="mx-auto flex w-full max-w-[1120px] flex-col items-start gap-10">
+    <div class="flex w-full flex-col items-start gap-4">
+      <h2
+        class="m-0 w-full text-[32px] font-bold leading-[40px] text-[#0B1528] sm:text-[40px] sm:leading-[48px] lg:text-[48px] lg:leading-[58px]">
+        {{ 'LANDINGPAGE.customers.procureSteps._titleStart' | translate }}
+        <span class="text-[#2D58A7]">
+          {{ 'LANDINGPAGE.customers.procureSteps._titleAccent' | translate }}
+        </span>
+      </h2>
+
+      <p class="m-0 w-full text-[18px] font-normal leading-[30px] text-[#0B1528] sm:text-[20px] sm:leading-[32px]">
+        {{ 'LANDINGPAGE.customers.procureSteps._subtitle' | translate }}
+      </p>
+    </div>
+
+    <div class="procure-steps-grid">
+      @for (step of steps; track step.key; let i = $index) {
+      <article class="procure-step-card">
+        <fa-icon [icon]="step.icon" class="procure-step-icon" aria-hidden="true"></fa-icon>
+
+        <div class="procure-step-number">
+          {{ i + 1 }}
+        </div>
+
+        <h3 class="procure-step-title">
+          {{ ('LANDINGPAGE.customers.procureSteps.items.' + step.key + '._title') | translate }}
+        </h3>
+      </article>
+
+      @if (i < steps.length - 1) { <div class="procure-step-connector" aria-hidden="true">
+    </div>
+    }
+    }
+  </div>
+  </div>
+</section>

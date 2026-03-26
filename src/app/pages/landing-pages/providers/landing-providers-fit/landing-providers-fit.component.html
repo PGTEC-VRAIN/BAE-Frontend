@@ -1,0 +1,45 @@
+<section class="good-fit-section relative isolate w-full overflow-hidden bg-white font-[Blinker]">
+  <div class="good-fit-watermark pointer-events-none select-none" aria-hidden="true"></div>
+
+  <div class="mx-auto w-full max-w-[1440px] px-6 py-16 sm:px-8 lg:px-16 lg:py-[100px] xl:px-[160px]">
+    <div class="good-fit-layout">
+      <div class="good-fit-copy">
+        <h2 class="good-fit-title">
+          {{ "LANDINGPAGE.providers.goodFit.titleStart" | translate }}
+          <span class="text-[#18A8D8]">
+            {{ "LANDINGPAGE.providers.goodFit.titleAccent" | translate }}
+          </span>
+          {{ "LANDINGPAGE.providers.goodFit.titleEnd" | translate }}
+        </h2>
+
+        <p class="good-fit-description">
+          {{ "LANDINGPAGE.providers.goodFit.description" | translate }}
+        </p>
+      </div>
+
+      <div class="good-fit-cards-col">
+        <app-vertical-scroll-cards class="good-fit-scroll" [height]="scrollHeight" [gap]="24" [indicatorLeft]="14">
+          @for (card of cards; track card.titleKey) {
+          <article verticalScrollCard class="good-fit-card">
+            <div class="flex flex-col gap-5 sm:gap-6">
+              <div class="good-fit-card__icon">
+                <fa-icon [icon]="card.icon" class="text-[32px] sm:text-[36px]"></fa-icon>
+              </div>
+
+              <div class="flex flex-col gap-3">
+                <h3 class="good-fit-card__title">
+                  {{ card.titleKey | translate }}
+                </h3>
+
+                <p class="good-fit-card__desc">
+                  {{ card.descKey | translate }}
+                </p>
+              </div>
+            </div>
+          </article>
+          }
+        </app-vertical-scroll-cards>
+      </div>
+    </div>
+  </div>
+</section>

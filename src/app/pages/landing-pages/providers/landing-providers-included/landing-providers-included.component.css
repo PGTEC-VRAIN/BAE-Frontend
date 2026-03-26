@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.providers-included-section {
+  background: linear-gradient(180deg, #0e1e3c 0%, #14274a 50%, #0e1e3c 100%);
+}
+
+.providers-included-glow {
+  position: absolute;
+  border-radius: 999999px;
+  background: #234481;
+  opacity: 0.25;
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+.providers-included-glow--left {
+  width: 520px;
+  height: 520px;
+  left: 0;
+  top: -40px;
+}
+
+.providers-included-glow--right {
+  width: 440px;
+  height: 440px;
+  right: -18px;
+  top: 35px;
+}
+
+.provider-card__top-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(100% - 18px);
+  height: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, #00add3 50%, rgba(0, 0, 0, 0) 100%);
+  opacity: 0.75;
+}

@@ -1,0 +1,31 @@
+<section class="cta-provider-section w-full font-[Blinker] bg-[linear-gradient(180deg,#EBF0F7_0%,#FFFFFF_100%)]">
+  <div class="mx-auto flex w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-[160px] lg:py-[100px]">
+    <div
+      class="cta-provider-card relative isolate flex w-full flex-col items-center overflow-hidden rounded-2xl px-6 py-12 sm:px-8 lg:px-6 lg:py-16">
+      <div class="cta-provider-blur" aria-hidden="true"></div>
+
+      <div class="relative z-[1] flex w-full max-w-[930px] flex-col items-center gap-6 text-center">
+        <div class="flex w-full flex-col items-center gap-6">
+          <h2
+            class="m-0 w-full text-center text-[32px] font-bold leading-[1.1] text-white sm:text-[38px] lg:text-[44px] lg:leading-[53px]"
+            [innerHTML]="'LANDINGPAGE.providers.cta.title' | translate"></h2>
+
+          <p
+            class="m-0 w-full text-center text-[18px] font-normal leading-[1.2] text-white sm:text-[20px] lg:text-[24px] lg:leading-[29px]">
+            {{ 'LANDINGPAGE.providers.cta.subtitle' | translate }}
+          </p>
+        </div>
+
+        <div class="flex w-full max-w-[548px] flex-col items-stretch justify-center gap-4 sm:flex-row sm:gap-6">
+          <a [href]="url()" class="cta-btn cta-btn--primary">
+            {{ 'LANDINGPAGE.providers.cta.primaryButton' | translate }}
+          </a>
+
+          <a href="/contact-us" class="cta-btn cta-btn--secondary">
+            {{ 'LANDINGPAGE.providers.cta.secondaryButton' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -5,12 +5,12 @@ const domeHeaderLinks: NavLink[] = [
 
   {
     label: 'HEADER._forCustomers',
-    url: 'https://onboard.sbx.evidenceledger.eu/register-customer'
+    url: 'landing-page/customers'
 
   },
   {
     label: 'HEADER._forProviders',
-    url: 'https://onboard.sbx.evidenceledger.eu/register-provider'
+    url: 'landing-page/providers'
   },
   {
     id: 'dropdown-marketplace',
@@ -45,7 +45,9 @@ const domeFooterLinks: NavHeaderLink[] = [
     label: 'FOOTER.aboutTitle',
     navLinks: [
       { label: 'FOOTER.domeProject', url: 'https://dome-project.eu/', isRouterLink: false },
-      { label: 'FOOTER.contactUs', url: '/contact-us', isRouterLink: true }
+      { label: 'FOOTER.contactUs', url: '/contact-us', isRouterLink: true },
+      { label: 'Feedback' },
+      { label: 'Newsletter', url: 'https://www.linkedin.com/newsletters/newsletter-7142535480692133889/', isRouterLink: false }
     ]
   },
   {
@@ -58,12 +60,12 @@ const domeFooterLinks: NavHeaderLink[] = [
       },
       {
         label: 'FOOTER.forCustomers',
-        url: '#for-customers',
+        url: 'landing-page/customers',
         isRouterLink: true
       },
       {
         label: 'FOOTER.forProviders',
-        url: '#for-providers',
+        url: 'landing-page/providers',
         isRouterLink: true
       },
     ],

@@ -1,0 +1,61 @@
+<section
+  class="relative isolate w-full overflow-hidden bg-[linear-gradient(180deg,#0E1E3C_0%,#14274A_50%,#0E1E3C_100%)] font-[Blinker]">
+  <div class="pointer-events-none absolute inset-0">
+    <div class="absolute left-0 top-[-40px] h-[520px] w-[520px] rounded-full bg-[#234481] opacity-25 blur-[120px]">
+    </div>
+    <div
+      class="absolute right-[-18px] top-[35px] h-[440px] w-[440px] rounded-full bg-[#234481] opacity-25 blur-[120px]">
+    </div>
+  </div>
+
+  <div
+    class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center gap-14 px-6 py-16 sm:px-8 lg:px-16 lg:py-[100px] xl:px-[160px]">
+
+    <div class="flex max-w-[421px] flex-col items-center gap-4 text-center">
+
+      <h2 class="text-[38px] font-bold leading-[1.08] text-white sm:text-[42px] lg:text-[48px] lg:leading-[58px]">
+        {{ 'LANDINGPAGE.customers.whyJoin._title' | translate }}
+      </h2>
+
+      <p class="text-[18px] font-normal leading-[1.6] text-white sm:text-[19px] lg:text-[20px] lg:leading-[32px]">
+        {{ 'LANDINGPAGE.customers.whyJoin._subtitle' | translate }}
+      </p>
+
+    </div>
+
+    <div class="grid w-full max-w-[1120px] grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+
+      @for (card of cards; track card.titleStartKey) {
+
+      <div
+        class="relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-[16px] border border-[#234481] bg-[linear-gradient(180deg,#14274A_0%,#0B1528_100%)] p-6 xl:h-[384px]">
+
+        <div
+          class="absolute left-2 top-0 h-[2px] w-[calc(100%-16px)] bg-[linear-gradient(90deg,rgba(0,0,0,0)_0%,#00ADD3_50%,rgba(0,0,0,0)_100%)] opacity-75">
+        </div>
+
+        <h3
+          class="max-w-[214px] text-[34px] font-bold leading-[1.15] text-white sm:text-[36px] lg:text-[40px] lg:leading-[48px]">
+
+          {{ card.titleStartKey | translate }}
+
+          <span class="text-[#00ADD3]">
+            {{ card.titleAccentKey | translate }}
+          </span>
+
+          {{ card.titleEndKey ? (card.titleEndKey | translate) : '' }}
+
+        </h3>
+
+        <p class="max-w-[214px] text-[22px] font-normal leading-[1.35] text-white lg:text-[24px] lg:leading-[32px]">
+          {{ card.descKey | translate }}
+        </p>
+
+      </div>
+
+      }
+
+    </div>
+
+  </div>
+</section>

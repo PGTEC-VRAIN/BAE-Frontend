@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEye, faMessages, faRotate, faShieldCheck } from '@fortawesome/pro-regular-svg-icons';
+import { faClipboardCheck } from '@fortawesome/pro-regular-svg-icons';
+import { faEye, faPuzzlePiece, faShieldCheck } from '@fortawesome/pro-solid-svg-icons';
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -14,6 +15,6 @@ import { TranslateModule } from '@ngx-translate/core';
 export class DashboardWhatsDome {
   faShieldCheck = faShieldCheck;
   faEye = faEye;
-  faRotate = faRotate;
-  faMessages = faMessages;
+  faPuzzle = faPuzzlePiece;
+  faClipboard = faClipboardCheck;
 }

@@ -1,0 +1,60 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.vertical-snap-scroll-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.vertical-snap-scroll-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.vertical-snap-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.vertical-snap-scroll-stack {
+  display: flex;
+  flex-direction: column;
+  padding-left: 12px;
+  box-sizing: border-box;
+}
+
+.vertical-snap-scroll-indicator {
+  position: absolute;
+  top: 0;
+  width: 6px;
+  border-radius: 16px 0 0 16px;
+  background: linear-gradient(180deg, #2d58a7 0%, #00add3 100%);
+  z-index: 3;
+  transition:
+    transform 0.26s ease,
+    height 0.26s ease,
+    opacity 0.18s ease;
+  will-change: transform, height;
+}
+
+.vertical-snap-scroll-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.vertical-snap-scroll-fade-top {
+  top: 0;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.vertical-snap-scroll-fade-bottom {
+  bottom: 0;
+  background: linear-gradient(0deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+}

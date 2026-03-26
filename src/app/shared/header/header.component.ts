@@ -3,7 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   faAddressCard,
   faAnglesLeft,
+  faArrowRight,
   faArrowRightFromBracket,
+  faBars,
   faBoxesStacked,
   faBrain,
   faCartShopping,
@@ -425,4 +427,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, DoCheck, OnDestro
   protected readonly faReceipt = faReceipt;
   protected readonly faRuler = faRuler;
   protected readonly faPieChart = faPieChart;
+  protected readonly faBars = faBars;
+  protected readonly faArrowRight = faArrowRight;
 }

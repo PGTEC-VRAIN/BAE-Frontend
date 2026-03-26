@@ -1,0 +1,106 @@
+.right-for-you-section {
+  min-height: 920px;
+}
+
+.right-for-you-layout {
+  display: grid;
+  grid-template-columns: 453px 554px;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 24px;
+}
+
+.right-for-you-copy {
+  padding-top: 80px;
+}
+
+.right-for-you-watermark {
+  position: absolute;
+  left: -124px;
+  bottom: -142px;
+  width: 511px;
+  height: 511px;
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+  background-color: #dde6f6;
+  mask-image: url("/assets/logos/DOME_Icon_White.svg");
+  -webkit-mask-image: url("/assets/logos/DOME_Icon_White.svg");
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+}
+
+.right-for-you-cards-col {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.right-for-you-scroll {
+  width: 554px;
+  max-width: 100%;
+}
+
+.scroll-card {
+  width: 548px;
+  max-width: 100%;
+  background: #ebf0f7;
+  border-radius: 16px;
+  padding: 24px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.scroll-card.is-active {
+  background: #ebf0f7;
+}
+
+@media (max-width: 1279px) {
+  .right-for-you-layout {
+    grid-template-columns: 1fr;
+    row-gap: 40px;
+  }
+
+  .right-for-you-copy {
+    padding-top: 0;
+    max-width: 640px;
+  }
+
+  .right-for-you-cards-col {
+    justify-content: flex-start;
+  }
+
+  .right-for-you-scroll {
+    width: 100%;
+    max-width: 554px;
+  }
+
+  .scroll-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .right-for-you-section {
+    min-height: auto;
+  }
+
+  .right-for-you-watermark {
+    width: 320px;
+    left: -90px;
+    bottom: -100px;
+    opacity: 0.35;
+  }
+
+  .right-for-you-scroll {
+    width: 100%;
+  }
+}

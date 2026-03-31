@@ -1,124 +1,232 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { Observable, Subject } from 'rxjs';
-import { ThemeService } from 'src/app/services/theme.service';
-import { ThemeConfig } from 'src/app/themes';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { provideRouter, Router } from "@angular/router";
+import { of, Subject } from "rxjs";
+import { ContactUsService } from "../../services/contactUs.service";
+import { ContactUsFormComponent, IContactUs } from "./contact-us-form.component";
 
-import { ContactUsFormComponent } from './contact-us-form.component';
+interface ISendEmail {
+  form: IContactUs;
+}
 
-describe('ContactUsFormComponent', () => {
+describe("ContactUsFormComponent", () => {
   let component: ContactUsFormComponent;
   let fixture: ComponentFixture<ContactUsFormComponent>;
-  let themeSubject: Subject<ThemeConfig | null>;
+  let contactUsServiceSpy: jasmine.SpyObj<ContactUsService>;
+  let router: Router;
 
-  const themeServiceStub: { currentTheme$: Observable<ThemeConfig | null> } = {
-    currentTheme$: new Subject<ThemeConfig | null>().asObservable(),
+  const validFormValue: IContactUs = {
+    firstName: "Luigi",
+    lastName: "Borriello",
+    email: "luigi@test.com",
+    organization: "OpenAI",
+    roleInOrganization: "Senior Angular Developer",
+    message: "Test message",
+    privacyAccepted: true,
+    marketingAccepted: false
+  };
+
+  const sendEmailResponse: ISendEmail = {
+    form: validFormValue
   };
 
   beforeEach(async () => {
-    themeSubject = new Subject<ThemeConfig | null>();
-    themeServiceStub.currentTheme$ = themeSubject.asObservable();
+    contactUsServiceSpy = jasmine.createSpyObj("ContactUsService", ["sendEmail"]);
 
     await TestBed.configureTestingModule({
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: [HttpClientTestingModule, RouterTestingModule, TranslateModule.forRoot()],
-      declarations: [ContactUsFormComponent],
-      providers: [{ provide: ThemeService, useValue: themeServiceStub }],
+      imports: [ContactUsFormComponent],
+      providers: [
+        provideRouter([]),
+        { provide: ContactUsService, useValue: contactUsServiceSpy }
+      ]
     })
-    .overrideComponent(ContactUsFormComponent, {
-      set: { template: '' },
-    })
-    .compileComponents();
-    
+      .overrideComponent(ContactUsFormComponent, {
+        set: {
+          template: ""
+        }
+      })
+      .compileComponents();
+
     fixture = TestBed.createComponent(ContactUsFormComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+
+    spyOn(router, "navigate").and.resolveTo(true);
+
+    fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  function fillValidForm(): void {
+    component.form.setValue(validFormValue);
+  }
+
+  it("should create", () => {
+    expect(component).toBeDefined();
   });
 
-  it('should initialize with an invalid form', () => {
-    expect(component.contactForm.valid).toBeFalse();
-    expect(component.contactForm.get('email')?.hasError('required')).toBeTrue();
-    expect(component.contactForm.get('message')?.hasError('required')).toBeTrue();
-  });
-
-  it('should validate email format', () => {
-    component.contactForm.patchValue({ email: 'invalid-email' });
-    expect(component.contactForm.get('email')?.hasError('email')).toBeTrue();
-  });
-
-  it('ngOnInit should update currentTheme when theme service emits', () => {
-    const theme = { name: 'default', displayName: 'Default', assets: { jumboBgUrl: '/bg.png' } } as any;
-
-    component.ngOnInit();
-    themeSubject.next(theme);
-
-    expect(component.currentTheme).toEqual(theme);
-  });
-
-  it('ngOnDestroy should stop updating theme after destroy', () => {
-    const firstTheme = { name: 'first', displayName: 'First', assets: {} } as any;
-    const secondTheme = { name: 'second', displayName: 'Second', assets: {} } as any;
-
-    component.ngOnInit();
-    themeSubject.next(firstTheme);
-    component.ngOnDestroy();
-    themeSubject.next(secondTheme);
-
-    expect(component.currentTheme).toEqual(firstTheme);
-  });
-
-  it('hide should set showThanksMessage to false', () => {
-    component.showThanksMessage = true;
-
-    component.hide();
-
-    expect(component.showThanksMessage).toBeFalse();
-  });
-
-  it('resetContactForm should clear values and control state', () => {
-    component.contactForm.patchValue({
-      email: 'john@example.com',
-      name: 'John',
-      lastname: 'Doe',
-      organization: 'Acme',
-      role: 'Engineer',
-      message: 'Hello',
-    });
-    component.contactForm.markAllAsTouched();
-
-    component.resetContactForm();
-
-    expect(component.contactForm.value).toEqual({
-      email: null,
-      name: null,
-      lastname: null,
-      organization: null,
-      role: null,
-      message: null,
-    });
-    Object.values(component.contactForm.controls).forEach((control) => {
-      expect(control.pristine).toBeTrue();
-      expect(control.untouched).toBeTrue();
-      expect(control.value).toBeNull();
+  it("should initialize form with default values", () => {
+    expect(component.form.getRawValue()).toEqual({
+      firstName: "",
+      lastName: "",
+      email: "",
+      organization: "",
+      roleInOrganization: "",
+      message: "",
+      privacyAccepted: false,
+      marketingAccepted: false
     });
   });
 
-  it('should make form valid when all required fields are provided with valid values', () => {
-    component.contactForm.patchValue({
-      email: 'john@example.com',
-      name: 'John',
-      lastname: 'Doe',
-      organization: 'Acme',
-      role: 'Engineer',
-      message: 'Hello',
+  it("should be invalid on init", () => {
+    expect(component.form.invalid).toBeTrue();
+  });
+
+  it("should expose controls through getter f", () => {
+    expect(component.f.firstName).toBeDefined();
+    expect(component.f.lastName).toBeDefined();
+    expect(component.f.email).toBeDefined();
+    expect(component.f.organization).toBeDefined();
+    expect(component.f.roleInOrganization).toBeDefined();
+    expect(component.f.message).toBeDefined();
+    expect(component.f.privacyAccepted).toBeDefined();
+    expect(component.f.marketingAccepted).toBeDefined();
+  });
+
+  it("should return false from hasError if control is invalid but untouched and not submitted", () => {
+    expect(component.hasError("firstName")).toBeFalse();
+  });
+
+  it("should return true from hasError if control is touched and invalid", () => {
+    component.f.firstName.markAsTouched();
+
+    expect(component.hasError("firstName")).toBeTrue();
+  });
+
+  it("should return true from hasError if form was submitted and control is invalid", () => {
+    component.submitted = true;
+
+    expect(component.hasError("firstName")).toBeTrue();
+  });
+
+  it("should validate invalid email", () => {
+    component.f.email.setValue("abc");
+    component.f.email.markAsTouched();
+    component.f.email.updateValueAndValidity();
+
+    expect(component.f.email.invalid).toBeTrue();
+    expect(component.f.email.hasError("email")).toBeTrue();
+    expect(component.hasError("email")).toBeTrue();
+  });
+
+  it("should validate privacyAccepted with requiredTrue", () => {
+    component.f.privacyAccepted.setValue(false);
+    component.f.privacyAccepted.markAsTouched();
+    component.f.privacyAccepted.updateValueAndValidity();
+
+    expect(component.f.privacyAccepted.invalid).toBeTrue();
+    expect(component.f.privacyAccepted.hasError("required")).toBeTrue();
+  });
+
+  it("should accept privacyAccepted when true", () => {
+    component.f.privacyAccepted.setValue(true);
+    component.f.privacyAccepted.updateValueAndValidity();
+
+    expect(component.f.privacyAccepted.valid).toBeTrue();
+    expect(component.f.privacyAccepted.hasError("required")).toBeFalse();
+  });
+
+  it("should be valid when form is correctly filled", () => {
+    fillValidForm();
+
+    expect(component.form.valid).toBeTrue();
+  });
+
+  it("should set submitted to true and not call service if form is invalid", () => {
+    component.onSubmit();
+
+    expect(component.submitted).toBeTrue();
+    expect(contactUsServiceSpy.sendEmail).not.toHaveBeenCalled();
+    expect(component.submittedSuccessfully).toBeFalse();
+  });
+
+  it("should mark all controls as touched on invalid submit", () => {
+    component.onSubmit();
+
+    expect(component.f.firstName.touched).toBeTrue();
+    expect(component.f.lastName.touched).toBeTrue();
+    expect(component.f.email.touched).toBeTrue();
+    expect(component.f.organization.touched).toBeTrue();
+    expect(component.f.roleInOrganization.touched).toBeTrue();
+    expect(component.f.message.touched).toBeTrue();
+    expect(component.f.privacyAccepted.touched).toBeTrue();
+  });
+
+  it("should call sendEmail with raw form value when form is valid", () => {
+    fillValidForm();
+    contactUsServiceSpy.sendEmail.and.returnValue(of(sendEmailResponse) as any);
+
+    component.onSubmit();
+
+    expect(contactUsServiceSpy.sendEmail).toHaveBeenCalledOnceWith(validFormValue);
+  });
+
+  it("should set submittedSuccessfully to true when sendEmail succeeds", () => {
+    fillValidForm();
+    contactUsServiceSpy.sendEmail.and.returnValue(of(sendEmailResponse) as any);
+
+    component.onSubmit();
+
+    expect(component.submittedSuccessfully).toBeTrue();
+  });
+
+  it("should reset form and flags and navigate to dashboard on continue browsing", () => {
+    fillValidForm();
+    component.submitted = true;
+    component.submittedSuccessfully = true;
+
+    component.onContinueBrowsing();
+
+    expect(component.submitted).toBeFalse();
+    expect(component.submittedSuccessfully).toBeFalse();
+    expect(component.form.getRawValue()).toEqual({
+      firstName: "",
+      lastName: "",
+      email: "",
+      organization: "",
+      roleInOrganization: "",
+      message: "",
+      privacyAccepted: false,
+      marketingAccepted: false
+    });
+    expect(router.navigate).toHaveBeenCalledWith(["/dashboard"]);
+  });
+
+  it("should emit and complete unsub subject on destroy", () => {
+    const nextSpy = jasmine.createSpy("next");
+    const completeSpy = jasmine.createSpy("complete");
+
+    component.unsub.subscribe({
+      next: nextSpy,
+      complete: completeSpy
     });
 
-    expect(component.contactForm.valid).toBeTrue();
+    fixture.destroy();
+
+    expect(nextSpy).toHaveBeenCalled();
+    expect(completeSpy).toHaveBeenCalled();
+  });
+
+  it("should unsubscribe active request on destroy", () => {
+    const response$ = new Subject<ISendEmail>();
+    contactUsServiceSpy.sendEmail.and.returnValue(response$.asObservable() as any);
+
+    fillValidForm();
+    component.onSubmit();
+
+    fixture.destroy();
+
+    response$.next(sendEmailResponse);
+    response$.complete();
+
+    expect(component.submittedSuccessfully).toBeFalse();
   });
 });

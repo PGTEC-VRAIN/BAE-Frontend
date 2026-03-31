@@ -1,83 +1,113 @@
-import {Component, HostListener, OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import {faHandsHoldingHeart} from "@fortawesome/pro-solid-svg-icons";
-import { environment } from 'src/environments/environment';
-import {ThemeService} from "../../services/theme.service";
-import {ThemeConfig} from "../../themes";
-import { Subscription, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { CommonModule } from "@angular/common";
+import { Component, inject, OnDestroy } from "@angular/core";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from "@angular/forms";
+import { Router } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faThumbsUp } from '@fortawesome/pro-regular-svg-icons';
+import { TranslateModule } from "@ngx-translate/core";
+import { Subject, takeUntil } from 'rxjs';
+import { ContactUsService } from '../../services/contactUs.service';
+
+export interface IContactUs {
+  firstName: string;
+  lastName: string;
+  email: string;
+  organization: string;
+  roleInOrganization: string;
+  message: string;
+  privacyAccepted: boolean;
+  marketingAccepted: boolean;
+}
+
+export type IContactUsForm = {
+  [K in keyof IContactUs]: FormControl<IContactUs[K]>;
+};
 
 @Component({
-  selector: 'app-contact-us-form',
-  templateUrl: './contact-us-form.component.html',
-  styleUrl: './contact-us-form.component.css'
+  selector: "app-contact-us",
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    FontAwesomeModule
+  ],
+  templateUrl: "./contact-us-form.component.html",
+  styleUrl: "./contact-us-form.component.css"
 })
+export class ContactUsFormComponent implements OnDestroy {
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly contactUsService = inject(ContactUsService)
 
-export class ContactUsFormComponent implements OnInit, OnDestroy {
-  contactForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'), Validators.maxLength(320)]),
-    name: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-    lastname: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-    organization: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-    role: new FormControl('', [Validators.required, Validators.maxLength(100)]),
-    message: new FormControl('', [Validators.required]),
+  faThumbsUp = faThumbsUp;
+
+  unsub = new Subject<void>();
+
+  submitted = false;
+  submittedSuccessfully = false;
+
+  form: FormGroup<IContactUsForm> = this.fb.nonNullable.group({
+    firstName: ["", [Validators.required]],
+    lastName: ["", [Validators.required]],
+    email: ["", [Validators.required, Validators.email]],
+    organization: ["", [Validators.required]],
+    roleInOrganization: ["", [Validators.required]],
+    message: ["", [Validators.required]],
+    privacyAccepted: [false, [Validators.requiredTrue]],
+    marketingAccepted: [false]
   });
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private themeService: ThemeService
-  ) { }
+  get f() {
+    return this.form.controls;
+  }
 
-  protected readonly faHandsHoldingHeart = faHandsHoldingHeart;
+  hasError(controlName: keyof typeof this.form.controls): boolean {
+    const control = this.form.controls[controlName];
+    return !!control && control.invalid && (control.touched || this.submitted);
+  }
 
-  dataControllerDome:any='https://dome-project.eu/about/#partners';
-  DPA:any='https://dome-marketplace-sbx.org/assets/documents/privacy.pdf';
-  showThanksMessage:boolean=false;
-  currentTheme: ThemeConfig | null = null;
-  private themeSubscription: Subscription = new Subscription();
-  private destroy$ = new Subject<void>();
-  
-  ngOnInit() {
-    this.themeSubscription = this.themeService.currentTheme$
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(theme => {
-      this.currentTheme = theme;
+  onSubmit(): void {
+    this.submitted = true;
+    this.form.markAllAsTouched();
+
+    if (this.form.invalid) {
+      return;
+    }
+
+
+    this.contactUsService.sendEmail(this.form.getRawValue()).pipe(takeUntil(this.unsub)).subscribe({
+      next: () => {
+        this.submittedSuccessfully = true;
+      },
     });
   }
 
-  ngOnDestroy(){
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  sendMail() {
-    let message = 'First name: '+this.contactForm.value.name+ '%0A' +
-    'Last name: '+this.contactForm.value.lastname+ '%0A' +
-    'Email: '+this.contactForm.value.email+ '%0A' +
-    'Organization: '+this.contactForm.value.organization+ '%0A' +
-    'Role: '+this.contactForm.value.role+ '%0A'+
-    this.contactForm.value.message;
-
-    const mailtoLink = `mailto:info@dome-marketplace.eu?body=${message}`;
-    
-    this.showThanksMessage=true;
-    // Open the mailto link
-    window.location.href = mailtoLink;
-    this.resetContactForm();
-  }
-
-  hide(){
-    this.showThanksMessage=false;
-  }
-  resetContactForm(): void {
-    this.contactForm.reset();
-  
-    Object.values(this.contactForm.controls).forEach(control => {
-      control.setErrors(null); // clear errors
-      control.markAsPristine();
-      control.markAsUntouched();
-      control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+  onContinueBrowsing(): void {
+    this.submittedSuccessfully = false;
+    this.submitted = false;
+    this.form.reset({
+      firstName: "",
+      lastName: "",
+      email: "",
+      organization: "",
+      roleInOrganization: "",
+      message: "",
+      privacyAccepted: false,
+      marketingAccepted: false
     });
+
+    this.router.navigate(['/dashboard'])
   }
-  
+
+  ngOnDestroy(): void {
+    this.unsub.next();
+    this.unsub.complete();
+  }
 }

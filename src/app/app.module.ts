@@ -32,7 +32,6 @@ import { VerificationComponent } from './pages/admin/verification/verification.c
 import { CatalogsComponent } from "./pages/catalogs/catalogs.component";
 import { BillingAddressComponent } from "./pages/checkout/billing-address/billing-address.component";
 import { CheckoutComponent } from "./pages/checkout/checkout.component";
-import { ContactUsFormComponent } from './pages/contact-us/contact-us-form.component';
 import { OrganizationDetailsComponent } from './pages/organization-details/organization-details.component';
 import { ProductDetailsComponent } from "./pages/product-details/product-details.component";
 import { InventoryProductsComponent } from './pages/product-inventory/inventory-items/inventory-products/inventory-products.component';
@@ -148,7 +147,6 @@ import { RequestValidationModalComponent } from './pages/seller-offerings/offeri
     UpdateCategoryComponent,
     CategoriesRecursionListComponent,
     ContactUsComponent,
-    ContactUsFormComponent,
     VerificationComponent,
     EmailComponent,
     InventoryResourcesComponent,

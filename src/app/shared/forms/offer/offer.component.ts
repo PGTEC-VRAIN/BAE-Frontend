@@ -535,8 +535,6 @@ export class OfferComponent implements OnInit, OnDestroy{
         units: component.newValue.usageUnit     
       };
 
-      priceComp['@baseType'] = "ProductOfferingPrice";
-      priceComp['@schemaLocation'] = "https://raw.githubusercontent.com/laraminones/tmf-new-schemas/main/UsageSpecId.json";
       (priceComp as any).usageSpecId = component.newValue.usageSpecId;
 
       console.log('----- here')
@@ -705,6 +703,10 @@ export class OfferComponent implements OnInit, OnDestroy{
       bundledProductOffering: this.offersBundle,
       place: [],
       version: generalInfo.version,
+      ...(generalInfo.extBillingEnabled && generalInfo.plaSpecId ? {
+        pricingLogicAlgorithm: [{ name: 'external billing', plaSpecId: generalInfo.plaSpecId }]
+      } : {}),
+
       category: categories,
       productOfferingPrice: prices,
       validFor: {
@@ -818,6 +820,11 @@ export class OfferComponent implements OnInit, OnDestroy{
           basePayload.description = change.currentValue.description;
           basePayload.version = change.currentValue.version;
           basePayload.lifecycleStatus = change.currentValue.status;
+          if (change.currentValue.extBillingEnabled && change.currentValue.plaSpecId) {
+            basePayload.pricingLogicAlgorithm = [{ name: 'external billing', plaSpecId: change.currentValue.plaSpecId }];
+          } else if (change.originalValue.extBillingEnabled && !change.currentValue.extBillingEnabled) {
+            basePayload.pricingLogicAlgorithm = [];
+          }
           break;
 
         case 'productSpecification':

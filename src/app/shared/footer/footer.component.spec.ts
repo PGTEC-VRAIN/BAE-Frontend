@@ -22,6 +22,14 @@ describe('FooterComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).to.be.ok;
+  });
+
+  it('should render organization and funding sections', () => {
+    const element: HTMLElement = fixture.nativeElement;
+
+    expect(element.textContent).to.contain('Organizacion');
+    expect(element.textContent).to.contain('Cofinanciado por');
+    expect(element.querySelectorAll('.footer-funding img').length).to.equal(5);
   });
 });

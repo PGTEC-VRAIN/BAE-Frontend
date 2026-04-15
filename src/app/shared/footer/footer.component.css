@@ -1,1 +1,63 @@
+.footer-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
 
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.logo-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-img {
+  max-height: 2rem;
+  width: auto;
+  object-fit: contain;
+}
+
+.gva-logo {
+  max-height: 2.5rem;
+}
+
+.footer-disclaimer {
+  margin-top: 0.5rem;
+  line-height: 1.25rem;
+}
+
+:host-context(.dark) .footer-title {
+  color: #e5e7eb;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  .funded-logos .footer-img {
+    max-height: 2.25rem;
+  }
+}

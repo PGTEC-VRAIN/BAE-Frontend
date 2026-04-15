@@ -23,7 +23,7 @@ export const PGTEC_THEME_CONFIG: ThemeConfig = {
   displayName: 'PGTEC Marketplace',
   isDefault: true,
   assets: {
-    logoUrl: 'assets/themes/pgtec/logo_PGTEC.svg',
+    logoUrl: 'assets/themes/pgtec/logo_PGTEC.png',
     jumboBgUrl: 'assets/themes/pgtec/blueBackground.png',
     cardDefaultBgUrl: 'assets/themes/pgtec/cardBackground.svg'
   },

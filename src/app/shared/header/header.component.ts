@@ -371,6 +371,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, DoCheck, OnDestro
   }
 
   onLoginClick() {
+    // PGTEC: el login va al flujo VC del logic-proxy (wallet y acceso con
+    // certificado FNMT) en vez del QR SIOP directo al verifier.
+    window.location.href = '/auth/vc/login';
+    return;
     if (environment.SIOP_INFO.enabled === true && this.qrVerifier.intervalId === undefined) {
       this.statePair = uuid.v4();
 

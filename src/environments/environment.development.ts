@@ -57,7 +57,7 @@ export const environment = {
   KNOWLEDGE_BASE_URL: "https://knowledgebase.dome-marketplace.org/",
   KB_ONBOARDING_GUIDELINES_URL: "https://knowledgebase.dome-marketplace-prd.org/books/company-onboarding-process-guide-for-cloud-service-providers-csp",
   KB_GUIDELNES_URL: "https://knowledgebase.dome-marketplace-prd.org/books/managing-orders-products-and-subscriptions",
-  REGISTRATION_FORM_URL: "https://onboarding.dome-marketplace.eu/",
+  REGISTRATION_FORM_URL: "https://onboarding.tailbe597b.ts.net/",
   SEARCH_ENABLED: true,
   PURCHASE_ENABLED: true,
   DOME_TRUST_LINK: "",

@@ -10,8 +10,8 @@
         }
         @if (isLightHeader) {
         <span class="hdr-brand-label">
-          <span class="hdr-brand-title">Marketplace</span>
-          <span class="hdr-brand-subtitle">Data Space</span>
+          <span class="hdr-brand-title">{{ 'HEADER._brand_title' | translate }}</span>
+          <span class="hdr-brand-subtitle">{{ 'HEADER._brand_subtitle' | translate }}</span>
         </span>
         }
       </a>
@@ -28,6 +28,16 @@
           <ng-container [ngTemplateOutlet]="headerActionsTemplate" [ngTemplateOutletContext]="{ mobile: false }">
           </ng-container>
         </div>
+
+        @if (currentTheme?.colorSchemeToggle) {
+        <button type="button" data-cy="colorSchemeToggle"
+          class="hdr-icon-btn inline-flex h-[44px] w-[44px] items-center justify-center rounded-full text-white/90 hover:text-white hover:bg-white/10 transition"
+          [attr.aria-label]="(isDarkMode ? 'HEADER._light_mode' : 'HEADER._dark_mode') | translate"
+          [title]="(isDarkMode ? 'HEADER._light_mode' : 'HEADER._dark_mode') | translate"
+          (click)="toggleColorScheme()">
+          <fa-icon [icon]="isDarkMode ? faSun : faMoon"></fa-icon>
+        </button>
+        }
 
         <button #navbarbutton type="button"
           class="hdr-icon-btn inline-flex lg:hidden h-[44px] w-[44px] items-center justify-center rounded-[10px] text-white/90 hover:text-white hover:bg-white/10 transition"

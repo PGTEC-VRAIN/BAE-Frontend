@@ -61,20 +61,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   searchEnabled = environment.SEARCH_ENABLED;
   catalogSearchTerm = '';
 
-  benefits = [
-    {
-      title: 'Trust by Design',
-      text: 'Every provider joins with a verifiable, credential-based identity, so you always know who stands behind each offering and under which conditions it is shared.'
-    },
-    {
-      title: 'Compliance Readiness',
-      text: 'Offerings carry explicit usage policies and terms, helping you align data sharing and AI adoption with European legal and governance requirements from day one.'
-    },
-    {
-      title: 'Faster Collaboration',
-      text: 'Once approved, your organization can publish its own services or reuse others\' to launch data-driven pilots with cities, companies and researchers across Europe.'
-    }
-  ];
+  benefits = [1, 2, 3].map((n) => ({
+    title: `DASHBOARD.landing._benefit${n}_title`,
+    text: `DASHBOARD.landing._benefit${n}_text`
+  }));
 
   domeRegister: string = environment.DOME_REGISTER_LINK;
 
@@ -98,6 +88,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private statsService: StatsServiceService,
     private themeService: ThemeService,
   ) { }
+
+  get projectUrl(): string {
+    return this.currentTheme?.links?.projectUrl ?? this.customersLink;
+  }
+
+  get heroUrl(): string {
+    return this.currentTheme?.assets?.heroUrl ?? 'assets/themes/citcom/onboarding-hero.webp';
+  }
 
   ngOnInit() {
     this.themeService.currentTheme$.pipe(takeUntil(this.unSub)).subscribe((theme) => {

@@ -4,7 +4,7 @@
 <section class="mk-page-hero mb-8">
   <p class="mk-eyebrow">Marketplace</p>
   <h1 class="mk-title">{{ 'HEADER._services' | translate }}</h1>
-  <p class="mk-subtitle">Explore verified data and AI services published by providers across the CitCom.ai ecosystem. Search by keyword or narrow the results by category.</p>
+  <p class="mk-subtitle">{{ 'BRAND._services_subtitle' | translate }}</p>
 </section>
 <section class="flex gap-6">
   @if(showDrawer){
@@ -236,8 +236,8 @@
 
 @if(feedback){
   <feedback-modal 
-  rateMessage="Based on your recent experience, how likely are you to recommend CitCom.ai to a colleague or a partner?"
-  writeMessage="How can we improve CitCom.ai?"
+  [rateMessage]="'BRAND._feedback_recommend' | translate"
+  [writeMessage]="'BRAND._feedback_improve' | translate"
   type="campaign"
   class="fixed inset-0 flex items-center justify-center z-40"></feedback-modal>
 }

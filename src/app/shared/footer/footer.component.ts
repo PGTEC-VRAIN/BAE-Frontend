@@ -31,6 +31,10 @@ export class FooterComponent implements OnInit, OnDestroy {
   checkLogged: boolean = false;
   feedback: boolean = false;
   isDomeTheme: boolean = false;
+  isPgtecTheme: boolean = false;
+  projectUrl?: string;
+  githubUrl?: string;
+  currentYear = new Date().getFullYear();
 
   socialLinks: { icon: any; url: string }[] = [];
   footerLinks: NavHeaderLink[] = [];
@@ -79,6 +83,9 @@ export class FooterComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unSub))
       .subscribe((theme) => {
         this.isDomeTheme = (theme?.name || '').toUpperCase() === 'DOME';
+        this.isPgtecTheme = (theme?.name || '').toUpperCase() === 'PGTEC';
+        this.projectUrl = theme?.links?.projectUrl;
+        this.githubUrl = theme?.links?.github;
         this.footerLinks = theme?.links?.footerLinks || [];
         this.defaultFooterLinks = this.footerLinks.flatMap((linkGroup) => linkGroup.navLinks || []);
         this.columns = theme?.links?.footerLinksColsNumber || 0;

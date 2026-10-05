@@ -64,6 +64,52 @@
     </div>
   </div>
 </footer>
+} @else if (isPgtecTheme) {
+<footer class="pg-footer w-full antialiased">
+  <div class="pg-footer-shell">
+    <div class="pg-footer-logos">
+      <a href="https://next-generation-eu.europa.eu/index_es" target="_blank" rel="noopener noreferrer">
+        <img src="assets/themes/pgtec/logo_EU-NG_es.png" alt="Financiado por la Unión Europea - NextGenerationEU" />
+      </a>
+      <a href="https://avance.digital.gob.es/" target="_blank" rel="noopener noreferrer">
+        <img src="assets/themes/pgtec/logo_MTDFP-SEDIA.png"
+          alt="Gobierno de España - Ministerio para la Transformación Digital y de la Función Pública - Secretaría de Estado de Digitalización e Inteligencia Artificial" />
+      </a>
+      <a href="https://planderecuperacion.gob.es/" target="_blank" rel="noopener noreferrer">
+        <img src="assets/themes/pgtec/logo_PRTR.png" alt="Plan de Recuperación, Transformación y Resiliencia" />
+      </a>
+      <a href="https://www.upv.es/" target="_blank" rel="noopener noreferrer">
+        <img src="assets/themes/pgtec/logo_UPV.png" alt="Universitat Politècnica de València" />
+      </a>
+      <a href="https://cred.digital.gob.es/espacios-de-datos/lista-de-confianza-de-espacios-de-datos" target="_blank"
+        rel="noopener noreferrer">
+        <img src="assets/themes/pgtec/logo_EDC.svg" alt="Espacio de datos de confianza - CRED" />
+      </a>
+    </div>
+
+    <p class="pg-footer-funding">{{ 'FOOTER._funding' | translate }}</p>
+
+    <div class="pg-footer-bottom">
+      <nav class="pg-footer-links">
+        <a (click)="goToRoute('/search')">{{ 'HEADER._browse_serv' | translate }}</a>
+        <a href="https://onboarding.pgtec-vrain-dataspace.eu/" target="_blank" rel="noopener noreferrer">
+          {{ 'FOOTER._onboarding' | translate }}
+        </a>
+        <a href="https://onboarding-docs.pgtec-vrain-dataspace.eu/documents/onboarding/agreement.pdf" target="_blank"
+          rel="noopener noreferrer">
+          {{ 'FOOTER._agreement' | translate }}
+        </a>
+        @if (projectUrl) {
+        <a [href]="projectUrl" target="_blank" rel="noopener noreferrer">{{ 'FOOTER._project' | translate }}</a>
+        }
+        @if (githubUrl) {
+        <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">GitHub</a>
+        }
+      </nav>
+      <span class="pg-footer-copy">© {{ currentYear }} {{ 'FOOTER._copyright' | translate }}</span>
+    </div>
+  </div>
+</footer>
 } @else {
 <footer class="w-full bg-[#1c2430] text-white antialiased border-t border-white/10">
   <div class="mx-auto max-w-[1240px] px-6 sm:px-8 lg:px-12">

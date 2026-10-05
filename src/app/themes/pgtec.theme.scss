@@ -1,0 +1,931 @@
+/*
+ * PGTEC theme: visual identity shared with the PGTEC onboarding portal
+ * (https://onboarding.pgtec-vrain-dataspace.eu/).
+ *
+ * The --pg-* tokens hold the palette. Light values live on body.theme-pgtec and
+ * dark values on html.dark body.theme-pgtec, so every rule below works in both
+ * modes without duplicating selectors. Component overrides are written as
+ * body.theme-pgtec <selector> so they win over the (CitCom) component styles
+ * without touching them.
+ */
+body.theme-pgtec {
+  /* HEX: #2422B0 - Indigo hover */
+  --theme-primary-50: 36 34 176;
+  /* HEX: #3634E8 - PGTEC Indigo */
+  --theme-primary-100: 54 52 232;
+
+  /* HEX: #EEF0FF - Indigo tint */
+  --theme-secondary-50: 238 240 255;
+  /* HEX: #1F2342 - Soft night */
+  --theme-secondary-100: 31 35 66;
+  /* HEX: #2C3155 - Night line */
+  --theme-secondary-200: 44 49 85;
+  /* HEX: #171A33 - Night surface */
+  --theme-secondary-300: 23 26 51;
+  /* HEX: #24275C - Night indigo tint */
+  --theme-secondary-400: 36 39 92;
+  /* HEX: #16193A - Ink */
+  --theme-secondary-500: 22 25 58;
+
+  /* BG COLOR - Night */
+  --theme-tertiary-50: 15 18 38;
+  /* CARD/MODAL BG COLOR - Night surface */
+  --theme-tertiary-100: 23 26 51;
+
+  /* Fonts */
+  --theme-font-display: "Montserrat";
+  --theme-font-body: "Inter";
+
+  /* Palette (light) */
+  --pg-indigo: #3634e8;
+  --pg-indigo-hover: #2422b0;
+  --pg-orange: #ee7306;
+  --pg-green: #0e8424;
+  --pg-teal: #1a7fa0;
+  --pg-bg: #fdfdfe;
+  --pg-surface: #ffffff;
+  --pg-soft: #f3f4f8;
+  --pg-line: #e3e5ee;
+  --pg-input-border: #c9cde0;
+  --pg-ink: #16193a;
+  --pg-body: #3c4160;
+  --pg-muted: #5f6485;
+  --pg-link: #3634e8;
+  --pg-tint-indigo: #eef0ff;
+  --pg-tint-orange: #fff3e3;
+  --pg-tint-green: #f0f8e4;
+  --pg-orange-text: #8a3f00;
+  --pg-band: #16193a;
+  --pg-focus-ring: 0 0 0 3px rgba(54, 52, 232, 0.35);
+  --pg-shadow-card: 0 2px 10px rgba(22, 25, 58, 0.06);
+  --pg-shadow-pop: 0 18px 40px rgba(22, 25, 58, 0.14);
+  --pg-radius-sm: 10px;
+  --pg-radius-md: 16px;
+  --pg-spectrum: linear-gradient(90deg, #3634e8 0%, #33d0e6 25%, #6ab02e 50%, #f8cd2b 75%, #ee7306 100%);
+  --pg-font-heading: "Montserrat", system-ui, sans-serif;
+  --pg-font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Header */
+  --theme-header-v2-top-bg: var(--pg-surface);
+  --theme-header-v2-glass-bg: rgba(255, 255, 255, 0.88);
+  --theme-header-v2-solid-bg: var(--pg-indigo);
+  --theme-header-v2-solid-hover-bg: var(--pg-indigo-hover);
+  --theme-header-v2-outline-border: var(--pg-input-border);
+  --theme-header-v2-outline-hover-bg: var(--pg-tint-indigo);
+  --theme-header-v2-outline-hover-text: var(--pg-ink);
+
+  /* Light header (header.component.css) */
+  --hdr-light-ink: var(--pg-ink);
+  --hdr-light-ink-strong: var(--pg-ink);
+  --hdr-light-muted: var(--pg-muted);
+  --hdr-light-accent: var(--pg-link);
+  --hdr-light-border: var(--pg-line);
+  --hdr-light-shadow: var(--pg-shadow-card);
+  --hdr-light-surface: var(--pg-surface);
+  --hdr-light-soft: var(--pg-soft);
+  --hdr-light-hover-bg: var(--pg-soft);
+  --hdr-light-avatar-bg: var(--pg-indigo);
+  --hdr-light-logo-filter: none;
+  --hdr-light-brand-font: var(--pg-font-heading);
+  --hdr-light-brand-size: 18px;
+  --hdr-light-brand-weight: 800;
+  --hdr-light-subtitle-size: 12px;
+  --hdr-light-subtitle-spacing: 0;
+  --hdr-light-subtitle-transform: none;
+
+  /* Marketplace accents used by shared components */
+  --mk-accent: var(--pg-indigo);
+  --mk-accent-bright: var(--pg-indigo);
+  --mk-accent-tint: var(--pg-tint-indigo);
+  --mk-accent-ink: var(--pg-indigo);
+
+  /* Light-mode blockquotes (markdown) */
+  --blockquote-border-color: var(--pg-indigo);
+  --blockquote-bg-color: var(--pg-tint-indigo);
+  --blockquote-text-color: var(--pg-ink);
+
+  font-family: var(--pg-font-body);
+  color: var(--pg-body);
+}
+
+html.dark body.theme-pgtec {
+  /* HEX: #8A88FF - Indigo readable on night surfaces */
+  --theme-primary-50: 138 136 255;
+
+  --pg-link: #9b99ff;
+  --pg-green: #4cc265;
+  --pg-bg: #0f1226;
+  --pg-surface: #171a33;
+  --pg-soft: #1f2342;
+  --pg-line: #2c3155;
+  --pg-input-border: #454b7c;
+  --pg-ink: #eef0fa;
+  --pg-body: #c8cce2;
+  --pg-muted: #a5abc8;
+  --pg-tint-indigo: #24275c;
+  --pg-tint-orange: #3a2a16;
+  --pg-tint-green: #1b3320;
+  --pg-orange-text: #ffc58a;
+  --pg-band: #1f2342;
+  --pg-focus-ring: 0 0 0 3px rgba(155, 153, 255, 0.5);
+  --pg-shadow-card: 0 2px 12px rgba(0, 0, 0, 0.4);
+  --pg-shadow-pop: 0 18px 40px rgba(0, 0, 0, 0.5);
+
+  --theme-header-v2-glass-bg: rgba(15, 18, 38, 0.88);
+
+  --mk-accent: var(--pg-link);
+  --mk-accent-bright: var(--pg-link);
+  --mk-accent-ink: var(--pg-link);
+
+  --blockquote-border-color: var(--pg-link);
+  --blockquote-text-color: var(--pg-ink);
+}
+
+body.theme-pgtec h1,
+body.theme-pgtec h2,
+body.theme-pgtec h3 {
+  font-family: var(--pg-font-heading);
+}
+
+body.theme-pgtec markdown {
+  font-family: inherit;
+}
+
+body.theme-pgtec ngx-file-drop .ngx-file-drop__drop-zone {
+  border-color: var(--pg-input-border) !important;
+}
+
+/* ===================================================================
+ * Header
+ * =================================================================== */
+/* Spectrum strip on top of the header, as in the onboarding portal */
+body.theme-pgtec nav.header-light::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--pg-spectrum);
+}
+
+/* Pill buttons like the onboarding portal */
+body.theme-pgtec .header-solid-btn,
+body.theme-pgtec .border-color-c,
+body.theme-pgtec .mobile-action-btn {
+  border-radius: 999px;
+}
+
+body.theme-pgtec .header-solid-btn:focus-visible,
+body.theme-pgtec .hdr-icon-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--pg-focus-ring);
+}
+
+/* Header dropdowns */
+body.theme-pgtec .dropdown-glass {
+  background: var(--pg-surface);
+  border: 1px solid var(--pg-line);
+  box-shadow: var(--pg-shadow-pop);
+}
+
+body.theme-pgtec .dropdown-item {
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .dropdown-item:hover,
+body.theme-pgtec .dropdown-session-btn:hover {
+  background: var(--pg-soft);
+}
+
+body.theme-pgtec .dropdown-item-icon {
+  color: var(--pg-muted);
+}
+
+body.theme-pgtec .dropdown-item--danger,
+body.theme-pgtec .dropdown-item--danger .dropdown-item-icon {
+  color: #c62828;
+}
+
+html.dark body.theme-pgtec .dropdown-item--danger,
+html.dark body.theme-pgtec .dropdown-item--danger .dropdown-item-icon {
+  color: #f28b82;
+}
+
+body.theme-pgtec .dropdown-session {
+  background: var(--pg-soft);
+}
+
+body.theme-pgtec .dropdown-glass .text-slate-900 {
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .dropdown-glass .text-slate-600,
+body.theme-pgtec .dropdown-glass .text-\[\#5b6472\] {
+  color: var(--pg-muted);
+}
+
+body.theme-pgtec .dropdown-glass .bg-\[\#1f242c\] {
+  background: var(--pg-indigo);
+}
+
+body.theme-pgtec .dropdown-glass .bg-slate-900\/10 {
+  background: var(--pg-line);
+}
+
+/* ===================================================================
+ * Landing (dashboard)
+ * =================================================================== */
+body.theme-pgtec .ob-page {
+  --ob-ink: var(--pg-ink);
+  --ob-border: var(--pg-line);
+  --ob-muted: var(--pg-body);
+  --ob-caption: var(--pg-muted);
+  --ob-surface-muted: var(--pg-soft);
+  --ob-accent: var(--pg-link);
+  --ob-accent-bright: var(--pg-indigo);
+  --ob-accent-ink: #ffffff;
+  --ob-display: var(--pg-font-heading);
+
+  background: var(--pg-bg);
+}
+
+body.theme-pgtec .ob-shell {
+  max-width: 1200px;
+  padding: 0 32px;
+}
+
+body.theme-pgtec .ob-btn:focus-visible,
+body.theme-pgtec .ob-link-light:focus-visible,
+body.theme-pgtec .ob-text-link:focus-visible,
+body.theme-pgtec .ob-search-btn:focus-visible,
+body.theme-pgtec .ob-feat-link:focus-visible {
+  outline: none;
+  box-shadow: var(--pg-focus-ring);
+}
+
+/* Section eyebrows: small coloured caps, no rule */
+body.theme-pgtec .ob-eyebrow {
+  gap: 8px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--pg-link);
+}
+
+body.theme-pgtec .ob-eyebrow-line {
+  display: none;
+}
+
+/* Hero */
+body.theme-pgtec .ob-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--pg-bg);
+  color: var(--pg-ink);
+  padding: 88px 0 96px;
+  border-bottom: 1px solid var(--pg-line);
+}
+
+body.theme-pgtec .ob-hero--with-search {
+  padding-bottom: 144px;
+  border-bottom: 0;
+}
+
+/* Hero eyebrow is a pill badge ("Espacio de datos de confianza" style) */
+body.theme-pgtec .ob-hero .ob-eyebrow {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--pg-tint-orange);
+  color: var(--pg-orange-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+body.theme-pgtec .ob-title {
+  margin-top: 20px;
+  font-family: var(--pg-font-heading);
+  font-size: clamp(2.375rem, 4.4vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .ob-subtitle {
+  margin-top: 24px;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--pg-body);
+}
+
+body.theme-pgtec .ob-actions {
+  margin-top: 32px;
+  gap: 12px;
+}
+
+body.theme-pgtec .ob-btn {
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+body.theme-pgtec .ob-btn-accent {
+  background: var(--pg-indigo);
+  color: #ffffff;
+}
+
+body.theme-pgtec .ob-btn-accent:hover {
+  background: var(--pg-indigo-hover);
+  color: #ffffff;
+}
+
+body.theme-pgtec .ob-hero .ob-btn-ghost-light {
+  background: var(--pg-surface);
+  border-color: var(--pg-input-border);
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .ob-hero .ob-btn-ghost-light:hover {
+  background: var(--pg-tint-indigo);
+  border-color: var(--pg-input-border);
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .ob-link-light {
+  color: var(--pg-muted);
+}
+
+body.theme-pgtec .ob-link-light:hover {
+  color: var(--pg-link);
+}
+
+/* Illustration instead of a photo, with the metrics as cards underneath */
+body.theme-pgtec .ob-hero-media {
+  flex: 0 1 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body.theme-pgtec .ob-hero-img {
+  width: auto;
+  max-width: 100%;
+  height: 340px;
+  aspect-ratio: auto;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+body.theme-pgtec .ob-stats {
+  position: static;
+  width: 100%;
+  margin-top: 32px;
+  gap: 12px;
+}
+
+body.theme-pgtec .ob-stat {
+  border: 1px solid var(--pg-line);
+  border-radius: var(--pg-radius-md);
+  background: var(--pg-surface);
+  box-shadow: var(--pg-shadow-card);
+}
+
+body.theme-pgtec .ob-stat-value {
+  color: var(--pg-body);
+}
+
+body.theme-pgtec .ob-stat-number {
+  font-family: var(--pg-font-heading);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--pg-link);
+}
+
+body.theme-pgtec .ob-stat:nth-child(2) .ob-stat-number {
+  color: var(--pg-orange);
+}
+
+/* Search card */
+body.theme-pgtec .ob-search-card {
+  border-radius: var(--pg-radius-md);
+  border: 1px solid var(--pg-line);
+  background: var(--pg-surface);
+  box-shadow: var(--pg-shadow-pop);
+}
+
+body.theme-pgtec .ob-search-label {
+  font-family: var(--pg-font-heading);
+  font-size: 1.375rem;
+  font-weight: 700;
+  text-transform: none;
+}
+
+body.theme-pgtec .ob-search-inner {
+  min-height: 52px;
+  border-radius: 999px;
+  border-color: var(--pg-input-border);
+  background: var(--pg-surface);
+}
+
+body.theme-pgtec .ob-search-inner:focus-within {
+  border-color: var(--pg-indigo);
+  box-shadow: var(--pg-focus-ring);
+}
+
+body.theme-pgtec .ob-search-btn {
+  border-radius: 999px;
+  background: var(--pg-indigo);
+  font-weight: 600;
+}
+
+body.theme-pgtec .ob-search-btn:hover {
+  background: var(--pg-indigo-hover);
+}
+
+/* Sections */
+body.theme-pgtec .ob-section {
+  padding: 96px 0;
+}
+
+body.theme-pgtec .ob-section--after-search {
+  padding-top: 80px;
+}
+
+body.theme-pgtec .ob-section-head--rule {
+  border-bottom: 1px solid var(--pg-line);
+}
+
+body.theme-pgtec .ob-display-title {
+  font-family: var(--pg-font-heading);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: none;
+}
+
+body.theme-pgtec .ob-text-link {
+  font-weight: 600;
+  border-radius: 999px;
+}
+
+body.theme-pgtec .ob-text-link:hover {
+  color: var(--pg-ink);
+}
+
+/* Featured services */
+body.theme-pgtec .ob-feat-card {
+  border: 1px solid var(--pg-line);
+  border-radius: var(--pg-radius-md);
+  background: var(--pg-surface);
+  box-shadow: var(--pg-shadow-card);
+}
+
+body.theme-pgtec .ob-feat-card:hover,
+body.theme-pgtec .ob-feat-card:focus-within {
+  box-shadow: var(--pg-shadow-pop);
+}
+
+body.theme-pgtec .ob-feat-media {
+  background: var(--pg-soft);
+}
+
+body.theme-pgtec .ob-feat-badge {
+  background: var(--pg-tint-indigo);
+  color: var(--pg-link);
+}
+
+body.theme-pgtec .ob-feat-title {
+  font-family: var(--pg-font-heading);
+  font-size: 1.25rem;
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .ob-feat-more {
+  font-weight: 600;
+  color: var(--pg-link);
+}
+
+/* About + benefits as cards */
+body.theme-pgtec .ob-about-title {
+  font-family: var(--pg-font-heading);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+body.theme-pgtec .ob-benefits {
+  gap: 24px;
+}
+
+body.theme-pgtec .ob-benefit {
+  padding: 28px;
+  border: 1px solid var(--pg-line);
+  border-radius: var(--pg-radius-md);
+  background: var(--pg-surface);
+  box-shadow: var(--pg-shadow-card);
+}
+
+body.theme-pgtec .ob-benefit-icon {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--pg-tint-indigo);
+  color: var(--pg-link);
+}
+
+body.theme-pgtec .ob-benefit:nth-child(2) .ob-benefit-icon {
+  background: var(--pg-tint-orange);
+  color: var(--pg-orange-text);
+}
+
+body.theme-pgtec .ob-benefit:nth-child(3) .ob-benefit-icon {
+  background: var(--pg-tint-green);
+  color: var(--pg-green);
+}
+
+body.theme-pgtec .ob-benefit-title {
+  font-family: var(--pg-font-heading);
+  font-size: 1.25rem;
+}
+
+/* Providers band */
+body.theme-pgtec .ob-provider {
+  position: relative;
+  background: var(--pg-band);
+}
+
+body.theme-pgtec .ob-provider::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--pg-spectrum);
+}
+
+body.theme-pgtec .ob-provider .ob-eyebrow {
+  color: #f8cd2b;
+}
+
+body.theme-pgtec .ob-provider-title {
+  font-family: var(--pg-font-heading);
+  font-size: clamp(2rem, 3.6vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: none;
+}
+
+body.theme-pgtec .ob-provider .ob-btn-ghost-light {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+}
+
+body.theme-pgtec .ob-provider .ob-btn-ghost-light:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #16193a;
+}
+
+body.theme-pgtec .ob-provider-media {
+  background-image: url("/assets/themes/pgtec/logo_PGTEC_mark.png");
+  background-size: auto 72%;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1;
+}
+
+/* ===================================================================
+ * Catalogue list (bae-off-featured)
+ * =================================================================== */
+body.theme-pgtec .ft-item {
+  border-bottom-color: var(--pg-line);
+  border-radius: var(--pg-radius-sm);
+}
+
+body.theme-pgtec .ft-item:hover {
+  background: var(--pg-soft);
+}
+
+body.theme-pgtec .ft-index {
+  font-family: var(--pg-font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--pg-link);
+}
+
+body.theme-pgtec .ft-name {
+  font-family: var(--pg-font-heading);
+  font-size: 1.125rem;
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .ft-desc {
+  color: var(--pg-body);
+}
+
+body.theme-pgtec .ft-arrow {
+  border-color: var(--pg-input-border);
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .ft-item:hover .ft-arrow {
+  background: var(--pg-indigo);
+  border-color: var(--pg-indigo);
+  color: #ffffff;
+}
+
+body.theme-pgtec .ft-empty {
+  color: var(--pg-muted);
+}
+
+/* ===================================================================
+ * Marketplace pages: services, catalogues (mk-* in styles.css)
+ * =================================================================== */
+body.theme-pgtec .mk-page {
+  background: var(--pg-bg);
+}
+
+body.theme-pgtec .mk-shell {
+  max-width: 1200px;
+}
+
+/* Light banner with the spectrum strip instead of the dark photo banner */
+body.theme-pgtec .mk-page-hero {
+  padding: 36px 40px 32px;
+  border-radius: var(--pg-radius-md);
+  border: 1px solid var(--pg-line);
+  background: var(--pg-tint-indigo);
+  background-image: none;
+  color: var(--pg-ink);
+  box-shadow: none;
+}
+
+body.theme-pgtec .mk-page-hero::before {
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--pg-spectrum);
+}
+
+body.theme-pgtec .mk-eyebrow {
+  font-weight: 700;
+  color: var(--pg-link);
+}
+
+body.theme-pgtec .mk-title {
+  font-family: var(--pg-font-heading);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .mk-subtitle {
+  color: var(--pg-body);
+}
+
+body.theme-pgtec .mk-card {
+  border-color: var(--pg-line);
+  background: var(--pg-surface);
+  box-shadow: var(--pg-shadow-card);
+}
+
+body.theme-pgtec .mk-card-hover:hover {
+  border-color: var(--pg-input-border);
+  box-shadow: var(--pg-shadow-pop);
+}
+
+body.theme-pgtec .mk-chip {
+  border-color: transparent;
+  background: var(--pg-tint-indigo);
+  color: var(--pg-link);
+}
+
+body.theme-pgtec .mk-btn-outline {
+  border-radius: 999px;
+  border-color: var(--pg-input-border);
+  background: var(--pg-surface);
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .mk-btn-outline:hover {
+  border-color: var(--pg-indigo);
+  background: var(--pg-indigo);
+  color: #ffffff;
+}
+
+/* ===================================================================
+ * Signed-in area: profile, offerings, orders... (acc-* in styles.css)
+ * =================================================================== */
+body.theme-pgtec .acc-page {
+  background: var(--pg-bg);
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .acc-head {
+  background: var(--pg-surface);
+  border-bottom-color: var(--pg-line);
+}
+
+body.theme-pgtec .acc-breadcrumb,
+body.theme-pgtec .acc-breadcrumb a,
+body.theme-pgtec .acc-session-label,
+body.theme-pgtec .acc-nav-label,
+body.theme-pgtec .acc-nav-icon {
+  color: var(--pg-muted);
+}
+
+body.theme-pgtec .acc-breadcrumb a:hover,
+body.theme-pgtec .acc-breadcrumb-current,
+body.theme-pgtec .acc-title {
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .acc-title {
+  font-family: var(--pg-font-heading);
+  letter-spacing: -0.01em;
+}
+
+body.theme-pgtec .acc-subtitle,
+body.theme-pgtec .acc-help-steps {
+  color: var(--pg-body);
+}
+
+body.theme-pgtec .acc-session {
+  border-color: var(--pg-line);
+  background: var(--pg-soft);
+}
+
+body.theme-pgtec .acc-session-avatar {
+  background: var(--pg-indigo);
+}
+
+body.theme-pgtec .acc-session-avatar--org {
+  background: var(--pg-orange);
+  color: #ffffff;
+}
+
+body.theme-pgtec .acc-nav,
+body.theme-pgtec .acc-help {
+  border-color: var(--pg-line);
+  background: var(--pg-surface);
+}
+
+body.theme-pgtec .acc-nav-item {
+  color: var(--pg-ink);
+}
+
+body.theme-pgtec .acc-nav-item.bg-primary-100 {
+  color: #ffffff;
+}
+
+body.theme-pgtec .acc-nav-item:not(.bg-primary-100):hover {
+  background: var(--pg-soft);
+}
+
+body.theme-pgtec .acc-nav-item.bg-primary-100 .acc-nav-icon {
+  color: #ffffff;
+}
+
+body.theme-pgtec .acc-help-step {
+  background: var(--pg-tint-indigo);
+  color: var(--pg-link);
+}
+
+body.theme-pgtec .acc-main .bg-secondary-50 {
+  background-color: var(--pg-surface);
+}
+
+body.theme-pgtec .acc-main .border-secondary-50 {
+  border-color: var(--pg-line);
+}
+
+body.theme-pgtec .acc-main table {
+  color: var(--pg-body);
+}
+
+body.theme-pgtec .acc-main table thead {
+  background: var(--pg-soft);
+  color: var(--pg-muted);
+}
+
+body.theme-pgtec .acc-main table tbody tr {
+  border-color: var(--pg-line);
+}
+
+body.theme-pgtec .acc-main table tbody tr:hover {
+  background-color: var(--pg-soft);
+}
+
+/* ===================================================================
+ * Footer (markup in footer.component.html, PGTEC branch)
+ * =================================================================== */
+.pg-footer {
+  background: var(--pg-bg);
+  border-top: 1px solid var(--pg-line);
+  color: var(--pg-body);
+}
+
+.pg-footer-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 32px 32px;
+}
+
+/* Funders' logos keep their colours, so they sit on a white strip in both modes */
+.pg-footer-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 40px;
+  padding: 20px 24px;
+  border-radius: var(--pg-radius-md);
+  background: #ffffff;
+}
+
+html.dark .pg-footer-logos {
+  border: 1px solid var(--pg-line);
+}
+
+.pg-footer-logos a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.pg-footer-logos img {
+  height: 52px;
+  width: auto;
+  max-width: 240px;
+  object-fit: contain;
+}
+
+.pg-footer-funding {
+  margin: 24px 0 0;
+  font-size: 14px;
+  color: var(--pg-muted);
+}
+
+.pg-footer-bottom {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--pg-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  font-size: 14px;
+}
+
+.pg-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+.pg-footer-links a {
+  color: var(--pg-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.pg-footer-links a:hover {
+  color: var(--pg-link);
+}
+
+.pg-footer-copy {
+  color: var(--pg-muted);
+}
+
+@media (max-width: 640px) {
+  body.theme-pgtec .ob-shell,
+  .pg-footer-shell {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  body.theme-pgtec .ob-hero-img {
+    height: 220px;
+  }
+
+  body.theme-pgtec .ob-section {
+    padding: 64px 0;
+  }
+
+  .pg-footer-logos {
+    justify-content: center;
+  }
+
+  .pg-footer-logos img {
+    height: 40px;
+  }
+}

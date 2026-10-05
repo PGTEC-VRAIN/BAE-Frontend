@@ -1,5 +1,5 @@
 {
-  "theme": "citcom",
+  "theme": "pgtec",
   "siop": {
     "enabled": false,
     "isRedirection": false,
@@ -19,7 +19,7 @@
   "domeTrust": "",
   "domeAbout": "",
   "purchaseEnabled": false,
-  "domeRegister": "",
+  "domeRegister": "https://onboarding.pgtec-vrain-dataspace.eu/",
   "domeRegisterCustomer": "",
   "domePublish": "",
   "domeOnboardingGuidelines": "",

@@ -102,7 +102,7 @@
               <div class="hidden md:block self-stretch w-px bg-gray-200 mx-4"></div>
           
               <!-- Logo -->
-              <img class="w-[100px] lg:w-[200px] hidden md:block self-center z-10 dark:text-white" [ngClass]="{'brightness-[.15]': logo === defaultLogo}" src="{{ logo }}" />
+              <img class="w-[100px] lg:w-[200px] hidden md:block self-center z-10 dark:text-white" [ngClass]="{'brightness-[.15]': darkenDefaultLogo && logo === defaultLogo}" src="{{ logo }}" />
             </div>
           </div>
           

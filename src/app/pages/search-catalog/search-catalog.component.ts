@@ -16,6 +16,7 @@ import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SearchStateService } from "../../services/search-state.service"
+import { ThemeService } from "../../services/theme.service";
 
 @Component({
   selector: 'app-search-catalog',
@@ -33,7 +34,8 @@ export class SearchCatalogComponent implements OnInit, OnDestroy{
     private localStorage: LocalStorageService,
     private router: Router,
     private paginationService: PaginationService,
-    private state: SearchStateService
+    private state: SearchStateService,
+    private themeService: ThemeService
   ) {
     this.eventMessage.messages$
     .pipe(takeUntil(this.destroy$))
@@ -60,7 +62,9 @@ export class SearchCatalogComponent implements OnInit, OnDestroy{
 
   id:any;
   catalog:any;
-  defaultLogo = 'assets/themes/citcom/logo-citcom.png';
+  defaultLogo = this.themeService.getCurrentThemeConfig()?.assets?.logoUrl ?? 'assets/themes/citcom/logo-citcom.png';
+  // The CitCom logo is white, so it is darkened when used on light backgrounds
+  darkenDefaultLogo = this.themeService.getCurrentThemeConfig()?.name === 'CITCOM';
   providerName:string='';
   providerDescription:string='';
   products: ProductOffering[]=[];

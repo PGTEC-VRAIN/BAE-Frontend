@@ -24,14 +24,17 @@ export const CITCOM_THEME_CONFIG: ThemeConfig = {
   assets: {
     logoUrl: 'assets/themes/citcom/logo-citcom.png',
     jumboBgUrl: 'assets/themes/citcom/blueBackground.png',
-    cardDefaultBgUrl: 'assets/themes/citcom/cardBackground.svg'
+    cardDefaultBgUrl: 'assets/themes/citcom/cardBackground.svg',
+    heroUrl: 'assets/themes/citcom/onboarding-hero.webp'
   },
   links: {
     headerLinks: citcomHeaderLinks,
+    projectUrl: 'https://citcomtef.eu/',
   },
   dashboard: {
     showFeaturedOfferings: true,
     showPlatformBenefits: false,
   },
-  forceLightMode: true
+  forceLightMode: true,
+  lightHeader: true
 };

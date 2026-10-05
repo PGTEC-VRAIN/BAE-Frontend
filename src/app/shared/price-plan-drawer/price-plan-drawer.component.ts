@@ -17,6 +17,7 @@ type ProductOfferingTerm = components["schemas"]["ProductOfferingTerm"];
 type ProductSpecificationCharacteristic = components["schemas"]["ProductSpecificationCharacteristic"];
 type AttachmentRefOrValue = components["schemas"]["AttachmentRefOrValue"];
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { lastValueFrom, Subscription } from 'rxjs';
 
 
@@ -29,7 +30,8 @@ import { lastValueFrom, Subscription } from 'rxjs';
     NgClass,
     CurrencyPipe,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    TranslateModule
   ],
   templateUrl: './price-plan-drawer.component.html',
   styleUrl: './price-plan-drawer.component.css'

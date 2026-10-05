@@ -12,9 +12,11 @@ import {
   faClipboardCheck,
   faCogs,
   faHandHoldingBox,
+  faMoon,
   faPieChart,
   faReceipt,
   faRuler,
+  faSun,
   faUser,
   faUsers
 } from '@fortawesome/sharp-solid-svg-icons';
@@ -110,8 +112,17 @@ export class HeaderComponent implements OnInit, AfterViewInit, DoCheck, OnDestro
   private themeSubscription: Subscription = new Subscription();
   private destroy$ = new Subject<void>();
 
+  isDarkMode = false;
+
   get isLightHeader(): boolean {
-    return this.currentTheme?.name === 'CITCOM';
+    return !!this.currentTheme?.lightHeader;
+  }
+
+  toggleColorScheme() {
+    this.isDarkMode = !this.isDarkMode;
+    document.documentElement.classList.toggle('dark', this.isDarkMode);
+    // Same key index.html reads on load to avoid a flash of the wrong scheme
+    localStorage.setItem('color-theme', this.isDarkMode ? 'dark' : 'light');
   }
 
   @HostListener('window:scroll')
@@ -152,6 +163,7 @@ export class HeaderComponent implements OnInit, AfterViewInit, DoCheck, OnDestro
 
     this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
       this.currentTheme = theme;
+      this.isDarkMode = document.documentElement.classList.contains('dark');
       this.themeAuthUrls = theme?.authUrls;
 
       const links = theme?.links?.headerLinks || [];
@@ -375,6 +387,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, DoCheck, OnDestro
   }
 
   onLoginClick() {
+    // PGTEC: el login va al flujo VC del logic-proxy (wallet y acceso con
+    // certificado FNMT) en vez del QR SIOP directo al verifier.
+    window.location.href = '/auth/vc/login';
+    return;
     if (environment.SIOP_INFO.enabled === true && this.qrVerifier.intervalId === undefined) {
       this.statePair = uuid.v4();
 
@@ -433,4 +449,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, DoCheck, OnDestro
   protected readonly faPieChart = faPieChart;
   protected readonly faBars = faBars;
   protected readonly faArrowRight = faArrowRight;
+  protected readonly faSun = faSun;
+  protected readonly faMoon = faMoon;
 }

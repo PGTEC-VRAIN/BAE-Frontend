@@ -4,6 +4,7 @@ export interface ThemeAssetConfig {
   faviconUrl?: string;
   jumboBgUrl?: string;
   cardDefaultBgUrl?: string;
+  heroUrl?: string; // Optional: illustration shown in the landing hero
   // other specific theme assets
 }
 
@@ -42,6 +43,7 @@ export interface ThemeLinkConfig {
   privacyPolicy?: string;
   termsOfService?: string;
   contactUs?: string;
+  projectUrl?: string; // Optional: public website of the project behind the marketplace
 }
 
 export interface ThemeColorsConfig {
@@ -74,5 +76,7 @@ export interface ThemeConfig {
   colors?: ThemeColorsConfig;
   dashboard?: DashboardConfig;
   forceLightMode?: boolean; // Optional: ignore the OS/stored dark preference for this theme
+  lightHeader?: boolean; // Optional: white header with brand label instead of the dark glass one
+  colorSchemeToggle?: boolean; // Optional: show a light/dark switch in the header
   // More theme specific propierties
 }

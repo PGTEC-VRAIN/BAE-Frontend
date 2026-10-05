@@ -34,12 +34,16 @@ export interface IDashboardStats {
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css',
+  styleUrls: [
+    './dashboard.onboarding.component.css',
+    './dashboard.search.component.css',
+    './dashboard.sections.component.css'
+  ],
   standalone: true,
   imports: [TranslateModule, ReactiveFormsModule, FeaturedComponent, NgClass, DashboardWhatsDome, DashboardHeroComponent, DashboardStatsComponent, DashboardServicesComponent, DashboardCustomersComponent, DashboardProvidersComponent, DashboardEcosystemComponent],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  customersLink = 'https://onboard.sbx.evidenceledger.eu/register-customer';
+  customersLink = 'https://citcomtef.eu/';
   providersLink = "https://onboard.sbx.evidenceledger.eu/register-provider";
 
 
@@ -55,6 +59,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isFilterPanelShown = false;
   searchField = new FormControl();
   searchEnabled = environment.SEARCH_ENABLED;
+  catalogSearchTerm = '';
+
+  benefits = [
+    {
+      title: 'Trust by Design',
+      text: 'Every provider joins with a verifiable, credential-based identity, so you always know who stands behind each offering and under which conditions it is shared.'
+    },
+    {
+      title: 'Compliance Readiness',
+      text: 'Offerings carry explicit usage policies and terms, helping you align data sharing and AI adoption with European legal and governance requirements from day one.'
+    },
+    {
+      title: 'Faster Collaboration',
+      text: 'Once approved, your organization can publish its own services or reuse others\' to launch data-driven pilots with cities, companies and researchers across Europe.'
+    }
+  ];
 
   domeRegister: string = environment.DOME_REGISTER_LINK;
 
@@ -198,13 +218,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.router.navigate(['/search']);
   }
 
+  goToOffering(offering: ProductOffering) {
+    this.router.navigate(['/search', offering.id]);
+  }
+
+  // Same image selection as the offering cards: profile picture first, then any picture
+  getOfferingImage(offering: ProductOffering): string {
+    const attachments = offering?.attachment ?? [];
+    const profile = attachments.filter((a) => a.name === 'Profile Picture');
+    const pictures = profile.length > 0 ? profile : attachments.filter((a) => a.attachmentType === 'Picture');
+    return pictures.at(0)?.url ?? 'https://placehold.co/600x400/svg';
+  }
+
+  getOfferingCategory(offering: ProductOffering): string | undefined {
+    return offering?.category?.find((c) => !!c?.name)?.name;
+  }
+
   filterSearch(event: Event) {
     event.preventDefault();
-    if (this.searchField.value != '' && this.searchField.value != null) {
-      this.router.navigate(['/search', { keywords: this.searchField.value }]);
-    } else {
-      this.router.navigate(['/search']);
-    }
+    this.catalogSearchTerm = (this.searchField.value ?? '').toString().trim();
+  }
+
+  onSearchInput() {
+    this.catalogSearchTerm = (this.searchField.value ?? '').toString().trim();
   }
 
   hasLongWord(str: string | undefined, threshold = 20) {

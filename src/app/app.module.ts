@@ -15,7 +15,6 @@ import { ErrorMessageComponent } from 'src/app/shared/error-message/error-messag
 import { appConfigFactory } from './app-config-factory';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ChatbotWidgetComponent } from './chatbot-widget/chatbot-widget.component';
 import { RequestInterceptor } from './interceptors/requests-interceptor';
 import { ContactUsComponent } from './offerings/contact-us/contact-us.component';
 import { ExploreDomeComponent } from "./offerings/explore-dome/explore-dome.component";
@@ -65,6 +64,7 @@ import { OrderInfoComponent } from './pages/user-profile/profile-sections/order-
 import { OrgInfoComponent } from './pages/user-profile/profile-sections/org-info/org-info.component';
 import { UserInfoComponent } from './pages/user-profile/profile-sections/user-info/user-info.component';
 import { UserProfileComponent } from "./pages/user-profile/user-profile.component";
+import { AccountHeaderComponent } from "./shared/account-header/account-header.component";
 import { AppInitService } from './services/app-init.service';
 import { ThemeAwareTranslateLoader } from './services/theme-aware-translate.loader';
 import { ThemeService } from './services/theme.service';
@@ -169,7 +169,6 @@ import { RequestValidationModalComponent } from './pages/seller-offerings/offeri
     ReactiveFormsModule,
     PickerComponent,
     NgxFileDropModule,
-    ChatbotWidgetComponent,
     QuotesModule,
     MarkdownModule.forRoot(),
     TranslateModule.forRoot({
@@ -193,7 +192,8 @@ import { RequestValidationModalComponent } from './pages/seller-offerings/offeri
     AboutDomeComponent,
     MarkdownTextareaComponent,
     ProviderRevenueSharingComponent,
-    OperatorRevenueSharingComponent
+    OperatorRevenueSharingComponent,
+    AccountHeaderComponent
   ],
   providers: [
     AppInitService,

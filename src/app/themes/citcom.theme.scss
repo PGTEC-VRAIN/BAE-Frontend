@@ -1,0 +1,53 @@
+body.theme-citcom {
+  /* HEX: #11899A - Accent Teal */
+  --theme-primary-50: 17 137 154;
+  /* HEX: #1F242C - Charcoal */
+  --theme-primary-100: 31 36 44;
+
+  /* HEX: #F3F4F6 - Light Neutral Grey */
+  --theme-secondary-50: 243 244 246;
+  /* HEX: #1C2430 - Dark Slate */
+  --theme-secondary-100: 28 36 48;
+  /* HEX: #151B24 - Deep Slate */
+  --theme-secondary-200: 21 27 36;
+  /* HEX: #252E3B - Steel Slate */
+  --theme-secondary-300: 37 46 59;
+  /* HEX: #10151C - Rich Black */
+  --theme-secondary-400: 16 21 28;
+  /* HEX: #1B2330 - Dark Gray-Blue */
+  --theme-secondary-500: 27 35 48;
+
+  /* BG COLOR - Deep Charcoal */
+  --theme-tertiary-50: 20 24 30;
+  /* CARD/MODAL BG COLOR - Dark Slate Grey */
+  --theme-tertiary-100: 28 34 42;
+
+  /* Fonts */
+  --theme-font-display: "Barlow";
+  --theme-font-body: "Barlow";
+
+  /* Header */
+  --theme-header-v2-top-bg: #ffffff;
+  --theme-header-v2-glass-bg: rgba(255, 255, 255, 0.86);
+  --theme-header-v2-solid-bg: #1f242c;
+  --theme-header-v2-solid-hover-bg: #000000;
+  --theme-header-v2-outline-border: #1f242c;
+  --theme-header-v2-outline-hover-bg: #1f242c;
+  --theme-header-v2-outline-hover-text: #ffffff;
+
+  /* Marketplace accents (AA contrast on white: accent, accent-ink) */
+  --mk-accent: #0e7480;
+  --mk-accent-bright: #3cc3cf;
+  --mk-accent-tint: #e6f4f5;
+  --mk-accent-ink: #0b5f69;
+
+  font-family: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body.theme-citcom markdown {
+  font-family: inherit;
+}
+
+body.theme-citcom .mk-page-hero {
+  background-image: url("/assets/themes/citcom/onboarding-hero.webp");
+}

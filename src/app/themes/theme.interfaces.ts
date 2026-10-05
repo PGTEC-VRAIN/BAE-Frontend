@@ -61,6 +61,7 @@ export interface ThemeAuthUrlsConfig {
 export interface DashboardConfig {
   showFeaturedOfferings?: boolean;
   showPlatformBenefits?: boolean;
+  heroStats?: 'overlay' | 'cards'; // Landing metrics over the hero image (default) or as cards under the hero actions
   // Add more sections
 }
 

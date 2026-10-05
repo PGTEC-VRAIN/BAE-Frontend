@@ -93,6 +93,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.currentTheme?.links?.projectUrl ?? this.customersLink;
   }
 
+  // Themes can move the hero metrics out of the image into cards under the actions
+  get heroStatCards(): boolean {
+    return this.currentTheme?.dashboard?.heroStats === 'cards';
+  }
+
   get heroUrl(): string {
     return this.currentTheme?.assets?.heroUrl ?? 'assets/themes/citcom/onboarding-hero.webp';
   }

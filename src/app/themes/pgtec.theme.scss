@@ -56,6 +56,12 @@ body.theme-pgtec {
   --pg-tint-green: #f0f8e4;
   --pg-orange-text: #8a3f00;
   --pg-band: #16193a;
+  /* Landing hero band: night under the white header, so it does not look like the onboarding portal */
+  --pg-hero-bg: #0f1226;
+  --pg-hero-body: #c8cce2;
+  --pg-hero-muted: #a5abc8;
+  --pg-hero-card-bg: #171a33;
+  --pg-hero-card-border: #2c3155;
   --pg-focus-ring: 0 0 0 3px rgba(54, 52, 232, 0.35);
   --pg-shadow-card: 0 2px 10px rgba(22, 25, 58, 0.06);
   --pg-shadow-pop: 0 18px 40px rgba(22, 25, 58, 0.14);
@@ -127,6 +133,12 @@ html.dark body.theme-pgtec {
   --pg-tint-green: #1b3320;
   --pg-orange-text: #ffc58a;
   --pg-band: #1f2342;
+  /* Petroleum hero band, distinct from the night background */
+  --pg-hero-bg: #0b3a4a;
+  --pg-hero-body: #cfe6ec;
+  --pg-hero-muted: #9cc3cd;
+  --pg-hero-card-bg: rgba(4, 22, 30, 0.45);
+  --pg-hero-card-border: rgba(255, 255, 255, 0.12);
   --pg-focus-ring: 0 0 0 3px rgba(155, 153, 255, 0.5);
   --pg-shadow-card: 0 2px 12px rgba(0, 0, 0, 0.4);
   --pg-shadow-pop: 0 18px 40px rgba(0, 0, 0, 0.5);
@@ -277,53 +289,55 @@ body.theme-pgtec .ob-eyebrow-line {
   display: none;
 }
 
-/* Hero */
+/* Hero: coloured band (night / petroleum) with light text */
 body.theme-pgtec .ob-hero {
+  --ob-hero-body: var(--pg-hero-body);
+  --ob-hero-muted: var(--pg-hero-muted);
+  --ob-hero-card-bg: var(--pg-hero-card-bg);
+  --ob-hero-card-border: var(--pg-hero-card-border);
+
   position: relative;
   overflow: hidden;
-  background: var(--pg-bg);
-  color: var(--pg-ink);
-  padding: 88px 0 96px;
-  border-bottom: 1px solid var(--pg-line);
+  background: var(--pg-hero-bg);
+  color: #ffffff;
+  padding: 80px 0 96px;
 }
 
 body.theme-pgtec .ob-hero--with-search {
   padding-bottom: 144px;
-  border-bottom: 0;
 }
 
-/* Hero eyebrow is a pill badge ("Espacio de datos de confianza" style) */
+/* "PGTEC MARKETPLACE" in caps with a leading rule */
 body.theme-pgtec .ob-hero .ob-eyebrow {
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: var(--pg-tint-orange);
-  color: var(--pg-orange-text);
-  font-size: 0.875rem;
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
+  gap: 12px;
+  letter-spacing: 0.16em;
+  color: #f8cd2b;
+}
+
+body.theme-pgtec .ob-hero .ob-eyebrow-line {
+  display: inline-block;
 }
 
 body.theme-pgtec .ob-title {
-  margin-top: 20px;
+  margin-top: 18px;
   font-family: var(--pg-font-heading);
-  font-size: clamp(2.375rem, 4.4vw, 3.5rem);
+  font-size: clamp(2.25rem, 4vw, 3rem);
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.01em;
   text-transform: none;
-  color: var(--pg-ink);
+  color: #ffffff;
 }
 
 body.theme-pgtec .ob-subtitle {
-  margin-top: 24px;
-  font-size: 1.125rem;
+  margin-top: 20px;
+  font-size: 1.0625rem;
   line-height: 1.6;
-  color: var(--pg-body);
+  color: var(--pg-hero-body);
 }
 
 body.theme-pgtec .ob-actions {
-  margin-top: 32px;
+  margin-top: 28px;
   gap: 12px;
 }
 
@@ -345,70 +359,60 @@ body.theme-pgtec .ob-btn-accent:hover {
   color: #ffffff;
 }
 
+body.theme-pgtec .ob-hero .ob-btn-accent {
+  background: #ffffff;
+  color: #16193a;
+}
+
+body.theme-pgtec .ob-hero .ob-btn-accent:hover {
+  background: #eef0ff;
+  color: #16193a;
+}
+
 body.theme-pgtec .ob-hero .ob-btn-ghost-light {
-  background: var(--pg-surface);
-  border-color: var(--pg-input-border);
-  color: var(--pg-ink);
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #ffffff;
 }
 
 body.theme-pgtec .ob-hero .ob-btn-ghost-light:hover {
-  background: var(--pg-tint-indigo);
-  border-color: var(--pg-input-border);
-  color: var(--pg-ink);
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #16193a;
 }
 
 body.theme-pgtec .ob-link-light {
-  color: var(--pg-muted);
+  color: var(--pg-hero-body);
 }
 
 body.theme-pgtec .ob-link-light:hover {
-  color: var(--pg-link);
+  color: #ffffff;
 }
 
-/* Illustration instead of a photo, with the metrics as cards underneath */
+/* Climate mosaic illustration */
 body.theme-pgtec .ob-hero-media {
-  flex: 0 1 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex: 0 1 440px;
 }
 
 body.theme-pgtec .ob-hero-img {
-  width: auto;
-  max-width: 100%;
-  height: 340px;
-  aspect-ratio: auto;
-  object-fit: contain;
-  border-radius: 0;
-}
-
-body.theme-pgtec .ob-stats {
-  position: static;
   width: 100%;
-  margin-top: 32px;
-  gap: 12px;
+  max-width: 440px;
+  height: auto;
+  aspect-ratio: 480 / 560;
+  object-fit: contain;
+  border-radius: 22px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
 }
 
-body.theme-pgtec .ob-stat {
-  border: 1px solid var(--pg-line);
-  border-radius: var(--pg-radius-md);
-  background: var(--pg-surface);
-  box-shadow: var(--pg-shadow-card);
+/* Metric cards: indigo-cyan for services, yellow-orange for providers */
+body.theme-pgtec .ob-hero-stat {
+  --ob-hero-stat-edge: linear-gradient(90deg, #3634e8, #33d0e6);
+  --ob-hero-stat-icon-bg: #3634e8;
 }
 
-body.theme-pgtec .ob-stat-value {
-  color: var(--pg-body);
-}
-
-body.theme-pgtec .ob-stat-number {
-  font-family: var(--pg-font-heading);
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: var(--pg-link);
-}
-
-body.theme-pgtec .ob-stat:nth-child(2) .ob-stat-number {
-  color: var(--pg-orange);
+body.theme-pgtec .ob-hero-stat--providers {
+  --ob-hero-stat-edge: linear-gradient(90deg, #f8cd2b, #ee7306);
+  --ob-hero-stat-icon-bg: #c25a00;
 }
 
 /* Search card */
@@ -914,7 +918,7 @@ html.dark .pg-footer-logos {
   }
 
   body.theme-pgtec .ob-hero-img {
-    height: 220px;
+    max-width: 320px;
   }
 
   body.theme-pgtec .ob-section {

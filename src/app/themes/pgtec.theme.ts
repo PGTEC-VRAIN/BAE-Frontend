@@ -29,7 +29,7 @@ export const PGTEC_THEME_CONFIG: ThemeConfig = {
   assets: {
     logoUrl: 'assets/themes/pgtec/logo_PGTEC_mark.png',
     faviconUrl: 'assets/themes/pgtec/logo_PGTEC.svg',
-    heroUrl: 'assets/themes/pgtec/logo_PGTEC_mark.png'
+    heroUrl: 'assets/themes/pgtec/hero-mosaico.svg'
   },
   links: {
     headerLinks: pgtecHeaderLinks,
@@ -39,6 +39,7 @@ export const PGTEC_THEME_CONFIG: ThemeConfig = {
   dashboard: {
     showFeaturedOfferings: true,
     showPlatformBenefits: false,
+    heroStats: 'cards',
   },
   lightHeader: true,
   colorSchemeToggle: true

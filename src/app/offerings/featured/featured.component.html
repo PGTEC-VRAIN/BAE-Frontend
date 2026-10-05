@@ -2,7 +2,7 @@
 
   <!--Only first 8 categories-->
   @for(cat of filteredCategories.slice(0, 8); track cat.id; let i = $index){
-  <div data-cy="categoryItem" class="ft-item">
+  <div data-cy="categoryItem" class="ft-item" [class.ft-item--lit]="i === litIndex">
     <span class="ft-index" aria-hidden="true">{{ (i + 1).toString().padStart(2, '0') }}</span>
 
     <div class="ft-text">

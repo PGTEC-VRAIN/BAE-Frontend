@@ -1,0 +1,71 @@
+:host {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.pl-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Yellow data line: the stroke draws in, holds, then leaves */
+#path7 {
+  stroke-dasharray: 700;
+  animation: pl-draw 3.6s ease-in-out infinite;
+}
+
+/* Rising segment of the line grows from its base */
+#path10 {
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+  animation: pl-grow 3.6s ease-in-out infinite;
+}
+
+/* Nodes of the line pop one after another */
+#path4,
+#path5,
+#path6 {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pl-pop 3.6s ease-in-out infinite;
+}
+
+#path4 {
+  animation-delay: 0.5s;
+}
+
+#path6 {
+  animation-delay: 1s;
+}
+
+@keyframes pl-draw {
+  0% { stroke-dashoffset: 700; }
+  35%, 85% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -700; }
+}
+
+@keyframes pl-grow {
+  0%, 20% { transform: scale(0.2); opacity: 0.2; }
+  50%, 85% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.2); opacity: 0.2; }
+}
+
+@keyframes pl-pop {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.35); }
+  30% { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #path7,
+  #path10,
+  #path4,
+  #path5,
+  #path6 {
+    animation: none;
+  }
+}

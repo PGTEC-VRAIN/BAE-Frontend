@@ -62,6 +62,7 @@ export interface DashboardConfig {
   showFeaturedOfferings?: boolean;
   showPlatformBenefits?: boolean;
   heroStats?: 'overlay' | 'cards'; // Landing metrics over the hero image (default) or as cards under the hero actions
+  motion?: 'data-line'; // Landing animations based on the PGTEC logo's data line (animated mosaic and provider logo)
   // Add more sections
 }
 

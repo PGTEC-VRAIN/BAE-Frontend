@@ -28,8 +28,7 @@ export const PGTEC_THEME_CONFIG: ThemeConfig = {
   browserTitle: 'PGTEC Marketplace',
   assets: {
     logoUrl: 'assets/themes/pgtec/logo_PGTEC_mark.png',
-    faviconUrl: 'assets/themes/pgtec/logo_PGTEC.svg',
-    heroUrl: 'assets/themes/pgtec/hero-mosaico.svg'
+    faviconUrl: 'assets/themes/pgtec/logo_PGTEC.svg'
   },
   links: {
     headerLinks: pgtecHeaderLinks,
@@ -40,6 +39,7 @@ export const PGTEC_THEME_CONFIG: ThemeConfig = {
     showFeaturedOfferings: true,
     showPlatformBenefits: false,
     heroStats: 'cards',
+    motion: 'data-line',
   },
   lightHeader: true,
   colorSchemeToggle: true

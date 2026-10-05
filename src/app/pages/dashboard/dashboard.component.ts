@@ -1,9 +1,9 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, SecurityContext } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit, SecurityContext, ViewChild } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { initFlowbite } from 'flowbite';
 import * as moment from 'moment';
 import { map, Subject, takeUntil } from 'rxjs';
@@ -25,6 +25,8 @@ import { DashboardProvidersComponent } from './dashboard-providers/dashboard-pro
 import { DashboardServicesComponent } from './dashboard-services/dashboard-services.component';
 import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.component';
 import { DashboardWhatsDome } from './dashboard-whatsdome/dashboard-whatsdome.component';
+import { HeroMosaicComponent } from './landing-motion/hero-mosaic.component';
+import { ProviderLogoComponent } from './landing-motion/provider-logo.component';
 
 export interface IDashboardStats {
   services: number;
@@ -40,9 +42,9 @@ export interface IDashboardStats {
     './dashboard.sections.component.css'
   ],
   standalone: true,
-  imports: [TranslateModule, ReactiveFormsModule, FeaturedComponent, NgClass, DashboardWhatsDome, DashboardHeroComponent, DashboardStatsComponent, DashboardServicesComponent, DashboardCustomersComponent, DashboardProvidersComponent, DashboardEcosystemComponent],
+  imports: [TranslateModule, ReactiveFormsModule, FeaturedComponent, NgClass, DashboardWhatsDome, DashboardHeroComponent, DashboardStatsComponent, DashboardServicesComponent, DashboardCustomersComponent, DashboardProvidersComponent, DashboardEcosystemComponent, HeroMosaicComponent, ProviderLogoComponent],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   customersLink = 'https://citcomtef.eu/';
   providersLink = "https://onboard.sbx.evidenceledger.eu/register-provider";
 
@@ -76,6 +78,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   stats?: IDashboardStats;
 
+  // Hero card counters, animated from zero when the theme enables landing motion
+  shownServices = 0;
+  shownProviders = 0;
+
+  @ViewChild('searchInput') searchInput?: ElementRef<HTMLInputElement>;
+
+  private countFrame = 0;
+  private typingId?: ReturnType<typeof setInterval>;
+  private readonly reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+
   constructor(
     private productService: ApiServiceService,
     private domSanitizer: DomSanitizer,
@@ -87,7 +99,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private statsService: StatsServiceService,
     private themeService: ThemeService,
+    private translate: TranslateService,
+    private zone: NgZone,
   ) { }
+
+  // Landing animations based on the PGTEC logo's data line
+  get motion(): boolean {
+    return this.currentTheme?.dashboard?.motion === 'data-line';
+  }
 
   get projectUrl(): string {
     return this.currentTheme?.links?.projectUrl ?? this.customersLink;
@@ -110,6 +129,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.getFirstThreeRandomProductOfferings();
     this.checkRouteForToken();
     this.getStats();
+  }
+
+  ngAfterViewInit() {
+    if (this.motion && !this.reduceMotion) {
+      this.startSearchExamples();
+    }
   }
 
   private startTagTransition() {
@@ -137,7 +162,64 @@ export class DashboardComponent implements OnInit, OnDestroy {
         providers: this.publishers.length,
       };
 
+      this.countUp(this.services.length, this.publishers.length);
       this.startTagTransition();
+    });
+  }
+
+  private countUp(services: number, providers: number) {
+    cancelAnimationFrame(this.countFrame);
+    if (!this.motion || this.reduceMotion) {
+      this.shownServices = services;
+      this.shownProviders = providers;
+      return;
+    }
+
+    const start = performance.now();
+    const step = (now: number) => {
+      const progress = Math.min(1, (now - start) / 1200);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      this.shownServices = Math.round(services * eased);
+      this.shownProviders = Math.round(providers * eased);
+      if (progress < 1) {
+        this.countFrame = requestAnimationFrame(step);
+      }
+    };
+    this.countFrame = requestAnimationFrame(step);
+  }
+
+  // Types example searches into the placeholder of the empty search box. It writes the DOM
+  // directly outside Angular, and shows the normal placeholder while the box is in use.
+  private startSearchExamples() {
+    let examples: string[] = [];
+    this.translate.stream('DASHBOARD.landing._search_examples').pipe(takeUntil(this.unSub)).subscribe((value) => {
+      examples = Array.isArray(value) ? value : [];
+    });
+
+    const secondsPerExample = 4;
+    const tick = 0.06;
+    let elapsed = 0;
+    this.zone.runOutsideAngular(() => {
+      this.typingId = setInterval(() => {
+        const input = this.searchInput?.nativeElement;
+        if (!input || examples.length === 0) {
+          return;
+        }
+
+        let placeholder: string;
+        if (document.activeElement === input || input.value) {
+          placeholder = this.translate.instant('DASHBOARD._search_ph');
+        } else {
+          elapsed += tick;
+          const text = examples[Math.floor(elapsed / secondsPerExample) % examples.length];
+          const local = elapsed % secondsPerExample;
+          placeholder = text.slice(0, Math.floor(local * 18));
+        }
+
+        if (input.placeholder !== placeholder) {
+          input.placeholder = placeholder;
+        }
+      }, tick * 1000);
     });
   }
 
@@ -257,6 +339,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.rotationIntervalId) {
       clearInterval(this.rotationIntervalId);
     }
+    clearInterval(this.typingId);
+    cancelAnimationFrame(this.countFrame);
 
     this.unSub.next();
     this.unSub.complete();

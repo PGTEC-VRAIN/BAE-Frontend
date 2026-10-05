@@ -64,7 +64,7 @@
                   </svg>
                 </span>
                 <p data-cy="vServices" class="ob-hero-stat-value">
-                  <span class="ob-hero-stat-number">{{ services.length }}</span>
+                  <span class="ob-hero-stat-number">{{ shownServices }}</span>
                   {{ 'DASHBOARD.landing._verified_services' | translate }}
                 </p>
               </div>
@@ -87,7 +87,7 @@
                   </svg>
                 </span>
                 <p data-cy="rPublishers" class="ob-hero-stat-value">
-                  <span class="ob-hero-stat-number">{{ publishers.length }}</span>
+                  <span class="ob-hero-stat-number">{{ shownProviders }}</span>
                   {{ 'DASHBOARD.landing._registered_providers' | translate }}
                 </p>
               </div>
@@ -105,7 +105,11 @@
       </div>
 
       <div class="ob-hero-media">
+        @if (motion) {
+        <app-hero-mosaic class="ob-hero-img"></app-hero-mosaic>
+        } @else {
         <img class="ob-hero-img" [src]="heroUrl" alt="" />
+        }
 
         @if (!heroStatCards) {
         <div class="ob-stats" [attr.aria-label]="'DASHBOARD.landing._metrics' | translate">
@@ -154,7 +158,7 @@
               <circle cx="11" cy="11" r="7" />
               <path d="m20 20-3.5-3.5" />
             </svg>
-            <input type="search" id="dashboardSearchBar" [formControl]="searchField" (input)="onSearchInput()"
+            <input #searchInput type="search" id="dashboardSearchBar" [formControl]="searchField" (input)="onSearchInput()"
               (keydown.enter)="filterSearch($event)" class="ob-search-input"
               placeholder="{{ 'DASHBOARD._search_ph' | translate }}">
             <button type="submit" id="dashboardSearchButton" (click)="filterSearch($event)" class="ob-search-btn">
@@ -181,7 +185,7 @@
         </button>
       </div>
 
-      <bae-off-featured data-cy="offFeatured" [searchTerm]="catalogSearchTerm"></bae-off-featured>
+      <bae-off-featured data-cy="offFeatured" [searchTerm]="catalogSearchTerm" [highlight]="motion"></bae-off-featured>
     </div>
   </section>
 
@@ -283,7 +287,11 @@
           </a>
         </div>
       </div>
-      <div class="ob-provider-media" aria-hidden="true"></div>
+      <div class="ob-provider-media" aria-hidden="true">
+        @if (motion) {
+        <app-provider-logo></app-provider-logo>
+        }
+      </div>
     </div>
   </section>
 </div>

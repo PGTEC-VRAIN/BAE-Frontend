@@ -55,6 +55,7 @@ body.theme-pgtec {
   --pg-tint-orange: #fff3e3;
   --pg-tint-green: #f0f8e4;
   --pg-orange-text: #8a3f00;
+  --pg-data-line: #a86f00;
   --pg-band: #16193a;
   /* Landing hero band: night under the white header, so it does not look like the onboarding portal */
   --pg-hero-bg: #0f1226;
@@ -67,7 +68,6 @@ body.theme-pgtec {
   --pg-shadow-pop: 0 18px 40px rgba(22, 25, 58, 0.14);
   --pg-radius-sm: 10px;
   --pg-radius-md: 16px;
-  --pg-spectrum: linear-gradient(90deg, #3634e8 0%, #33d0e6 25%, #6ab02e 50%, #f8cd2b 75%, #ee7306 100%);
   --pg-font-heading: "Montserrat", system-ui, sans-serif;
   --pg-font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -132,6 +132,7 @@ html.dark body.theme-pgtec {
   --pg-tint-orange: #3a2a16;
   --pg-tint-green: #1b3320;
   --pg-orange-text: #ffc58a;
+  --pg-data-line: #f8cd2b;
   --pg-band: #1f2342;
   /* Petroleum hero band, distinct from the night background */
   --pg-hero-bg: #0b3a4a;
@@ -170,17 +171,6 @@ body.theme-pgtec ngx-file-drop .ngx-file-drop__drop-zone {
 /* ===================================================================
  * Header
  * =================================================================== */
-/* Spectrum strip on top of the header, as in the onboarding portal */
-body.theme-pgtec nav.header-light::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--pg-spectrum);
-}
-
 /* Pill buttons like the onboarding portal */
 body.theme-pgtec .header-solid-btn,
 body.theme-pgtec .border-color-c,
@@ -566,16 +556,6 @@ body.theme-pgtec .ob-provider {
   background: var(--pg-band);
 }
 
-body.theme-pgtec .ob-provider::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--pg-spectrum);
-}
-
 body.theme-pgtec .ob-provider .ob-eyebrow {
   color: #f8cd2b;
 }
@@ -599,11 +579,13 @@ body.theme-pgtec .ob-provider .ob-btn-ghost-light:hover {
   color: #16193a;
 }
 
+/* Animated PGTEC logo (app-provider-logo) instead of the CitCom photo */
 body.theme-pgtec .ob-provider-media {
-  background-image: url("/assets/themes/pgtec/logo_PGTEC_mark.png");
-  background-size: auto 72%;
-  background-repeat: no-repeat;
-  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  background-image: none;
   opacity: 1;
 }
 
@@ -620,10 +602,33 @@ body.theme-pgtec .ft-item:hover {
 }
 
 body.theme-pgtec .ft-index {
+  position: relative;
   font-family: var(--pg-font-heading);
   font-size: 1.5rem;
   font-weight: 800;
   color: var(--pg-link);
+  transition: color 0.4s ease;
+}
+
+/* Landing motion: the lit category takes the yellow of the logo's data line */
+body.theme-pgtec .ft-index::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--pg-data-line);
+  transition: width 0.6s ease;
+}
+
+body.theme-pgtec .ft-item--lit .ft-index {
+  color: var(--pg-data-line);
+}
+
+body.theme-pgtec .ft-item--lit .ft-index::after {
+  width: 28px;
 }
 
 body.theme-pgtec .ft-name {
@@ -662,7 +667,7 @@ body.theme-pgtec .mk-shell {
   max-width: 1200px;
 }
 
-/* Light banner with the spectrum strip instead of the dark photo banner */
+/* Light banner instead of the dark photo banner */
 body.theme-pgtec .mk-page-hero {
   padding: 36px 40px 32px;
   border-radius: var(--pg-radius-md);
@@ -674,9 +679,7 @@ body.theme-pgtec .mk-page-hero {
 }
 
 body.theme-pgtec .mk-page-hero::before {
-  inset: 0 0 auto 0;
-  height: 4px;
-  background: var(--pg-spectrum);
+  content: none;
 }
 
 body.theme-pgtec .mk-eyebrow {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { MarkdownModule } from 'ngx-markdown';
@@ -15,9 +15,13 @@ import { LocalStorageService } from "../../services/local-storage.service";
   standalone: true,
   imports: [CommonModule, TranslateModule, MarkdownModule]
 })
-export class FeaturedComponent implements OnInit {
+export class FeaturedComponent implements OnInit, OnDestroy {
   categories: any[] = [];
   @Input() searchTerm = '';
+  // Lights one category after another (landing motion of themes that enable it)
+  @Input() highlight = false;
+  litIndex = -1;
+  private litTimer?: ReturnType<typeof setInterval>;
 
   get filteredCategories(): any[] {
     const normalizedTerm = this.searchTerm.trim().toLowerCase();
@@ -48,6 +52,18 @@ export class FeaturedComponent implements OnInit {
         }
       }
     })
+
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    if (this.highlight && !reduceMotion) {
+      this.litTimer = setInterval(() => {
+        const shown = Math.min(8, this.filteredCategories.length);
+        this.litIndex = shown ? (this.litIndex + 1) % shown : -1;
+      }, 1800);
+    }
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.litTimer);
   }
 
   searchByCategory(cat: Category) {

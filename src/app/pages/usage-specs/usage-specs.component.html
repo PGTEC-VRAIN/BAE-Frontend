@@ -4,8 +4,8 @@
 
   <div class="acc-layout">
     <aside class="acc-aside">
-      <nav class="acc-nav" aria-label="Usage specification sections">
-        <p class="acc-nav-label">Selling</p>
+      <nav class="acc-nav" [attr.aria-label]="'AUTO.usage_specification_sections' | translate">
+        <p class="acc-nav-label">{{ 'AUTO.selling' | translate }}</p>
         <button (click)="goToUsageSpec()" id="catalogs-button" type="button" class="acc-nav-item text-white bg-primary-100">
           <svg class="acc-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 15 12-12 6 6-12 12-6-6Z"/><path d="m7 11 2 2M10 8l2 2M13 5l2 2"/></svg>
           {{ 'USAGE_SPECS._list' | translate }}

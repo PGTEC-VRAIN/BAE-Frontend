@@ -2,7 +2,7 @@
 <div>
     <!-- Breadcrumb -->
     <div class="pb-4">
-        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-secondary-50 dark:bg-secondary-100 dark:border-gray-800 dark:text-white" aria-label="Breadcrumb">
+        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-secondary-50 dark:bg-secondary-100 dark:border-gray-800 dark:text-white" [attr.aria-label]="'AUTO.breadcrumb' | translate">
             <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
                 <button (click)="goBack()" class="inline-flex items-center text-sm font-medium text-gray-500 dark:text-white hover:text-primary-100 dark:hover:text-primary-50">
@@ -98,7 +98,7 @@
                                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                                     <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                                 </svg>
-                                <span class="sr-only">Loading...</span>
+                                <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
                             </div>
                         } @else {
                             @if(prodSpecs.length==0){
@@ -191,7 +191,7 @@
                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                                 <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                             </svg>
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
                             </div>
                         }
                     }
@@ -308,7 +308,7 @@
                                           <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                             <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                                           </svg>
-                                          <span class="sr-only">Info</span>
+                                          <span class="sr-only">{{ 'AUTO.info' | translate }}</span>
                                           <div>
                                               {{ 'CREATE_PROD_SPEC._no_comp_profile' | translate }}
                                           </div>
@@ -349,7 +349,7 @@
                     </div>
                     @if(additionalISOS.length>0){
                         <h3 class="font-bold text-primary-100 dark:text-primary-50 text-left ml-4">
-                            You added the following additional certifications:
+                            {{ 'AUTO.you_added_the_following_additional_c' | translate }}
                         </h3>
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg w-full bg-white dark:bg-secondary-300 m-4">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-200">
@@ -394,7 +394,7 @@
                     @if(showCert==false){
                         <div class="flex w-full justify-items-center justify-center">
                             <button type="button" (click)="showCert=!showCert" class="flex text-white justify-center bg-primary-100 hover:bg-primary-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
-                                Add an additional certification
+                                {{ 'AUTO.add_an_additional_certification' | translate }}
                                 <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                                 </svg>
@@ -403,7 +403,7 @@
                     } @else {
                         <div class="m-4 w-full">
                             <h3 class="font-bold text-primary-100 dark:text-primary-50 text-left ml-4">
-                                Add an additional certification:
+                                {{ 'AUTO.add_an_additional_certification_2' | translate }}
                             </h3>
                             <div class="lg:flex lg:grid lg:grid-cols-2 w-full gap-4 align-items-middle align-middle border border-gray-200 rounded-lg p-4">
                                 <div class="h-fit">
@@ -429,7 +429,7 @@
                                     </ngx-file-drop>
                                 } @else {
                                     <div class="relative w-full items-center p-4 text-sm text-primary-100 rounded-lg bg-blue-50 dark:bg-secondary-200 dark:text-primary-50" role="alert">
-                                        <span class="sr-only">Info</span>
+                                        <span class="sr-only">{{ 'AUTO.info' | translate }}</span>
                                         <label class="text-wrap break-all">
                                             {{isoToCreate}}
                                         </label>
@@ -445,14 +445,14 @@
                                     <button type="button" (click)="saveAdditionalCert()"
                                     [disabled]="!certFileName.valid || isoToCreate == ''" [ngClass]="!certFileName.valid || isoToCreate == '' ? 'opacity-50' : 'hover:bg-primary-50'"
                                     class="flex text-white justify-center bg-primary-100 hover:bg-primary-50 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
-                                        Save
+                                        {{ 'AUTO.save' | translate }}
                                         <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M11 16h2m6.707-9.293-2.414-2.414A1 1 0 0 0 16.586 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V7.414a1 1 0 0 0-.293-.707ZM16 20v-6a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v6h8ZM9 4h6v3a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V4Z"/>
                                         </svg>
                                     </button>
                                     <button type="button" (click)="clearAdditionalCert(false);showCert=false;"
                                     class="flex ml-4 text-gray-900 justify-end bg-gray-400 hover:bg-primary-50 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
-                                        Discard
+                                        {{ 'AUTO.discard' | translate }}
                                     </button>
                                 </div>
                         </div>
@@ -466,7 +466,7 @@
                             <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                               <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                             </svg>
-                            <span class="sr-only">Info</span>
+                            <span class="sr-only">{{ 'AUTO.info' | translate }}</span>
                             <div>
                                 {{ 'CREATE_PROD_SPEC._no_chars' | translate }}
                             </div>
@@ -572,13 +572,13 @@
                                 <label class="font-bold text-lg dark:text-white">{{ 'CREATE_PROD_SPEC._type' | translate }}</label>
                                 <select data-cy="charType" id="type" [(ngModel)]="charTypeSelected" [ngModelOptions]="{standalone: true}" (change)="onTypeChange($event)"
                                 class="mb-2 bg-gray-50 dark:bg-secondary-300 border border-gray-300 dark:border-secondary-200 dark:text-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                    <option value="string">String</option>
-                                    <option value="number">Number</option>
-                                    <option value="range">Number range</option>
-                                    <option value="boolean">Boolean</option>
+                                    <option value="string">{{ 'AUTO.string' | translate }}</option>
+                                    <option value="number">{{ 'AUTO.number' | translate }}</option>
+                                    <option value="range">{{ 'AUTO.number_range' | translate }}</option>
+                                    <option value="boolean">{{ 'AUTO.boolean' | translate }}</option>
                                     @if(DATA_SPACE_ENABLED){
-                                        <option value="credentialsConfiguration">Credentials Configuration</option>
-                                        <option value="authorizationPolicy">Authorization Policy</option>
+                                        <option value="credentialsConfiguration">{{ 'AUTO.credentials_configuration' | translate }}</option>
+                                        <option value="authorizationPolicy">{{ 'AUTO.authorization_policy' | translate }}</option>
                                     }
                                 </select>
                             </div>
@@ -609,7 +609,7 @@
                         </form>
                         <div class="m-4">
                             @if(creatingChars.length > 0 && charTypeSelected !== 'boolean'){
-                                <label for="values" class="font-bold text-lg dark:text-white">Values</label>
+                                <label for="values" class="font-bold text-lg dark:text-white">{{ 'AUTO.values' | translate }}</label>
                                 <div class="flex flex-col items-start pl-4  shadow-md sm:rounded-lg w-full bg-white dark:bg-secondary-300 dark:border-secondary-200 dark:text-white border border-gray-300 mb-2">
                                     @if(charTypeSelected === 'range'){
                                         @for (char of creatingChars; track char; let idx = $index) {
@@ -686,7 +686,7 @@
                                 </div>
                             } @else if (charTypeSelected === 'boolean'){
                                 <div class="col-span-2 flex align-items-middle h-fit">
-                                    <label for="boolean-default" class="font-bold text-lg dark:text-white">Default value</label>
+                                    <label for="boolean-default" class="font-bold text-lg dark:text-white">{{ 'AUTO.default_value' | translate }}</label>
                                     <label class="inline-flex items-center me-5 cursor-pointer ml-4">
                                         <input data-cy="charBooleanDefault" id="boolean-default" type="checkbox" [(ngModel)]="booleanDefaultTrue" [ngModelOptions]="{standalone: true}" (change)="onBooleanDefaultChange()" class="sr-only peer">
                                         <div class="relative w-11 h-6 bg-gray-400 dark:bg-gray-700 rounded-full peer peer-focus:ring-4 peer-focus:ring-primary-100 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-100"></div>
@@ -765,7 +765,7 @@
                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                                 <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                             </svg>
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
                         </div>
                     } @else {
                         @if(resourceSpecs.length==0){
@@ -848,7 +848,7 @@
                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                                 <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                             </svg>
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
                             </div>
                         }
                     <!--<div class="flex w-full justify-items-end justify-end ml-4">
@@ -867,7 +867,7 @@
                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                                 <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                             </svg>
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
                             </div>
                     } @else {
                         @if(serviceSpecs.length==0){
@@ -950,7 +950,7 @@
                                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                                 <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                             </svg>
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
                             </div>
                         }
                     <!--<div class="flex w-full justify-items-end justify-end ml-4 mt-4">
@@ -1047,7 +1047,7 @@
                               <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                               </svg>
-                              <span class="sr-only">Info</span>
+                              <span class="sr-only">{{ 'AUTO.info' | translate }}</span>
                               <div>
                                 {{ 'CREATE_PROD_SPEC._no_att' | translate }}
                               </div>
@@ -1129,7 +1129,7 @@
                                     </ngx-file-drop>
                                 } @else {
                                     <div class="relative w-full items-center p-4 text-sm text-primary-100 rounded-lg bg-blue-50 dark:bg-secondary-200 dark:text-primary-50" role="alert">
-                                        <span class="sr-only">Info</span>
+                                        <span class="sr-only">{{ 'AUTO.info' | translate }}</span>
                                         <label class="text-wrap break-all">
                                             {{attachToCreate.url}}
                                         </label>
@@ -1171,7 +1171,7 @@
                                 <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                   <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
                                 </svg>
-                                <span class="sr-only">Info</span>
+                                <span class="sr-only">{{ 'AUTO.info' | translate }}</span>
                                 <div>
                                     {{ 'CREATE_PROD_SPEC._no_relatioships' | translate }}
                                 </div>
@@ -1251,10 +1251,10 @@
                             <label class="font-bold text-lg dark:text-white">{{ 'CREATE_PROD_SPEC._relationship_type' | translate }}</label>
                             <select id="type" (change)="onRelChange($event)"
                             class="mb-2 bg-gray-50 dark:bg-secondary-300 border border-gray-300 dark:border-secondary-200 dark:text-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option selected value="migration">Migration</option>
-                                <option value="dependency">Dependency</option>
-                                <option value="exclusivity">Exclusivity</option>
-                                <option value="substitution">Substitution</option>
+                                <option selected value="migration">{{ 'AUTO.migration' | translate }}</option>
+                                <option value="dependency">{{ 'AUTO.dependency' | translate }}</option>
+                                <option value="exclusivity">{{ 'AUTO.exclusivity' | translate }}</option>
+                                <option value="substitution">{{ 'AUTO.substitution' | translate }}</option>
                             </select>
                             @if(loadingprodSpecRel){
                                 <div role="status" class="w-full h-fit flex justify-center align-middle">
@@ -1262,7 +1262,7 @@
                                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                                         <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                                     </svg>
-                                    <span class="sr-only">Loading...</span>
+                                    <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
                                     </div>
                             } @else {
                                 @if(prodSpecRels.length==0){
@@ -1304,9 +1304,9 @@
                                                     </td>
                                                     <td class="px-6 py-4">
                                                         @if(rel.isBundle == false){
-                                                            <span class="bg-blue-100 dark:bg-secondary-300 text-blue-600 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-blue-400">Simple</span>
+                                                            <span class="bg-blue-100 dark:bg-secondary-300 text-blue-600 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-blue-400">{{ 'AUTO.simple' | translate }}</span>
                                                         } @else {
-                                                            <span class="bg-blue-100 dark:bg-secondary-300 text-green-500 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-green-500">Bundle</span>
+                                                            <span class="bg-blue-100 dark:bg-secondary-300 text-green-500 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-green-500">{{ 'AUTO.bundle' | translate }}</span>
                                                         }
                                                     </td>
                                                     <td class="px-6 py-4 hidden md:table-cell">
@@ -1335,7 +1335,7 @@
                                         <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                                         <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                                     </svg>
-                                    <span class="sr-only">Loading...</span>
+                                    <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
                                     </div>
                                 }
                             }
@@ -1366,7 +1366,7 @@
                                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                                     <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                                 </svg>
-                                <span class="sr-only">Loading...</span>
+                                <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
                                 </div>
                         } @else {
                         <div class="mb-4 md:grid md:grid-cols-2 gap-4">

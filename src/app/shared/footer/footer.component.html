@@ -5,7 +5,7 @@
       <div class="grid grid-cols-1 md:grid-cols-12 gap-y-12 md:gap-x-12">
         <div class="md:col-span-5">
           <div class="flex items-start">
-            <img src="assets/logos/DOME_Logo_White_Name.svg" alt="DOME logo" class="h-[60px]" />
+            <img src="assets/logos/DOME_Logo_White_Name.svg" [alt]="'AUTO.dome_logo' | translate" class="h-[60px]" />
           </div>
           <p class="mt-10 max-w-[460px] text-[19px] leading-[1.58] text-white/80">
             DOME — Europe's trusted marketplace for verified cloud, edge &amp; AI services.
@@ -81,9 +81,13 @@
       <a href="https://www.upv.es/" target="_blank" rel="noopener noreferrer">
         <img src="assets/themes/pgtec/logo_UPV.png" alt="Universitat Politècnica de València" />
       </a>
+      <a href="https://vrain.upv.es/" target="_blank" rel="noopener noreferrer">
+        <img class="pg-footer-vrain" src="assets/themes/pgtec/logo_VRAIN.png"
+          [alt]="'AUTO.vrain_valencian_research_institute_f' | translate" />
+      </a>
       <a href="https://cred.digital.gob.es/espacios-de-datos/lista-de-confianza-de-espacios-de-datos" target="_blank"
         rel="noopener noreferrer">
-        <img src="assets/themes/pgtec/logo_EDC.svg" alt="Espacio de datos de confianza - CRED" />
+        <img src="assets/themes/pgtec/logo_EDC.svg" [alt]="'AUTO.espacio_de_datos_de_confianza_cred' | translate" />
       </a>
     </div>
 
@@ -92,6 +96,7 @@
     <div class="pg-footer-bottom">
       <nav class="pg-footer-links">
         <a (click)="goToRoute('/search')">{{ 'HEADER._browse_serv' | translate }}</a>
+        <a (click)="goToRoute('/guides')" class="cursor-pointer">{{ 'PGTEC._guides' | translate }}</a>
         <a href="https://onboarding.pgtec-vrain-dataspace.eu/" target="_blank" rel="noopener noreferrer">
           {{ 'FOOTER._onboarding' | translate }}
         </a>
@@ -103,7 +108,7 @@
         <a [href]="projectUrl" target="_blank" rel="noopener noreferrer">{{ 'FOOTER._project' | translate }}</a>
         }
         @if (githubUrl) {
-        <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">{{ 'AUTO.github' | translate }}</a>
         }
       </nav>
       <span class="pg-footer-copy">© {{ currentYear }} {{ 'FOOTER._copyright' | translate }}</span>
@@ -116,13 +121,13 @@
     <div class="grid grid-cols-1 gap-12 py-14 lg:grid-cols-[1.1fr_0.7fr_0.7fr] lg:gap-16">
       <div>
         <div class="flex items-start">
-          <img src="assets/themes/citcom/logo-citcom.png" alt="CitCom.ai logo" class="h-[64px] w-auto" />
+          <img src="assets/themes/citcom/logo-citcom.png" [alt]="'AUTO.citcom_ai_logo' | translate" class="h-[64px] w-auto" />
         </div>
 
         <div class="mt-8 flex items-center gap-4">
           <a href="https://next-generation-eu.europa.eu/" target="_blank" rel="noopener noreferrer"
             class="inline-flex items-center">
-            <img src="assets/themes/citcom/eu-co-funded.png" alt="Co-funded by the European Union"
+            <img src="assets/themes/citcom/eu-co-funded.png" [alt]="'AUTO.co_funded_by_the_european_union' | translate"
               class="h-[40px] w-auto" />
           </a>
         </div>
@@ -134,7 +139,7 @@
       </div>
 
       <div>
-        <h3 class="text-[14px] font-semibold tracking-[0.08em] text-white/90">Marketplace</h3>
+        <h3 class="text-[14px] font-semibold tracking-[0.08em] text-white/90">{{ 'AUTO.marketplace' | translate }}</h3>
         <ul class="mt-5 space-y-3">
           @for (link of marketplaceLinks; track link.label) {
           <li>
@@ -155,7 +160,7 @@
       </div>
 
       <div>
-        <h3 class="text-[14px] font-semibold tracking-[0.08em] text-white/90">Connect</h3>
+        <h3 class="text-[14px] font-semibold tracking-[0.08em] text-white/90">{{ 'AUTO.connect' | translate }}</h3>
         <ul class="mt-5 space-y-3">
           @for (social of marketplaceSocialLinks; track social.label) {
           <li>

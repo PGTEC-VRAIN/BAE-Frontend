@@ -183,7 +183,7 @@
                   <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                   <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
               </svg>
-              <span class="sr-only">Loading...</span>
+              <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
             </div>
         } @else {
                 <div class="">
@@ -232,7 +232,7 @@
                                                 }@else if(order.state === 'cancelled' || order.state === 'cancelled') {
                                                     <span class="bg-blue-100 dark:bg-secondary-300 text-red-500 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-red-500">{{order.state}}</span>
                                                 } @else {
-                                                  <span class="bg-amber-500 dark:bg-amber-900 text-amber-900 dark:text-amber-100 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-amber-950">Unchecked</span>
+                                                  <span class="bg-amber-500 dark:bg-amber-900 text-amber-900 dark:text-amber-100 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-amber-950">{{ 'AUTO.unchecked' | translate }}</span>
                                                 }
                                             </td>
                                             <td class="hidden md:table-cell px-6 py-4 text-center align-middle">
@@ -279,7 +279,7 @@
                         @if (page_check) {
                         <div class="flex pb-6 justify-center align-middle">
                             <button (click)="next()" class="flex cursor-pointer shadow-lg items-center justify-center px-3 h-8 text-sm font-medium text-gray-500 dark:text-white bg-white dark:bg-primary-100 dark:hover:bg-secondary-100 border border-gray-300 dark:border-secondary-200 rounded-lg hover:bg-gray-200">
-                            Load more
+                            {{ 'AUTO.load_more' | translate }}
                             <svg class="w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
                             </svg>
@@ -292,7 +292,7 @@
                             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
                             <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
                         </svg>
-                        <span class="sr-only">Loading...</span>
+                        <span class="sr-only">{{ 'AUTO.loading' | translate }}</span>
                         </div>
                     }
                 </div>
@@ -343,12 +343,12 @@
                                 }@else if(orderToShow.state === 'cancelled' || orderToShow.state === 'cancelled') {
                                     <span class="bg-blue-100 dark:bg-secondary-100 text-red-500 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-red-500">{{orderToShow.state}}</span>
                                 } @else {
-                                  <span class="bg-amber-500 dark:bg-amber-900 text-amber-900 dark:text-amber-100 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-amber-950">Unchecked</span>
+                                  <span class="bg-amber-500 dark:bg-amber-900 text-amber-900 dark:text-amber-100 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-amber-950">{{ 'AUTO.unchecked' | translate }}</span>
                                 }
                             </div>
                             <div class="flex flex-row gap-2 pb-2 text-gray-600">
                               <p class="w-fit text-base font-bold shrink-0 dark:text-white">
-                                  Date
+                                  {{ 'AUTO.date' | translate }}
                               </p>
                               <h3 class="text-base dark:text-gray-200">
                                   {{orderToShow?.orderDate | date:'EEEE, dd/MM/yy, HH:mm'}}
@@ -415,7 +415,7 @@
                                     @for (item of orderToShow.productOrderItems; track item.id; let idx = $index) {
                                         <tr class="border-b hover:bg-gray-200 dark:bg-secondary-300 dark:border-gray-700 dark:hover:bg-secondary-200">
                                             <td class="px-6 py-4 text-center align-middle flex justify-center items-center">
-                                                <img class="w-16 object-contain z-10 dark:text-white" src="{{getProductImage(item)}}" alt="Product image">
+                                                <img class="w-16 object-contain z-10 dark:text-white" src="{{getProductImage(item)}}" [alt]="'AUTO.product_image' | translate">
                                             </td>
                                             <td class="px-6 py-4 text-center align-middle">
                                                 {{item.name}}
@@ -459,7 +459,7 @@
                                             }@else if(item.productOrderItem.state === 'cancelled' || item.productOrderItem.state === 'cancelled') {
                                               <span class="bg-blue-100 dark:bg-secondary-100 text-red-500 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-red-500">{{item.productOrderItem.state}}</span>
                                             } @else {
-                                              <span class="bg-amber-500 dark:bg-amber-900 text-amber-900 dark:text-amber-100 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-amber-950">Unchecked</span>
+                                              <span class="bg-amber-500 dark:bg-amber-900 text-amber-900 dark:text-amber-100 text-xs font-medium me-2 px-2.5 py-0.5 rounded border border-amber-950">{{ 'AUTO.unchecked' | translate }}</span>
                                             }
                                           </td>
                                           <td class="px-6 py-4 text-center align-middle">
@@ -474,7 +474,7 @@
                                           <td class="px-6 py-4 text-center align-middle flex justify-center">
                                             @if (!hasProcurementAutomaticTerm(item)) {
                                               @if (!item.productOrderItem.state && role == sellerRole) {
-                                                <button data-cy="acknowledgeOrder" type="button" title="Acknowledge the order item"
+                                                <button data-cy="acknowledgeOrder" type="button" [title]="'AUTO.acknowledge_the_order_item' | translate"
                                                         class="text-white bg-primary-100 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2"
                                                         (click)="openModal('acknowledged', item)">
                                                   <!--!Font Awesome Pro 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2025 Fonticons, Inc.-->
@@ -484,7 +484,7 @@
                                                   </svg>
                                                 </button>
 
-                                                <button data-cy="rejectOrder" type="button" title="Reject the order item"
+                                                <button data-cy="rejectOrder" type="button" [title]="'AUTO.reject_the_order_item' | translate"
                                                         class="text-red-950 bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2"
                                                         (click)="openModal('cancelled', item)">
                                                   <svg class="w-[18px] h-[18px] text-white stroke-white fill-white stroke-2" stroke="currentColor"
@@ -495,21 +495,21 @@
                                               } @else {
                                                   @if(role == sellerRole){
                                                     @if (item.productOrderItem.state === 'acknowledged') {
-                                                      <button data-cy="startOrderTreatment" type="button" title="Start Order Treatment"
+                                                      <button data-cy="startOrderTreatment" type="button" [title]="'AUTO.start_order_treatment' | translate"
                                                               class="text-green-950 bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2"
                                                               (click)="openModal('inProgress', item)">
                                                         <svg class="w-[18px] h-[18px] text-white stroke-white fill-white stroke-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
                                                           <path class="fa-secondary" opacity=".4" d="M32 80l0 352c0 5.8 3.1 11.1 8.2 14s11.2 2.7 16.2-.3l288-176c4.8-2.9 7.7-8.1 7.7-13.7s-2.9-10.7-7.7-13.7l-288-176c-4.9-3-11.1-3.1-16.2-.3s-8.2 8.2-8.2 14z"/><path class="fa-primary" d="M56.3 66.3c-4.9-3-11.1-3.1-16.2-.3s-8.2 8.2-8.2 14l0 352c0 5.8 3.1 11.1 8.2 14s11.2 2.7 16.2-.3l288-176c4.8-2.9 7.7-8.1 7.7-13.7s-2.9-10.7-7.7-13.7l-288-176zM24.5 38.1C39.7 29.6 58.2 30 73 39L361 215c14.3 8.7 23 24.2 23 41s-8.7 32.2-23 41L73 473c-14.8 9.1-33.4 9.4-48.5 .9S0 449.4 0 432L0 80C0 62.6 9.4 46.6 24.5 38.1z"/></svg>
                                                       </button>
                                                     } @else if (item.productOrderItem.state === 'inProgress') {
-                                                      <button data-cy="completeOrder" type="button" title="Order Completely Treated"
+                                                      <button data-cy="completeOrder" type="button" [title]="'AUTO.order_completely_treated' | translate"
                                                               class="text-green-950 bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2"
                                                               (click)="openModal('completed', item)">
                                                         <svg class="w-[18px] h-[18px] text-white stroke-white fill-white stroke-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                                           <path d="M200.3 81.5C210.9 61.5 231.9 48 256 48s45.1 13.5 55.7 33.5L321 99.1l19-5.8c21.6-6.6 46.1-1.4 63.1 15.7s22.3 41.5 15.7 63.1l-5.8 19 17.5 9.3c20 10.6 33.5 31.6 33.5 55.7s-13.5 45.1-33.5 55.7L412.9 321l5.8 19c6.6 21.6 1.4 46.1-15.7 63.1s-41.5 22.3-63.1 15.7l-19-5.8-9.3 17.5c-10.6 20-31.6 33.5-55.7 33.5s-45.1-13.5-55.7-33.5L191 412.9l-19 5.8c-21.6 6.6-46.1 1.4-63.1-15.7S86.6 361.6 93.2 340l5.8-19-17.5-9.3C61.5 301.1 48 280.1 48 256s13.5-45.1 33.5-55.7L99.1 191l-5.8-19c-6.6-21.6-1.4-46.1 15.7-63.1S150.4 86.6 172 93.2l19 5.8 9.3-17.5zM256 0c-35.9 0-67.8 17-88.1 43.4c-33-4.3-67.6 6.2-93 31.6s-35.9 60-31.6 93C17 188.2 0 220.1 0 256s17 67.8 43.4 88.1c-4.3 33 6.2 67.6 31.6 93s60 35.9 93 31.6C188.2 495 220.1 512 256 512s67.8-17 88.1-43.4c33 4.3 67.6-6.2 93-31.6s35.9-60 31.6-93C495 323.8 512 291.9 512 256s-17-67.8-43.4-88.1c4.3-33-6.2-67.6-31.6-93s-60-35.9-93-31.6C323.8 17 291.9 0 256 0zM369 209l17-17L352 158.1l-17 17-111 111-47-47-17-17L126.1 256l17 17 64 64 17 17 17-17L369 209z"/>
                                                         </svg>
                                                       </button>
-                                                      <button data-cy="failOrder" type="button" title="Order Completely Failed"
+                                                      <button data-cy="failOrder" type="button" [title]="'AUTO.order_completely_failed' | translate"
                                                               class="text-red-950 bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2"
                                                               (click)="openModal('failed', item)">
                                                         <svg class="w-[18px] h-[18px] text-white stroke-white fill-white stroke-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -546,7 +546,7 @@
       <!-- Encabezado -->
       <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600 bg-primary-100">
         <h3 class="text-xl font-semibold text-secondary-50 dark:text-white">
-          Confirm Action
+          {{ 'AUTO.confirm_action' | translate }}
         </h3>
         <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900
           rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600
@@ -557,7 +557,7 @@
       <!-- Cuerpo del modal -->
       <div class="p-6 text-center">
         <p class="text-gray-500 dark:text-gray-300">
-          Are you sure you want to update this order item to <strong>{{ actionType }}</strong> status?
+          {{ 'AUTO.are_you_sure_you_want_to_update_this' | translate }} <strong>{{ actionType }}</strong> status?
         </p>
       </div>
       <!-- Botones de acción -->
@@ -565,13 +565,13 @@
         <button data-cy="confirmActionBtn" type="button" (click)="confirmAction()"
                 class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium
           rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-500 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-          Yes, Confirm
+          {{ 'AUTO.yes_confirm' | translate }}
         </button>
         <button data-cy="cancelActionBtn" type="button" (click)="closeModal()"
                 class="text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100
           focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-700
           dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-          Cancel
+          {{ 'AUTO.cancel' | translate }}
         </button>
       </div>
     </div>
@@ -596,7 +596,7 @@
       <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512">
         <path d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l224 0 0-112c0-26.5 21.5-48 48-48l112 0 0-224c0-35.3-28.7-64-64-64L64 32zM448 352l-45.3 0L336 352c-8.8 0-16 7.2-16 16l0 66.7 0 45.3 32-32 64-64 32-32z"/>
       </svg>
-      Order Notes
+      {{ 'AUTO.order_notes' | translate }}
     </h5>
 
     <button type="button" aria-controls="drawer-notes" (click)="closeDrawer()"
@@ -612,7 +612,7 @@
   <!-- Loading Spinner (visible for 1s) -->
   <div *ngIf="isLoading" class="flex flex-col items-center justify-center flex-1">
     <div class="animate-spin rounded-full h-8 w-8 border-t-4 border-blue-500"></div>
-    <p class="text-gray-500 mt-2">Loading notes...</p>
+    <p class="text-gray-500 mt-2">{{ 'AUTO.loading_notes' | translate }}</p>
   </div>
 
   <!-- Notes Container -->
@@ -620,7 +620,7 @@
 
     <!-- Message when there are no notes -->
     <div *ngIf="selectedOrder?.note.length === 0" class="text-center text-gray-500">
-      <p>No notes in this order.</p>
+      <p>{{ 'AUTO.no_notes_in_this_order' | translate }}</p>
     </div>
 
     <!-- Display notes when available -->
@@ -652,7 +652,7 @@
     <div class="flex flex-col">
       <textarea data-cy="orderNotesTextField" [(ngModel)]="newNoteText"
                 class="w-full p-2 text-sm border rounded-lg resize-none h-20"
-                placeholder="Write a new note..."
+                [placeholder]="'AUTO.write_a_new_note' | translate"
                 (keyup.enter)="addNote()"></textarea>
       <button data-cy="orderNotesSendButton" (click)="addNote()"
               class="mt-2 px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600">
@@ -672,7 +672,7 @@
         <svg class="flex-shrink-0 w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
           <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
         </svg>
-        <h3 class="text-lg font-medium">Error</h3>
+        <h3 class="text-lg font-medium">{{ 'AUTO.error' | translate }}</h3>
       </div>
       <div class="mt-2 mb-4 text-sm">
         {{errorMessage}}

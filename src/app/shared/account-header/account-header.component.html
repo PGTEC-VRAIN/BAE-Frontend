@@ -1,8 +1,8 @@
 <header class="acc-head">
   <div class="acc-head-inner">
     <div class="acc-head-copy">
-      <nav aria-label="Breadcrumb" class="acc-breadcrumb">
-        <a routerLink="/dashboard">Home</a>
+      <nav [attr.aria-label]="'AUTO.breadcrumb' | translate" class="acc-breadcrumb">
+        <a routerLink="/dashboard">{{ 'AUTO.home' | translate }}</a>
         <span aria-hidden="true">/</span>
         <span aria-current="page" class="acc-breadcrumb-current">{{ title }}</span>
       </nav>
@@ -18,7 +18,7 @@
         {{ sessionInitials }}
       </span>
       <span class="acc-session-text">
-        <span class="acc-session-label">Acting as</span>
+        <span class="acc-session-label">{{ 'AUTO.acting_as' | translate }}</span>
         <span class="acc-session-name">{{ sessionName }}</span>
       </span>
     </div>

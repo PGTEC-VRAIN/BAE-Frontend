@@ -2,7 +2,7 @@
 <div>
     <!-- Breadcrumb -->
     <div class="pb-4">
-        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-secondary-50 dark:bg-secondary-100 dark:border-gray-800 dark:text-white" aria-label="Breadcrumb">
+        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-secondary-50 dark:bg-secondary-100 dark:border-gray-800 dark:text-white" [attr.aria-label]="'AUTO.breadcrumb' | translate">
             <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
                 <button (click)="goBack()" class="inline-flex items-center text-sm font-medium text-gray-500 dark:text-white hover:text-primary-100 dark:hover:text-primary-50">
@@ -73,14 +73,14 @@
                                             <svg class="w-6 h-6 text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8.737 8.737a21.49 21.49 0 0 1 3.308-2.724m0 0c3.063-2.026 5.99-2.641 7.331-1.3 1.827 1.828.026 6.591-4.023 10.64-4.049 4.049-8.812 5.85-10.64 4.023-1.33-1.33-.736-4.218 1.249-7.253m6.083-6.11c-3.063-2.026-5.99-2.641-7.331-1.3-1.827 1.828-.026 6.591 4.023 10.64m3.308-9.34a21.497 21.497 0 0 1 3.308 2.724m2.775 3.386c1.985 3.035 2.579 5.923 1.248 7.253-1.336 1.337-4.245.732-7.295-1.275M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
                                             </svg>                                     
-                                            Active
+                                            {{ 'AUTO.active' | translate }}
                                         </span>
                                     </li>
                                 }@else{
                                     <li (click)="setCatStatus('Active')"
                                     class="cursor-pointer flex w-fit md:w-full items-center after:w-full after:h-1 after:border-b after:border-gray-700 dark:after:border-gray-400 after:border-1 after:mx-2 md:after:mx-6 xl:after:mx-10">
                                         <span class="flex items-center">                                    
-                                            Active
+                                            {{ 'AUTO.active' | translate }}
                                         </span>
                                     </li>
                                 }
@@ -91,14 +91,14 @@
                                             <svg class="w-6 h-6 text-green-700" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8.737 8.737a21.49 21.49 0 0 1 3.308-2.724m0 0c3.063-2.026 5.99-2.641 7.331-1.3 1.827 1.828.026 6.591-4.023 10.64-4.049 4.049-8.812 5.85-10.64 4.023-1.33-1.33-.736-4.218 1.249-7.253m6.083-6.11c-3.063-2.026-5.99-2.641-7.331-1.3-1.827 1.828-.026 6.591 4.023 10.64m3.308-9.34a21.497 21.497 0 0 1 3.308 2.724m2.775 3.386c1.985 3.035 2.579 5.923 1.248 7.253-1.336 1.337-4.245.732-7.295-1.275M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
                                             </svg>                                          
-                                            Launched
+                                            {{ 'AUTO.launched' | translate }}
                                         </span>
                                     </li>
                                 }@else{
                                     <li (click)="setCatStatus('Launched')"
                                     class="cursor-pointer flex w-fit md:w-full items-center after:w-full after:h-1 after:border-b after:border-gray-700 dark:after:border-gray-400 after:border-1 after:mx-2 md:after:mx-6 xl:after:mx-10">
                                         <span class="flex items-center">                                         
-                                            Launched
+                                            {{ 'AUTO.launched' | translate }}
                                         </span>
                                     </li>
                                 }
@@ -109,14 +109,14 @@
                                             <svg class="w-6 h-6 text-yellow-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8.737 8.737a21.49 21.49 0 0 1 3.308-2.724m0 0c3.063-2.026 5.99-2.641 7.331-1.3 1.827 1.828.026 6.591-4.023 10.64-4.049 4.049-8.812 5.85-10.64 4.023-1.33-1.33-.736-4.218 1.249-7.253m6.083-6.11c-3.063-2.026-5.99-2.641-7.331-1.3-1.827 1.828-.026 6.591 4.023 10.64m3.308-9.34a21.497 21.497 0 0 1 3.308 2.724m2.775 3.386c1.985 3.035 2.579 5.923 1.248 7.253-1.336 1.337-4.245.732-7.295-1.275M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
                                             </svg>                                          
-                                            Retired
+                                            {{ 'AUTO.retired' | translate }}
                                         </span>
                                     </li>
                                 }@else{
                                     <li (click)="setCatStatus('Retired')"
                                     class="cursor-pointer flex w-fit md:w-full items-center after:w-full after:h-1 after:border-b after:border-gray-700 dark:after:border-gray-400 after:border-1 after:mx-2 md:after:mx-6 xl:after:mx-10">
                                         <span class="flex items-center">                                        
-                                            Retired
+                                            {{ 'AUTO.retired' | translate }}
                                         </span>
                                     </li>
                                 }
@@ -126,13 +126,13 @@
                                             <svg class="w-6 h-6 text-red-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8.737 8.737a21.49 21.49 0 0 1 3.308-2.724m0 0c3.063-2.026 5.99-2.641 7.331-1.3 1.827 1.828.026 6.591-4.023 10.64-4.049 4.049-8.812 5.85-10.64 4.023-1.33-1.33-.736-4.218 1.249-7.253m6.083-6.11c-3.063-2.026-5.99-2.641-7.331-1.3-1.827 1.828-.026 6.591 4.023 10.64m3.308-9.34a21.497 21.497 0 0 1 3.308 2.724m2.775 3.386c1.985 3.035 2.579 5.923 1.248 7.253-1.336 1.337-4.245.732-7.295-1.275M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z"/>
                                             </svg>                                          
-                                            Obsolete
+                                            {{ 'AUTO.obsolete' | translate }}
                                         </span>
                                     </li>
                                 }@else{
                                     <li (click)="setCatStatus('Obsolete')" class="cursor-pointer flex items-center">
                                         <span class="flex items-center">                                        
-                                            Obsolete
+                                            {{ 'AUTO.obsolete' | translate }}
                                         </span>
                                     </li>
                                 }

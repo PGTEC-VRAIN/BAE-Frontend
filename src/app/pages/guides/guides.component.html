@@ -1,0 +1,45 @@
+<div class="gd-page">
+  <header class="gd-head">
+    <p class="gd-eyebrow">{{ 'PGTEC.GUIDES.eyebrow' | translate }}</p>
+    <h1 class="gd-title">{{ 'PGTEC.GUIDES.title' | translate }}</h1>
+    <p class="gd-sub">{{ 'PGTEC.GUIDES.subtitle' | translate }}</p>
+
+    <div class="gd-tabs" role="tablist" [attr.aria-label]="'PGTEC.GUIDES.title' | translate">
+      @for (t of tabs; track t) {
+        <button type="button" role="tab" class="gd-tab" [class.gd-tab-on]="tab === t" [attr.aria-selected]="tab === t"
+                (click)="select(t)">{{ 'PGTEC.GUIDES.tab_' + t | translate }}</button>
+      }
+    </div>
+  </header>
+
+  @if (tab !== 'templates') {
+    <div class="gd-layout">
+      <nav class="gd-toc" [attr.aria-label]="'PGTEC.GUIDES.index' | translate">
+        <p class="gd-toc-title">{{ 'PGTEC.GUIDES.index' | translate }}</p>
+        @for (s of sections; track s.id) {
+          <a href="javascript:void(0)" (click)="goTo(s.id)">{{ s.title[lang] }}</a>
+        }
+      </nav>
+      <article class="gd-content">
+        @for (s of sections; track s.id) {
+          <section [id]="'guide-' + s.id" class="gd-section">
+            <h2>{{ s.title[lang] }}</h2>
+            <markdown class="gd-md" [data]="s.md[lang]"></markdown>
+          </section>
+        }
+      </article>
+    </div>
+  } @else {
+    <div class="gd-content gd-templates">
+      <p class="gd-intro">{{ 'PGTEC.GUIDES.templates_intro' | translate }}</p>
+      @for (t of templates; track t.id; let i = $index) {
+        <section class="gd-section" [id]="'guide-' + t.id">
+          <h2>{{ i + 1 }}. {{ t.title[lang] }}</h2>
+          <markdown class="gd-md" [data]="t.when[lang]"></markdown>
+          <app-code-block [code]="json(t)" [title]="t.title_file" maxHeight="26rem"></app-code-block>
+        </section>
+      }
+      <p class="gd-note">{{ 'PGTEC.GUIDES.templates_note' | translate }}</p>
+    </div>
+  }
+</div>

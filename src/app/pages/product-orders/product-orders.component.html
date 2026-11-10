@@ -4,8 +4,8 @@
 
   <div class="acc-layout">
     <aside class="acc-aside">
-      <nav class="acc-nav" aria-label="Order sections">
-        <p class="acc-nav-label">Orders</p>
+      <nav class="acc-nav" [attr.aria-label]="'AUTO.order_sections' | translate">
+        <p class="acc-nav-label">{{ 'AUTO.orders' | translate }}</p>
         <button (click)="goToOrders()" id="order-button" type="button" class="acc-nav-item">
           <svg class="acc-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></svg>
           {{ 'PRODUCT_ORDERS._orders' | translate }}

@@ -14,7 +14,7 @@
           (click)="removeItem(item, $event)"
         >x</button>
       </span>
-      <span *ngIf="selectedItems.length === 0" class="text-gray-500 dark:text-gray-400">Select items...</span>
+      <span *ngIf="selectedItems.length === 0" class="text-gray-500 dark:text-gray-400">{{ 'AUTO.select_items' | translate }}</span>
     </div>
   
     <!-- Dropdown -->

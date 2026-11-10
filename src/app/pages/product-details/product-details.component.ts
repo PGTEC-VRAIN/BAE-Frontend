@@ -1,3 +1,5 @@
+import { PolicyViewerComponent } from 'src/app/shared/policy-viewer/policy-viewer.component';
+import { isPolicyValue } from 'src/app/shared/policy-viewer/policy-explainer';
 import { Component, OnInit, ElementRef, ViewChild,ChangeDetectorRef, HostListener, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiServiceService } from 'src/app/services/product-service.service';
@@ -20,6 +22,8 @@ import { environment } from 'src/environments/environment';
 import { Location } from '@angular/common';
 import {firstValueFrom, Subject} from "rxjs";
 import { takeUntil } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
+import { ThemeService } from 'src/app/services/theme.service';
 import { UsageServiceService } from 'src/app/services/usage-service.service';
 
 interface UsageMetricCard {
@@ -116,6 +120,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   private isManualScroll = false;
   private scrollTimeout: any;
   private destroy$ = new Subject<void>();
+  hideCompliance = false;
+  private baseTitle = '';
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -129,7 +135,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     private eventMessage: EventMessageService,
     private accService: AccountServiceService,
     private usageService: UsageServiceService,
-    private location: Location
+    private location: Location,
+    private pageTitle: Title,
+    private themeService: ThemeService
   ) {
     this.showTermsMore=false;
     this.eventMessage.messages$
@@ -183,6 +191,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    if (this.baseTitle) this.pageTitle.setTitle(this.baseTitle);
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -229,6 +238,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     initFlowbite();
+    this.baseTitle = this.pageTitle.getTitle();
+    this.themeService.currentTheme$.pipe(takeUntil(this.destroy$)).subscribe(t => { this.hideCompliance = !!t?.hideCompliance; this.cdr.detectChanges(); });
     let aux = this.localStorage.getObject('login_items') as LoginInfo;
     if(JSON.stringify(aux) != '{}' && (((aux.expire - moment().unix())-4) > 0)) {
       this.check_logged=true;
@@ -329,6 +340,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       }
     }
 
+    if (prod?.name) this.pageTitle.setTitle(`${prod.name} · ${this.baseTitle}`);
     this.productOff={
       id: prod.id,
       name: prod.name,
@@ -483,6 +495,17 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   toggleQuoteModal(){
     //Show quote modal
     this.showQuoteModal = true;
+  }
+
+  // Clave de traducción (i18n) de la descripción del nivel de cumplimiento
+  getComplianceKey(): string {
+    switch (this.complianceLevel) {
+      case 'NL': return 'PGTEC._no_level_desc';
+      case 'BL': return 'PGTEC._basic_level_desc';
+      case 'P': return 'PGTEC._pro_level_desc';
+      case 'PP': return 'PGTEC._pro_plus_level_desc';
+      default: return '';
+    }
   }
 
   getComplianceDescription(): string {
@@ -801,7 +824,7 @@ async deleteProduct(product: Product | undefined){
   }
 
   getProductImage() {
-    return this.images.length > 0 ? this.images?.at(0)?.url : 'https://placehold.co/600x400/svg';
+    return this.images.length > 0 ? this.images?.at(0)?.url : 'assets/images/placeholder.svg';
   }
 
   removeClass(elem: HTMLElement, cls:string) {
@@ -1019,6 +1042,17 @@ async deleteProduct(product: Product | undefined){
     } else {
       return false
     }   
+  }
+
+  // Políticas (ODRL o de credenciales): se muestran explicadas con el JSON tras el icono (i)
+  isPolicyCharacteristic(char: any): boolean {
+    return !!this.getPolicyValue(char) && isPolicyValue(this.getPolicyValue(char));
+  }
+
+  getPolicyValue(char: any): any {
+    const vals = char?.productSpecCharacteristicValue ?? [];
+    const def = vals.find((v: any) => v?.isDefault) ?? vals[0];
+    return def?.value;
   }
 
   getCharacteristicValueLabel(valueSpec: any): string {

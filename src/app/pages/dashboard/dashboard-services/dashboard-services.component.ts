@@ -55,6 +55,6 @@ export class DashboardServicesComponent implements OnInit {
       }
     }
 
-    return images.length > 0 ? images.at(0)?.url : 'https://placehold.co/600x400/svg';
+    return images.length > 0 ? images.at(0)?.url : 'assets/images/placeholder.svg';
   }
 }

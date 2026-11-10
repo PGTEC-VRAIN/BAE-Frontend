@@ -91,12 +91,12 @@
         } @else if(checkCampaing){
             <div class="w-full rounded-t-lg p-8">
                 <fa-icon [icon]="faMessagePen" class="text-5xl text-primary-50 align-middle mr-2"></fa-icon>
-                <h5 class="md:text-3xl lg:text-4xl font-semibold tracking-tight text-secondary-100 dark:text-white text-wrap break-words">Would you like to provide feedback?</h5>
+                <h5 class="md:text-3xl lg:text-4xl font-semibold tracking-tight text-secondary-100 dark:text-white text-wrap break-words">{{ 'AUTO.would_you_like_to_provide_feedback' | translate }}</h5>
                 <div class="justify-start mt-4">
                     <div class="flex gap-4">
                         <label class="inline-flex items-center">
                           <input type="radio" name="feedbackOption" [(ngModel)]="wantsFeedback" [value]="true" class="w-4 h-4 cursor-pointer text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                          <span class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Yes</span>
+                          <span class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ 'AUTO.yes' | translate }}</span>
                         </label>
                     
                         <label class="inline-flex items-center">
@@ -110,7 +110,7 @@
                         <svg class="rtl:rotate-180 w-3.5 h-3.5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                         </svg>
-                        Confirm
+                        {{ 'AUTO.confirm' | translate }}
                         </button>
                     </div>
                 </div>

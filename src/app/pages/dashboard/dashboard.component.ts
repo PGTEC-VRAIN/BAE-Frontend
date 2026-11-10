@@ -312,7 +312,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     const attachments = offering?.attachment ?? [];
     const profile = attachments.filter((a) => a.name === 'Profile Picture');
     const pictures = profile.length > 0 ? profile : attachments.filter((a) => a.attachmentType === 'Picture');
-    return pictures.at(0)?.url ?? 'https://placehold.co/600x400/svg';
+    return pictures.at(0)?.url ?? 'assets/images/placeholder.svg';
   }
 
   getOfferingCategory(offering: ProductOffering): string | undefined {

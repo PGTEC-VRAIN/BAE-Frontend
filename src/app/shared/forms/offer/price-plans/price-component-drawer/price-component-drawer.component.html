@@ -109,7 +109,7 @@
         <select data-cy="selectPriceSpecChar" id="type" (change)="changePriceComponentChar($event)"
           class="mb-2 mr-2 bg-gray-50 dark:bg-secondary-300 border border-gray-300 dark:border-secondary-200 dark:text-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             @if(!selectedCharacteristic){
-              <option value="">Select a characteristic</option>
+              <option value="">{{ 'AUTO.select_a_characteristic' | translate }}</option>
               @for(char of filteredChars; track char){
                 <option  value="{{char.id}}">{{char.name}}</option>
               }
@@ -192,7 +192,7 @@
         <select id="type" data-cy="usageInput" (change)="changePriceComponentUsageSpec($event)" 
           class="mb-2 mr-2 bg-gray-50 dark:bg-secondary-300 border border-gray-300 dark:border-secondary-200 dark:text-gray-100 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             @if(!selectedUsageSpec){
-              <option value="">Select a usage specification</option>
+              <option value="">{{ 'AUTO.select_a_usage_specification' | translate }}</option>
               @for(usage of usageSpecs; track usage){
                 <option  value="{{usage.id}}">{{usage.name}}</option>
               }
@@ -253,7 +253,7 @@
               data-cy="offerDiscountAmount"
               formControlName="discountValue"
               type="number"
-              placeholder="Amount"
+              [placeholder]="'AUTO.amount' | translate"
               class="w-1/2 p-2 border rounded dark:bg-gray-700 dark:text-gray-100"
               [ngClass]="(priceComponentForm.get('discountValue')?.invalid == true && priceComponentForm.value.discountValue!='') || (priceComponentForm.get('discountValue')?.touched && priceComponentForm.value.discountValue=='') ? 'border-red-600' : 'dark:border-gray-600'"
             >
@@ -295,7 +295,7 @@
               data-cy="offerDiscountDuration"
               formControlName="discountDuration"
               type="number"
-              placeholder="Duration"
+              [placeholder]="'AUTO.duration' | translate"
               class="w-1/2 p-2 rounded dark:bg-gray-700 dark:text-gray-100"
               [ngClass]="(priceComponentForm.get('discountDuration')?.invalid == true && priceComponentForm.value.discountDuration!='') || (priceComponentForm.get('discountDuration')?.touched && priceComponentForm.value.discountDuration=='') ? 'border-red-600' : 'dark:border-gray-600'"
             >

@@ -1,7 +1,7 @@
 <div>
     <!-- Breadcrumb -->
     <div class="pb-4">
-        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-secondary-50 dark:bg-secondary-100 dark:border-gray-800 dark:text-white" aria-label="Breadcrumb">
+        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-secondary-50 dark:bg-secondary-100 dark:border-gray-800 dark:text-white" [attr.aria-label]="'AUTO.breadcrumb' | translate">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
                 <button (click)="goBack()" class="inline-flex items-center text-sm font-medium text-gray-500 dark:text-white hover:text-primary-100 dark:hover:text-primary-50">
@@ -38,7 +38,7 @@
                             class="mb-2 bg-gray-50 dark:bg-secondary-300 border border-gray-300 dark:border-secondary-200 dark:text-white text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
     
                     <label for="vc" class="font-bold text-lg dark:text-white">{{ 'ADMIN._vc' | translate }}</label>
-                    <textarea data-cy="adminVerifiableCredential" formControlName="vc" rows="8" class="block w-full min-h-fit px-0 text-sm text-gray-800 dark:text-gray-200 bg-white dark:bg-secondary-300 border-0" placeholder="Add credential..." ></textarea>
+                    <textarea data-cy="adminVerifiableCredential" formControlName="vc" rows="8" class="block w-full min-h-fit px-0 text-sm text-gray-800 dark:text-gray-200 bg-white dark:bg-secondary-300 border-0" [placeholder]="'AUTO.add_credential' | translate" ></textarea>
                 </form>
 
                 <div class="flex w-full justify-items-end justify-end ml-4">

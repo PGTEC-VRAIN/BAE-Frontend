@@ -15,6 +15,11 @@ const pgtecHeaderLinks: NavLink[] = [
     ]
   },
   {
+    label: 'PGTEC._guides',
+    url: '/guides',
+    isRouterLink: true
+  },
+  {
     label: 'HEADER._onboarding',
     url: 'https://onboarding.pgtec-vrain-dataspace.eu/',
     isRouterLink: false
@@ -42,5 +47,6 @@ export const PGTEC_THEME_CONFIG: ThemeConfig = {
     motion: 'data-line',
   },
   lightHeader: true,
+  hideCompliance: true,
   colorSchemeToggle: true
 };

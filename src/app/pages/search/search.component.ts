@@ -39,6 +39,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   showDrawer:boolean=false;
   searchEnabled = environment.SEARCH_ENABLED;
   keywords:any=undefined;
+  sortBy: 'default' | 'name_asc' | 'name_desc' | 'recent' = 'default';
   searchField = new FormControl();
   showPanel = false;
   feedback:boolean=false;
@@ -254,6 +255,18 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  /** Ofertas ya cargadas, ordenadas según el selector (el orden no cambia lo que devuelve la API) */
+  get sortedProducts(): any[] {
+    const list = [...(this.products || [])];
+    const byName = (a: any, b: any) => String(a?.name || '').localeCompare(String(b?.name || ''), undefined, { sensitivity: 'base' });
+    switch (this.sortBy) {
+      case 'name_asc': return list.sort(byName);
+      case 'name_desc': return list.sort((a, b) => byName(b, a));
+      case 'recent': return list.sort((a, b) => new Date(b?.lastUpdate || 0).getTime() - new Date(a?.lastUpdate || 0).getTime());
+      default: return list;
+    }
   }
 
   async getProducts(next:boolean){

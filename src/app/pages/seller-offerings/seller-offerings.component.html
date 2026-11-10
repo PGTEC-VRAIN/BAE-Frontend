@@ -1,11 +1,11 @@
 <div class="acc-page">
   <app-account-header [title]="'OFFERINGS._my_offerings' | translate"
-    subtitle="Create and manage the catalogues, offers and specifications you publish."></app-account-header>
+    [subtitle]="'PGTEC._offerings_subtitle' | translate"></app-account-header>
 
   <div class="acc-layout">
     <aside class="acc-aside">
-      <nav class="acc-nav" aria-label="Offering sections">
-        <p class="acc-nav-label">Publishing</p>
+      <nav class="acc-nav" [attr.aria-label]="'PGTEC._offering_sections' | translate">
+        <p class="acc-nav-label">{{ 'PGTEC._publishing' | translate }}</p>
         <button data-cy="catalogSection" (click)="goToCatalogs()" id="catalogs-button" type="button" class="acc-nav-item text-white bg-primary-100">
           <svg class="acc-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
           {{ 'OFFERINGS._catalogs' | translate }}
@@ -15,7 +15,7 @@
           {{ 'OFFERINGS._offers' | translate }}
         </button>
 
-        <p class="acc-nav-label">Specifications</p>
+        <p class="acc-nav-label">{{ 'PGTEC._specifications' | translate }}</p>
         <button data-cy="prdSpecSection" (click)="goToProdSpec()" id="prod-spec-button" type="button" class="acc-nav-item">
           <svg class="acc-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>
           {{ 'OFFERINGS._prod_spec' | translate }}
@@ -31,11 +31,11 @@
       </nav>
 
       <div class="acc-help">
-        <p class="acc-help-title">How publishing works</p>
+        <p class="acc-help-title">{{ 'PGTEC._how_publishing' | translate }}</p>
         <ol class="acc-help-steps">
-          <li><span class="acc-help-step">1</span>Create a catalogue</li>
-          <li><span class="acc-help-step">2</span>Describe the product specification</li>
-          <li><span class="acc-help-step">3</span>Publish an offer with its price plan</li>
+          <li><span class="acc-help-step">1</span>{{ 'PGTEC._step_catalog' | translate }}</li>
+          <li><span class="acc-help-step">2</span>{{ 'PGTEC._step_spec' | translate }}</li>
+          <li><span class="acc-help-step">3</span>{{ 'PGTEC._step_offer' | translate }}</li>
         </ol>
       </div>
     </aside>

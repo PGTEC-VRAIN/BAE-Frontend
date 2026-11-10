@@ -1,11 +1,11 @@
 <div class="acc-page">
   <app-account-header [title]="'ADMIN._admin' | translate"
-    subtitle="Manage categories, verification, revenue sharing and email settings."></app-account-header>
+    [subtitle]="'PGTEC._admin_subtitle' | translate"></app-account-header>
 
   <div class="acc-layout">
     <aside class="acc-aside">
-      <nav class="acc-nav" aria-label="Administration sections">
-        <p class="acc-nav-label">Administration</p>
+      <nav class="acc-nav" [attr.aria-label]="'PGTEC._admin_sections' | translate">
+        <p class="acc-nav-label">{{ 'PGTEC._administration' | translate }}</p>
         <button (click)="goToCategories()" id="categories-button" type="button" class="acc-nav-item text-white bg-primary-100">
           <svg class="acc-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9-9-9Z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>
           {{ 'ADMIN._categories' | translate }}

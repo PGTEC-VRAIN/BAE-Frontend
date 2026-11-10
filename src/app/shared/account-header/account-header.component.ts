@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { Subject, takeUntil } from 'rxjs';
 import { LoginInfo } from 'src/app/models/interfaces';
 import { EventMessageService } from 'src/app/services/event-message.service';
@@ -12,7 +13,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 @Component({
   selector: 'app-account-header',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, TranslateModule],
   templateUrl: './account-header.component.html'
 })
 export class AccountHeaderComponent implements OnInit, OnDestroy {

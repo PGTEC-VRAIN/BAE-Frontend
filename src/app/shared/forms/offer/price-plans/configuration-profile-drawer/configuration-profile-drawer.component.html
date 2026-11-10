@@ -28,17 +28,17 @@
             <h5 class="text-xl font-semibold tracking-tight text-primary-100">{{char.value.name}}:</h5>
             @if(hasKey(char?.value.options[0], 'valueFrom')){
               <div class="relative mb-6">
-                <label for="default-range" class="sr-only">Labels range</label>
+                <label for="default-range" class="sr-only">{{ 'AUTO.labels_range' | translate }}</label>
                 <input id="default-range" type="range" (change)="changeProfileValue($index,$event)"
                        [min]="char.value.options[0].valueFrom"
                        [max]="char.value.options[0].valueTo"
                        [value]="char.value.selectedValue"
                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 dark:text-gray-100">
-                <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">Min ({{char?.value.options[0].valueFrom}})</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">{{ 'PGTEC._min' | translate }} ({{char?.value.options[0].valueFrom}})</span>
                 @if(char?.value.options?.length > 0){
                   <span class="text-sm text-gray-500 dark:text-gray-400 absolute start-1/2 -bottom-6">{{char?.value.selectedValue}} {{char?.value.options[0].unitOfMeasure}}</span>
                 }
-                <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">Max ({{char?.value.options[0].valueTo}})</span>
+                <span class="text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">{{ 'PGTEC._max' | translate }} ({{char?.value.options[0].valueTo}})</span>
               </div>
             }@else{
               <!-- Dropdown Selector -->

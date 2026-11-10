@@ -127,7 +127,7 @@ export class OrderInfoComponent implements OnInit, OnDestroy {
     if(profile.length!=0){
       images = profile;
     } 
-    return images.length > 0 ? images?.at(0)?.url : 'https://placehold.co/600x400/svg';
+    return images.length > 0 ? images?.at(0)?.url : 'assets/images/placeholder.svg';
   }
 
   async getOrders(next:boolean){

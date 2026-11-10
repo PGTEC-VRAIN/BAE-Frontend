@@ -1,3 +1,4 @@
+import { orgDisplayName } from "src/app/shared/org-name";
 import { Component, OnInit, ChangeDetectorRef, ElementRef, ViewChild, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { LoginInfo, billingAccountCart } from 'src/app/models/interfaces';
@@ -305,7 +306,7 @@ export class OrderInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     if(profile.length!=0){
       images = profile;
     }
-    return images.length > 0 ? images?.at(0)?.url : 'https://placehold.co/600x400/svg';
+    return images.length > 0 ? images?.at(0)?.url : 'assets/images/placeholder.svg';
   }
 
   async getOrders(next:boolean){
@@ -516,7 +517,7 @@ export class OrderInfoComponent implements OnInit, AfterViewInit, OnDestroy {
       } else if (partyId.startsWith('urn:ngsi-ld:organization:')) {
         // Get organization info
         const orgInfo = await this.accountService.getOrgInfo(partyId);
-        username = orgInfo?.tradingName || `Unknown Organization (${partyId})`;
+        username = orgDisplayName(orgInfo) || `Unknown Organization (${partyId})`;
       } else {
         username = `Unknown (${partyId})`;
       }

@@ -219,7 +219,7 @@ describe('InvoiceInfoComponent', () => {
     const withoutImage = { attachment: [] } as any;
 
     expect(component.getProductImage(withProfile)).toBe('https://profile');
-    expect(component.getProductImage(withoutImage)).toBe('https://placehold.co/600x400/svg');
+    expect(component.getProductImage(withoutImage)).toBe('assets/images/placeholder.svg');
   });
 
   it('getTotalPrice should aggregate non-custom prices and set custom flag', () => {

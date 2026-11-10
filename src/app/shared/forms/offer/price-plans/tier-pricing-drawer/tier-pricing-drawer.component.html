@@ -11,7 +11,7 @@
     <div class="p-6 flex-1 overflow-y-auto">
       <!-- Title -->
       <h2 class="text-xl font-semibold text-gray-700 dark:text-white">
-        Create Tier Pricing
+        {{ 'AUTO.create_tier_pricing' | translate }}
       </h2>
 
       <div class="mt-4 space-y-4">
@@ -19,7 +19,7 @@
         <!-- Characteristic Selector -->
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Select Range Characteristic
+            {{ 'AUTO.select_range_characteristic' | translate }}
           </label>
           <select
             (change)="onCharacteristicChange($event)"
@@ -35,7 +35,7 @@
 
         <!-- Info message when no characteristic is selected -->
         <div *ngIf="!selectedCharacteristic" class="p-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-secondary-100 dark:text-blue-400">
-          <span class="font-medium">Please select a range characteristic to start creating tier pricing.</span>
+          <span class="font-medium">{{ 'AUTO.please_select_a_range_characteristic' | translate }}</span>
         </div>
 
         <!-- Slider Section (only shown when characteristic is selected) -->
@@ -45,7 +45,7 @@
               Divide Range: {{ rangeMin }} - {{ rangeMax }}
             </label>
             <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              Add markers to divide the range into subranges. Each subrange will become a separate price component.
+              {{ 'AUTO.add_markers_to_divide_the_range_into' | translate }}
             </p>
           </div>
 
@@ -59,7 +59,7 @@
               <svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/>
               </svg>
-              Add Marker
+              {{ 'AUTO.add_marker' | translate }}
             </button>
           </div>
 
@@ -85,7 +85,7 @@
               <div class="relative">
                 <div class="w-4 h-4 bg-red-500 rounded-full border-2 border-white cursor-pointer hover:bg-red-600"
                      (click)="removeMarker(i)"
-                     title="Click to remove">
+                     [title]="'AUTO.click_to_remove' | translate">
                 </div>
                 <span class="absolute top-6 left-1/2 transform -translate-x-1/2 text-xs font-semibold text-gray-700 dark:text-gray-300">
                   {{ marker }}
@@ -109,7 +109,7 @@
             </label>
             <div class="grid grid-cols-2 gap-2">
               <div *ngFor="let marker of sliderMarkers; let i = index; trackBy: trackByIndex" class="flex items-center space-x-2">
-                <span class="text-sm text-gray-600 dark:text-gray-400">Marker {{ i + 1 }}:</span>
+                <span class="text-sm text-gray-600 dark:text-gray-400">{{ 'PGTEC._marker' | translate }} {{ i + 1 }}:</span>
                 <input
                   type="number"
                   [value]="marker"
@@ -122,7 +122,7 @@
                   type="button"
                   (click)="removeMarker(i)"
                   class="text-red-500 hover:text-red-700"
-                  title="Remove marker"
+                  [title]="'AUTO.remove_marker' | translate"
                 >
                   <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/>
@@ -190,7 +190,7 @@
                   <form [formGroup]="priceForm" class="space-y-3">
                     <!-- Name -->
                     <div>
-                      <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Name</label>
+                      <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{ 'AUTO.name' | translate }}</label>
                       <input
                         formControlName="name"
                         type="text"
@@ -200,7 +200,7 @@
 
                     <!-- Price -->
                     <div>
-                      <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Price</label>
+                      <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{ 'AUTO.price' | translate }}</label>
                       <input
                         formControlName="price"
                         type="number"
@@ -222,41 +222,41 @@
 
                     <!-- Price Type -->
                     <div>
-                      <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Price Type</label>
+                      <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{ 'AUTO.price_type' | translate }}</label>
                       <select
                         formControlName="priceType"
                         class="mt-1 w-full p-2 text-sm border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                       >
-                        <option value="one time">One Time</option>
-                        <option value="recurring">Recurring</option>
-                        <option value="recurring-prepaid">Recurring Prepaid</option>
-                        <option value="usage">Usage</option>
+                        <option value="one time">{{ 'AUTO.one_time' | translate }}</option>
+                        <option value="recurring">{{ 'AUTO.recurring' | translate }}</option>
+                        <option value="recurring-prepaid">{{ 'AUTO.recurring_prepaid' | translate }}</option>
+                        <option value="usage">{{ 'AUTO.usage' | translate }}</option>
                       </select>
                     </div>
 
                     <!-- Recurring Period (if recurring) -->
                     <div *ngIf="priceForm.get('priceType')?.value === 'recurring' || priceForm.get('priceType')?.value === 'recurring-prepaid'">
-                      <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Recurring Period</label>
+                      <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{ 'AUTO.recurring_period' | translate }}</label>
                       <select
                         formControlName="recurringPeriod"
                         class="mt-1 w-full p-2 text-sm border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                       >
-                        <option value="day">Daily</option>
-                        <option value="week">Weekly</option>
-                        <option value="month">Monthly</option>
-                        <option value="year">Yearly</option>
+                        <option value="day">{{ 'AUTO.daily' | translate }}</option>
+                        <option value="week">{{ 'AUTO.weekly' | translate }}</option>
+                        <option value="month">{{ 'AUTO.monthly' | translate }}</option>
+                        <option value="year">{{ 'AUTO.yearly' | translate }}</option>
                       </select>
                     </div>
 
                     <!-- Usage Specification (if usage) -->
                     <div *ngIf="priceForm.get('priceType')?.value === 'usage'" class="space-y-2">
                       <div>
-                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Usage Specification</label>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{ 'AUTO.usage_specification' | translate }}</label>
                         <select
                           (change)="changePriceComponentUsageSpec($event)"
                           class="mt-1 w-full p-2 text-sm border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                         >
-                          <option value="">Select a usage specification</option>
+                          <option value="">{{ 'AUTO.select_a_usage_specification' | translate }}</option>
                           <option *ngFor="let usage of usageSpecs" [value]="usage.id" [selected]="selectedUsageSpec?.id === usage.id">
                             {{ usage.name }}
                           </option>
@@ -264,7 +264,7 @@
                       </div>
 
                       <div *ngIf="showMetricSelect">
-                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Metric</label>
+                        <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{ 'AUTO.metric' | translate }}</label>
                         <select
                           (change)="changePriceComponentMetric($event)"
                           class="mt-1 w-full p-2 text-sm border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
@@ -285,7 +285,7 @@
                         class="w-4 h-4 text-blue-600 border-gray-300 rounded cursor-pointer"
                       />
                       <label class="ml-2 text-xs font-medium text-gray-700 dark:text-gray-300">
-                        Include Discount
+                        {{ 'AUTO.include_discount' | translate }}
                       </label>
                     </div>
 
@@ -293,7 +293,7 @@
                     <div *ngIf="showDiscount" class="space-y-2 pl-6 border-l-2 border-blue-300">
                       <div class="flex space-x-2">
                         <div class="flex-1">
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Discount Value</label>
+                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{ 'AUTO.discount_value' | translate }}</label>
                           <input
                             formControlName="discountValue"
                             type="number"
@@ -301,20 +301,20 @@
                           />
                         </div>
                         <div class="flex-1">
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Unit</label>
+                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{ 'AUTO.unit' | translate }}</label>
                           <select
                             formControlName="discountUnit"
                             class="mt-1 w-full p-2 text-sm border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                           >
-                            <option value="percentage">Percentage</option>
-                            <option value="fixed">Fixed</option>
+                            <option value="percentage">{{ 'AUTO.percentage' | translate }}</option>
+                            <option value="fixed">{{ 'AUTO.fixed' | translate }}</option>
                           </select>
                         </div>
                       </div>
 
                       <div class="flex space-x-2">
                         <div class="flex-1">
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Duration</label>
+                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{ 'AUTO.duration' | translate }}</label>
                           <input
                             formControlName="discountDuration"
                             type="number"
@@ -322,15 +322,15 @@
                           />
                         </div>
                         <div class="flex-1">
-                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">Unit</label>
+                          <label class="block text-xs font-medium text-gray-700 dark:text-gray-300">{{ 'AUTO.unit' | translate }}</label>
                           <select
                             formControlName="discountDurationUnit"
                             class="mt-1 w-full p-2 text-sm border rounded dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100"
                           >
-                            <option value="days">Days</option>
-                            <option value="weeks">Weeks</option>
-                            <option value="months">Months</option>
-                            <option value="years">Years</option>
+                            <option value="days">{{ 'AUTO.days' | translate }}</option>
+                            <option value="weeks">{{ 'AUTO.weeks' | translate }}</option>
+                            <option value="months">{{ 'AUTO.months' | translate }}</option>
+                            <option value="years">{{ 'AUTO.years' | translate }}</option>
                           </select>
                         </div>
                       </div>
@@ -343,7 +343,7 @@
                         (click)="cancelPriceForm()"
                         class="px-3 py-1 text-sm bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-white rounded hover:bg-gray-400"
                       >
-                        Cancel
+                        {{ 'AUTO.cancel' | translate }}
                       </button>
                       <button
                         type="button"
@@ -352,7 +352,7 @@
                         class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
                         [ngClass]="priceForm.invalid ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'"
                       >
-                        Save
+                        {{ 'AUTO.save' | translate }}
                       </button>
                     </div>
                   </form>
@@ -364,7 +364,7 @@
           <!-- Validation Errors -->
           <div *ngIf="validationErrors.length > 0" class="mb-4">
             <div class="p-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-red-900 dark:text-red-200">
-              <span class="font-medium">Validation Errors:</span>
+              <span class="font-medium">{{ 'AUTO.validation_errors' | translate }}</span>
               <ul class="list-disc list-inside mt-2">
                 <li *ngFor="let error of validationErrors">{{ error }}</li>
               </ul>
@@ -379,7 +379,7 @@
             (click)="closeDrawer()"
             class="px-4 py-2 bg-gray-300 dark:bg-gray-600 dark-text:white rounded"
           >
-            Cancel
+            {{ 'AUTO.cancel' | translate }}
           </button>
           <button
             type="button"
@@ -388,7 +388,7 @@
             [ngClass]="canConfirm ? 'bg-blue-500 hover:bg-blue-600 cursor-pointer' : 'bg-gray-400 cursor-not-allowed opacity-50'"
             class="px-4 py-2 text-white rounded"
           >
-            Save Tier Pricing
+            {{ 'AUTO.save_tier_pricing' | translate }}
           </button>
         </div>
       </div>

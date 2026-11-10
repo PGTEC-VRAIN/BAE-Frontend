@@ -314,7 +314,7 @@ describe('ProductDetailsComponent', () => {
     expect(component.getProductImage()).toBe('https://example.com/image.png');
 
     component.images = [];
-    expect(component.getProductImage()).toBe('https://placehold.co/600x400/svg');
+    expect(component.getProductImage()).toBe('assets/images/placeholder.svg');
   });
 
   it('toggleTermsReadMore should switch clamp class based on expanded state', () => {

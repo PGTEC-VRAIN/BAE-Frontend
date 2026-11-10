@@ -1,7 +1,7 @@
 <div>
     <!-- Breadcrumb -->
     <div class="pb-4">
-        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-secondary-50 dark:bg-secondary-100 dark:border-gray-800 dark:text-white" aria-label="Breadcrumb">
+        <nav class="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-secondary-50 dark:bg-secondary-100 dark:border-gray-800 dark:text-white" [attr.aria-label]="'AUTO.breadcrumb' | translate">
             <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
                 <button (click)="goBack()" class="inline-flex items-center text-sm font-medium text-gray-500 dark:text-white hover:text-primary-100 dark:hover:text-primary-50">

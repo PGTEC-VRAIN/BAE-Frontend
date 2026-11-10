@@ -1,0 +1,42 @@
+<div class="pv-root">
+  <div class="pv-head">
+    <span class="pv-title">{{ 'PGTEC.POLICY.explained' | translate }}</span>
+    <button type="button" class="pv-info" (click)="showJson = !showJson"
+            [attr.aria-pressed]="showJson" [attr.aria-label]="'PGTEC.POLICY.show_json' | translate"
+            [title]="'PGTEC.POLICY.show_json' | translate">i</button>
+  </div>
+
+  @for (b of blocks; track $index) {
+    <section class="pv-block pv-{{ b.kind }}">
+      @if (b.kind === 'credentials') {
+        <h4 class="pv-block-title">{{ 'PGTEC.POLICY.credentials_title' | translate }}</h4>
+      }
+      <ul class="pv-list">
+        @for (n of b.nodes; track $index) {
+          <ng-container *ngTemplateOutlet="nodeTpl; context: { $implicit: n }"></ng-container>
+        }
+      </ul>
+    </section>
+  }
+
+  @if (blocks.length === 0) {
+    <p class="pv-fallback">{{ 'PGTEC.POLICY.not_explained' | translate }}</p>
+  }
+
+  @if (showJson) {
+    <app-code-block [code]="json" [title]="'PGTEC.POLICY.json' | translate"></app-code-block>
+  }
+</div>
+
+<ng-template #nodeTpl let-n>
+  <li class="pv-item">
+    <span>{{ n.key | translate: params(n) }}</span>
+    @if (n.children?.length) {
+      <ul class="pv-list pv-nested">
+        @for (c of n.children; track $index) {
+          <ng-container *ngTemplateOutlet="nodeTpl; context: { $implicit: c }"></ng-container>
+        }
+      </ul>
+    }
+  </li>
+</ng-template>

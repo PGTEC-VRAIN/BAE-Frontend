@@ -1,10 +1,10 @@
 <div class="acc-page">
-  <app-account-header title="My inventory"
+  <app-account-header [title]="'AUTO.my_inventory' | translate"
     subtitle="The products, services and resources available to your account."></app-account-header>
 
   <div class="acc-layout">
     <aside class="acc-aside">
-      <nav class="acc-nav" aria-label="Inventory sections">
+      <nav class="acc-nav" [attr.aria-label]="'AUTO.inventory_sections' | translate">
         <p class="acc-nav-label">{{ 'PRODUCT_INVENTORY._inventory' | translate }}</p>
         <button data-cy="inventoryProducts" id="prod-button" (click)="goToOffers()" type="button" class="acc-nav-item text-white bg-primary-100">
           <svg class="acc-nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>

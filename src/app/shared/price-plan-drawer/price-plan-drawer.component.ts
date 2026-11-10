@@ -662,7 +662,7 @@ export class PricePlanDrawerComponent implements OnInit, OnDestroy {
   }
 
   getProductImage() {
-    return this.images.length > 0 ? this.images?.at(0)?.url : 'https://placehold.co/600x400/svg';
+    return this.images.length > 0 ? this.images?.at(0)?.url : 'assets/images/placeholder.svg';
   }
 
   async createOrder() {

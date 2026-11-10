@@ -65,6 +65,8 @@ import { OrgInfoComponent } from './pages/user-profile/profile-sections/org-info
 import { UserInfoComponent } from './pages/user-profile/profile-sections/user-info/user-info.component';
 import { UserProfileComponent } from "./pages/user-profile/user-profile.component";
 import { AccountHeaderComponent } from "./shared/account-header/account-header.component";
+import { OrgNamePipe } from "./shared/org-name";
+import { PolicyViewerComponent } from "./shared/policy-viewer/policy-viewer.component";
 import { AppInitService } from './services/app-init.service';
 import { ThemeAwareTranslateLoader } from './services/theme-aware-translate.loader';
 import { ThemeService } from './services/theme.service';
@@ -193,7 +195,9 @@ import { RequestValidationModalComponent } from './pages/seller-offerings/offeri
     MarkdownTextareaComponent,
     ProviderRevenueSharingComponent,
     OperatorRevenueSharingComponent,
-    AccountHeaderComponent
+    AccountHeaderComponent,
+    PolicyViewerComponent,
+    OrgNamePipe
   ],
   providers: [
     AppInitService,

@@ -1,3 +1,4 @@
+import { TranslateModule } from "@ngx-translate/core";
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {NgClass, NgIf, NgFor} from "@angular/common";
 import { HostListener } from '@angular/core';
@@ -6,6 +7,7 @@ import { HostListener } from '@angular/core';
   selector: 'multiple-select',
   standalone: true,
   imports: [
+    TranslateModule,
     NgIf,
     NgClass,
     NgFor

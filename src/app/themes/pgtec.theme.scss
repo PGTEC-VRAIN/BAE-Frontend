@@ -164,6 +164,31 @@ body.theme-pgtec markdown {
   font-family: inherit;
 }
 
+/* Markdown (código, bloques y cabeceras de tabla): azul claro con texto oscuro en modo claro.
+ * El azul oscuro del estilo base solo se mantiene en modo oscuro. */
+body.theme-pgtec markdown code,
+body.theme-pgtec markdown pre,
+body.theme-pgtec markdown table th {
+  background-color: #dbeafe;
+  color: #1e3a8a;
+}
+
+body.theme-pgtec markdown pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+html.dark body.theme-pgtec markdown code,
+html.dark body.theme-pgtec markdown pre,
+html.dark body.theme-pgtec markdown table th {
+  background-color: #2d58a7;
+  color: #ffffff;
+}
+
+html.dark body.theme-pgtec markdown pre code {
+  background-color: transparent;
+}
+
 body.theme-pgtec ngx-file-drop .ngx-file-drop__drop-zone {
   border-color: var(--pg-input-border) !important;
 }
@@ -868,10 +893,24 @@ html.dark .pg-footer-logos {
 }
 
 .pg-footer-logos img {
-  height: 52px;
+  height: 40px;
   width: auto;
   max-width: 240px;
   object-fit: contain;
+}
+
+/* Con estas alturas los seis logos caben en una sola línea desde 1160 px; por debajo se reparten */
+@media (min-width: 1160px) {
+  .pg-footer-logos {
+    flex-wrap: nowrap;
+    gap: 20px;
+  }
+}
+
+/* Logo apaisado de VRAIN (9,7:1): se limita por altura para que no ocupe media banda */
+.pg-footer-logos img.pg-footer-vrain {
+  height: 22px;
+  max-width: 280px;
 }
 
 .pg-footer-funding {
@@ -934,5 +973,9 @@ html.dark .pg-footer-logos {
 
   .pg-footer-logos img {
     height: 40px;
+  }
+
+  .pg-footer-logos img.pg-footer-vrain {
+    height: 22px;
   }
 }

@@ -8,7 +8,7 @@
       <div class="absolute inset-0 bg-cover bg-center opacity-75" style="background-image: url({{getProductImage()}});filter: blur(20px);"></div>
       <!-- Imagen superior -->
       <!-- <img crossorigin="anonymous" #myProdImage class="h-5/6 w-5/6 object-contain z-10" src="{{getProductImage()}}" alt="Descripción de la imagen">-->
-      <img class="h-5/6 w-5/6 object-contain z-10 dark:text-white" src="{{getProductImage()}}" alt="Product image">
+      <img class="h-5/6 w-5/6 object-contain z-10 dark:text-white" src="{{getProductImage()}}" [alt]="'AUTO.product_image' | translate">
     </div>
   </div>
 
@@ -19,11 +19,12 @@
         [ngClass]="complianceLevel == 'NL' ? 'bg-red-200 text-red-700' : complianceLevel == 'BL' ? 'bg-orange-200 text-orange-700' : complianceLevel == 'P' ? 'bg-yellow-200 text-yellow-700' : 'bg-green-200 text-green-700'">
         <fa-icon [icon]="faAtom" class="mr-2" [ngClass]="complianceLevel == 'NL' ? 'text-red-700' : complianceLevel == 'BL' ? 'text-orange-700' : complianceLevel == 'P' ? 'text-yellow-700' : 'text-green-700'"></fa-icon>
         -->
-        @if(complianceLevel=='NL'){
+        @if (!currentTheme?.hideCompliance) {
+@if(complianceLevel=='NL'){
           <a class="text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md mb-2 mr-2"
           [ngClass]="complianceLevel == 'NL' ? 'bg-red-200 text-red-700' : complianceLevel == 'BL' ? 'bg-orange-200 text-orange-700' : complianceLevel == 'P' ? 'bg-yellow-200 text-yellow-700' : 'bg-green-200 text-green-700'">
           <fa-icon [icon]="faAtom" class="mr-2" [ngClass]="complianceLevel == 'NL' ? 'text-red-700' : complianceLevel == 'BL' ? 'text-orange-700' : complianceLevel == 'P' ? 'text-yellow-700' : 'text-green-700'"></fa-icon>
-              No level
+              {{ 'PGTEC._no_level' | translate }}
           </a>
         }@else if(complianceLevel=='BL'){
           <img class="z-10 dark:text-white rounded-md mb-2 mr-2 max-h-[1.2rem] align-middle" src="assets/logos/baseline.png">
@@ -32,6 +33,7 @@
         } @else {
           <img class="z-10 dark:text-white rounded-md mb-2 mr-2 max-h-[1.2rem] align-middle" src="assets/logos/profplus.png">
         }
+}
         <!--</a>-->
         @for (cat of categories; track cat.id) {
           <bae-badge class="mr-2" [category]=cat></bae-badge>
@@ -152,11 +154,12 @@
                   </div>
 
                   <div class="h-fit overflow-x-hidden flex items-center flex-wrap">
-                    @if(complianceLevel=='NL'){
+                    @if (!currentTheme?.hideCompliance) {
+@if(complianceLevel=='NL'){
                       <a class="text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-md mb-2 mr-2"
                       [ngClass]="complianceLevel == 'NL' ? 'bg-red-200 text-red-700' : complianceLevel == 'BL' ? 'bg-orange-200 text-orange-700' : complianceLevel == 'P' ? 'bg-yellow-200 text-yellow-700' : 'bg-green-200 text-green-700'">
                       <fa-icon [icon]="faAtom" class="mr-2" [ngClass]="complianceLevel == 'NL' ? 'text-red-700' : complianceLevel == 'BL' ? 'text-orange-700' : complianceLevel == 'P' ? 'text-yellow-700' : 'text-green-700'"></fa-icon>
-                          No level
+                          {{ 'PGTEC._no_level' | translate }}
                       </a>
                     }@else if(complianceLevel=='BL'){
                       <img class="z-10 dark:text-white rounded-md mb-2 mr-2 max-h-[1.2rem] align-middle" src="assets/logos/baseline.png">
@@ -165,6 +168,7 @@
                     } @else {
                       <img class="z-10 dark:text-white rounded-md mb-2 mr-2 max-h-[1.2rem] align-middle" src="assets/logos/profplus.png">
                     }
+}
                       @for (cat of categories; track cat.id) {
                           <bae-badge class="mr-2" [category]=cat></bae-badge>
                       }
@@ -188,7 +192,7 @@
 
               <div class="relative h-[200px] overflow-hidden flex justify-center items-center border border-1 border-gray-200 dark:border-gray-700 rounded-tr-lg">
                 <div class="absolute inset-0 bg-cover bg-center opacity-75" style="background-image: url({{getProductImage()}});filter: blur(20px);"></div>
-                <img class="rounded-r-lg h-5/6 w-5/6 object-contain z-10 dark:text-white" src="{{getProductImage()}}" alt="Product image" />
+                <img class="rounded-r-lg h-5/6 w-5/6 object-contain z-10 dark:text-white" src="{{getProductImage()}}" [alt]="'AUTO.product_image' | translate" />
               </div>
 
 
@@ -238,7 +242,7 @@
                         <li [ngClass]="{
                           'break-all': hasLongWord(orgInfo.tradingName, 20),
                           'break-words': !hasLongWord(orgInfo.tradingName, 20)
-                        }" class="text-wrap break-words line-clamp-1">{{ 'CARD._owner' | translate }}: <a (click)="goToOrgDetails(orgInfo.id)" target="_blank" class="cursor-pointer font-medium text-primary-100 dark:text-primary-50 hover:underline">{{orgInfo.tradingName}}</a></li>
+                        }" class="text-wrap break-words line-clamp-1">{{ 'CARD._owner' | translate }}: <a (click)="goToOrgDetails(orgInfo.id)" target="_blank" class="cursor-pointer font-medium text-primary-100 dark:text-primary-50 hover:underline">{{ orgInfo | orgName }}</a></li>
                       }
                     </ul>
               </div>
@@ -288,7 +292,7 @@
       </div>
       <div class="flex items-center ms-auto space-x-2 rtl:space-x-reverse p-1.5">
           <button type="button" (click)="deleteProduct(lastAddedProd)" class="px-3 py-2 text-xs font-medium text-center text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">{{ 'CARD._undo' | translate }}</button>
-          <button type="button" (click)="toastVisibility=false" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-add-cart" aria-label="Close">
+          <button type="button" (click)="toastVisibility=false" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-add-cart" [attr.aria-label]="'AUTO.close' | translate">
           <span class="sr-only">{{ 'CARD._close_toast' | translate }}</span>
           <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>

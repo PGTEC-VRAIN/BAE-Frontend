@@ -15,9 +15,9 @@
             <img src="assets/chatbot/images/dome_logo_white.svg" alt="image">
           </div>
           <div class="chatbox__content--header">
-            <h4 class="chatbox__heading--header">DOME support</h4>
+            <h4 class="chatbox__heading--header">{{ 'AUTO.dome_support' | translate }}</h4>
             <p class="chatbox__description--header">
-              Hi. My name is DomeGPT. How can I help you?
+              {{ 'AUTO.hi_my_name_is_domegpt_how_can_i_help' | translate }}
             </p>
           </div>
         </div>
@@ -25,8 +25,8 @@
         <div class="chatbox__messages"></div>
 
         <div class="chatbox__footer">
-          <input type="text" placeholder="Write a message..." (keyup)="onKeyUp($event)">
-          <button class="chatbox__send--footer" (click)="onSendButton()">Send</button>
+          <input type="text" [placeholder]="'AUTO.write_a_message' | translate" (keyup)="onKeyUp($event)">
+          <button class="chatbox__send--footer" (click)="onSendButton()">{{ 'AUTO.send' | translate }}</button>
         </div>
       </div>
     }
@@ -39,7 +39,7 @@
       >
         <img
           src="assets/chatbot/images/chatbox-icon.svg"
-          alt="Chat"
+          [alt]="'AUTO.chat' | translate"
           class="w-[30px] h-[30px] filter brightness-0 invert"
         />
       </button>

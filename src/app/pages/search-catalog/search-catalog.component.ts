@@ -1,3 +1,4 @@
+import { orgDisplayName } from "src/app/shared/org-name";
 import { Component, OnInit, ChangeDetectorRef, HostListener, OnDestroy } from '@angular/core';
 import { ActivatedRoute, NavigationStart } from '@angular/router';
 import { ApiServiceService } from 'src/app/services/product-service.service';
@@ -106,7 +107,7 @@ export class SearchCatalogComponent implements OnInit, OnDestroy{
         this.accService.getOrgInfo(owner.id).then(info  => {
           console.log('info')
           console.log(info)
-          this.providerName=info.tradingName;
+          this.providerName=orgDisplayName(info);
           if (Array.isArray(info?.partyCharacteristic) && info.partyCharacteristic.length > 0) {
             const provdesc = info.partyCharacteristic.find((item: { name: string; }) => item.name === 'description')
             if(provdesc?.value){

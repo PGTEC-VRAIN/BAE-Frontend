@@ -445,7 +445,7 @@ describe('PricePlanDrawerComponent', () => {
 
   it('getProductImage should return placeholder when there are no images', () => {
     component.images = [];
-    expect(component.getProductImage()).toBe('https://placehold.co/600x400/svg');
+    expect(component.getProductImage()).toBe('assets/images/placeholder.svg');
   });
 
   it('getProductImage should return first image url when available', () => {

@@ -1,7 +1,7 @@
 <div class="container mx-auto pt-2 pb-8">
     <!-- Breadcrumb -->
     <div class="pb-4">
-        <nav class="flex px-5 py-3 text-gray-700 border border-secondary-50 rounded-lg bg-secondary-50 dark:bg-secondary-100 dark:border-gray-800" aria-label="Breadcrumb">
+        <nav class="flex px-5 py-3 text-gray-700 border border-secondary-50 rounded-lg bg-secondary-50 dark:bg-secondary-100 dark:border-gray-800" [attr.aria-label]="'AUTO.breadcrumb' | translate">
             <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
                 <button (click)="back()" class="inline-flex items-center text-sm font-medium text-gray-500 dark:text-white hover:text-primary-100 dark:hover:text-primary-50">
@@ -26,7 +26,7 @@
     <!-- START HEADER CARD -->
     <div class="w-full lg:h-fit mb-4 bg-secondary-50 rounded-lg dark:bg-secondary-100 dark:border-gray-800 border-secondary-50 border lg:grid lg:grid-cols-60/40">
         <div class="flex lg:hidden overflow-hidden justify-center items-center bg-white rounded-t-lg w-full">
-            <img class="rounded-t-lg object-contain dark:text-white" src="{{logo}}" alt="Organization profile image" />
+            <img class="rounded-t-lg object-contain dark:text-white" src="{{logo}}" [alt]="'AUTO.organization_profile_image' | translate" />
         </div>
         <div class="grid grid-rows-auto p-4 md:p-8 h-fit">
             <div class="mt-2 h-fit">
@@ -34,7 +34,7 @@
                 <h5 [ngClass]="{
                     'break-all': hasLongWord(orgInfo?.tradingName, 20),
                     'break-words': !hasLongWord(orgInfo?.tradingName, 20)
-                    }" class="text-3xl lg:text-4xl font-semibold tracking-tight text-primary-100 dark:text-white line-clamp-3 text-wrap break-words">{{orgInfo?.tradingName}}</h5>
+                    }" class="text-3xl lg:text-4xl font-semibold tracking-tight text-primary-100 dark:text-white line-clamp-3 text-wrap break-words">{{ orgInfo | orgName }}</h5>
                 <!--</a>-->
             </div>
             <div class="pt-2 line-clamp-5 h-fit">
@@ -49,7 +49,7 @@
                 <!-- Imagen de fondo difuminada -->
                 <div class="object-contain overflow-hidden absolute inset-0 bg-cover bg-center opacity-75" style="background-image: url({{logo}});filter: blur(20px);"></div>
                 <!-- Imagen superior -->
-                <img class="object-contain max-h-[300px] z-10 p-8 dark:text-white" src="{{logo}}" alt="Organization profile image">
+                <img class="object-contain max-h-[300px] z-10 p-8 dark:text-white" src="{{logo}}" [alt]="'AUTO.organization_profile_image' | translate">
             </div>
         </div>
     </div>

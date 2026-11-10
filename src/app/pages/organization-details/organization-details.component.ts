@@ -15,7 +15,7 @@ export class OrganizationDetailsComponent implements OnInit {
 
   id:any;
   orgInfo:any;
-  logo:any='https://placehold.co/600x400/svg';
+  logo:any='assets/images/placeholder.svg';
   description:any=undefined;
   website:any;
 
@@ -51,7 +51,7 @@ export class OrganizationDetailsComponent implements OnInit {
         }
       }
       if(this.logo==undefined){
-        this.logo='https://placehold.co/600x400/svg';
+        this.logo='assets/images/placeholder.svg';
       }
     })
   }

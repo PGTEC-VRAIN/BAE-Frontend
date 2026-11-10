@@ -5,6 +5,7 @@ import { AboutDomeComponent } from "src/app/pages/about-dome/about-dome.componen
 import { BlogEntryDetailComponent } from "src/app/pages/dome-blog/blog-entry-detail/blog-entry-detail.component";
 import { DomeBlogComponent } from "src/app/pages/dome-blog/dome-blog.component";
 import { EntryFormComponent } from "src/app/pages/dome-blog/entry-form/entry-form.component";
+import { GuidesComponent } from './pages/guides/guides.component';
 import { UsageSpecsComponent } from "src/app/pages/usage-specs/usage-specs.component";
 import { AuthGuard } from './guard/auth.guard';
 import { quoteGuardGuard } from './guard/quote-guard.guard';
@@ -113,6 +114,10 @@ const routes: Routes = [
     loadChildren: () => import('./features/tenders/tenders.module').then(m => m.TendersModule),
     canActivate: [AuthGuard, quoteGuardGuard],
     data: { roles: [] }
+  },
+  {
+    path: 'guides',
+    component: GuidesComponent
   },
   {
     path: 'usage-spec',

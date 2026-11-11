@@ -131,6 +131,5 @@ export interface ThemeConfig {
   forceLightMode?: boolean; // Optional: ignore the OS/stored dark preference for this theme
   lightHeader?: boolean; // Optional: white header with brand label instead of the dark glass one
   hideCompliance?: boolean; // Optional: hide the DOME compliance level badges and section
-  colorSchemeToggle?: boolean; // Optional: show a light/dark switch in the header
   // More theme specific propierties
 }

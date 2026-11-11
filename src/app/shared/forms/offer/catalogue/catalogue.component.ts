@@ -41,7 +41,7 @@ export class CatalogueComponent implements ControlValueAccessor, OnInit, AfterVi
   catalogs:any[]=[];
   nextCatalogs:any[]=[];
   selectedCatalogInternal: any = null;
-  
+
   constructor(
       private api: ApiServiceService,
       private paginationService: PaginationService,
@@ -78,25 +78,28 @@ export class CatalogueComponent implements ControlValueAccessor, OnInit, AfterVi
     if(next==false){
       this.loadingCatalog=true;
     }
-    
+
     let options = {
       "keywords": undefined,
       "filters": ['Active','Launched'],
       "partyId": this.partyId
     }
 
-    this.paginationService.getItemsPaginated(this.catalogPage, this.CATALOG_LIMIT, next, this.catalogs,this.nextCatalogs, options,
-      this.api.getCatalogsByUser.bind(this.api)).then(data => {
-      this.catalogPageCheck=data.page_check;      
+    try {
+      const data = await this.paginationService.getItemsPaginated(this.catalogPage, this.CATALOG_LIMIT, next, this.catalogs,this.nextCatalogs, options,
+        this.api.getCatalogsByUser.bind(this.api));
+      this.catalogPageCheck=data.page_check;
       this.catalogs=data.items;
       this.nextCatalogs=data.nextItems;
       this.catalogPage=data.page;
+    } finally {
       this.loadingCatalog=false;
       this.loadingCatalog_more=false;
-    })
+    }
   }
 
   async nextCatalog(){
+    this.loadingCatalog_more=true;
     await this.getSellerCatalogs(true);
   }
 
@@ -117,8 +120,8 @@ export class CatalogueComponent implements ControlValueAccessor, OnInit, AfterVi
 
   getRowClass(catId: string): string {
     return catId === this.selectedCatalogInternal?.id
-      ? "bg-white dark:bg-secondary-100"
-      : "bg-white dark:bg-secondary-300";
+      ? "bg-offerings-surface dark:bg-secondary-100"
+      : "bg-offerings-surface dark:bg-secondary-300";
   }
 
   hasLongWord(str: string | undefined, threshold = 20) {
@@ -126,7 +129,7 @@ export class CatalogueComponent implements ControlValueAccessor, OnInit, AfterVi
       return str.split(/\s+/).some(word => word.length > threshold);
     } else {
       return false
-    }   
+    }
   }
 
 }

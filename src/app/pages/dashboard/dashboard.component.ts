@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { initFlowbite } from 'flowbite';
-import * as moment from 'moment';
+import moment from 'moment';
 import { map, Subject, takeUntil } from 'rxjs';
 import { LoginInfo } from 'src/app/models/interfaces';
 import { ProductOffering } from 'src/app/models/product.model';
@@ -21,6 +21,7 @@ import { environment } from 'src/environments/environment';
 import { DashboardCustomersComponent } from './dashboard-customers/dashboard-customers.component';
 import { DashboardEcosystemComponent } from './dashboard-ecosystem/dashboard-ecosystem.component';
 import { DashboardHeroComponent } from './dashboard-hero/dashboard-hero.component';
+import { DashboardNewsComponent } from './dashboard-news/dashboard-news.component';
 import { DashboardProvidersComponent } from './dashboard-providers/dashboard-providers.component';
 import { DashboardServicesComponent } from './dashboard-services/dashboard-services.component';
 import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.component';
@@ -42,11 +43,11 @@ export interface IDashboardStats {
     './dashboard.sections.component.css'
   ],
   standalone: true,
-  imports: [TranslateModule, ReactiveFormsModule, FeaturedComponent, NgClass, DashboardWhatsDome, DashboardHeroComponent, DashboardStatsComponent, DashboardServicesComponent, DashboardCustomersComponent, DashboardProvidersComponent, DashboardEcosystemComponent, HeroMosaicComponent, ProviderLogoComponent],
+  imports: [TranslateModule, ReactiveFormsModule, FeaturedComponent, NgClass, DashboardWhatsDome, DashboardHeroComponent, DashboardStatsComponent, DashboardServicesComponent, DashboardCustomersComponent, DashboardProvidersComponent, DashboardNewsComponent, DashboardEcosystemComponent],
 })
-export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
-  customersLink = 'https://citcomtef.eu/';
-  providersLink = "https://onboard.sbx.evidenceledger.eu/register-provider";
+export class DashboardComponent implements OnInit, OnDestroy {
+  customersLink = environment.DOME_CUSTOMER_REGISTER_LINK;
+  providersLink = environment.DOME_REGISTER_LINK;
 
 
   private unSub = new Subject<void>();

@@ -5,7 +5,7 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
 import { UsageServiceService } from 'src/app/services/usage-service.service';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { LoginInfo } from 'src/app/models/interfaces';
-import * as moment from 'moment';
+import moment from 'moment';
 
 interface SubRange {
   id: string;
@@ -86,7 +86,7 @@ export class TierPricingDrawerComponent implements OnInit {
 
     // Initialize party info and get usage specs
     this.initPartyInfo();
-    this.usageService.getAllUsageSpecs(this.partyId).then(data => {
+    this.usageService.getUsageSpecsByStatus(['Launched'], this.partyId).then(data => {
       this.usageSpecs = data;
     });
   }

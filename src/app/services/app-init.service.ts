@@ -1,7 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import * as moment from "moment";
+import moment from "moment";
 import { Observer } from "rxjs";
+import { applyRuntimeSearchFiltersConfig } from "src/app/data/availableFilters";
+import { applyRuntimeFeaturesConfig } from "src/app/data/featuresConfig";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -14,7 +16,6 @@ export class AppInitService {
     return new Promise((resolve, reject) => {
         const obs: Observer<any> = {
             next: ((config) => {
-                const aiConfig = config.ai ?? {};
                 // Load dynamic environment data
                 environment.SIOP_INFO = config.siop;
                 environment.CHAT_API = config.chat;
@@ -22,10 +23,8 @@ export class AppInitService {
                 environment.MATOMO_TRACKER_URL = config.matomoUrl;
                 environment.KNOWLEDGE_BASE_URL = config.knowledgeBaseUrl;
                 environment.TICKETING_SYSTEM_URL = config.ticketingUrl;
-                environment.SEARCH_ENABLED = true;
                 environment.DOME_TRUST_LINK = config.domeTrust;
                 environment.DOME_ABOUT_LINK = config.domeAbout;
-                environment.PURCHASE_ENABLED = config.purchaseEnabled ?? true;
                 environment.DOME_REGISTER_LINK = config.domeRegister;
                 environment.DOME_CUSTOMER_REGISTER_LINK = config.domeRegisterCustomer;
                 environment.DOME_PUBLISH_LINK = config.domePublish;
@@ -38,20 +37,19 @@ export class AppInitService {
                 environment.ADMIN_ROLE = config.roles?.admin;
                 environment.ORG_ADMIN_ROLE = config.roles?.orgAdmin;
                 environment.CERTIFIER_ROLE = config.roles?.certifier;
-                environment.quoteApi = config.quoteApi ?? 'http://localhost:8080/quoteManagement';
-                environment.analytics = config.analytics ?? 'https://analytics.dome-marketplace-sbx.org/',
-                environment.feedbackCampaign = config.feedbackCampaign ?? false,
-                environment.feedbackCampaignExpiration = config.feedbackCampaign ?? moment().add(1, 'week').unix()
+                environment.quoteApi = config.quoteApi ?? environment.quoteApi;
+                environment.analyticsEnabled = config.analyticsEnabled ?? false;
+                environment.analytics = this.getAnalyticsUrl(config);
+                environment.feedbackCampaign = config.feedbackCampaign ?? false;
+                environment.feedbackCampaignExpiration = config.feedbackCampaign ?? moment().add(1, 'week').unix();
+                environment.documentApi = config.documentApi ?? environment.documentApi;
+                environment.googleTagManagerId = config.googleTagManagerId ?? '';
                 environment.providerThemeName = config.theme ?? 'default';
-                environment.QUOTES_ENABLED = config.quotesEnabled ?? false
-                environment.TENDER_ENABLED = config.tenderingEnabled ?? false
-                environment.DATA_SPACE_ENABLED = config.dataSpaceEnabled ?? false
-                environment.LEAR_URL = config.learUrl ?? ''
-                environment.LAUNCH_VALIDATION_ENABLED = config.launchValidationEnabled ?? false;
-                environment.AI_SEARCH_ENABLED = aiConfig.aiEnabled ?? config.aiEnabled ?? false;
-                environment.AI_SEARCH_API_KEY = aiConfig.aiApiKey ?? config.aiApiKey ?? '';
-                environment.AI_SEARCH_API_URL = aiConfig.aiApiUrl ?? config.aiApiUrl ?? '';
-                environment.AI_SEARCH_PROFILE = aiConfig.aiSearchProfile ?? config.aiSearchProfile ?? '';
+                environment.LEAR_URL = config.learUrl ?? '';
+                environment.DSP_CONTRACT_DEFINITION_SCHEMA = config.dspContractDefinitionSchema || environment.DSP_CONTRACT_DEFINITION_SCHEMA
+                environment.DSP_SCHEMA = config.dspSchema || environment.DSP_SCHEMA
+                applyRuntimeFeaturesConfig(config);
+                applyRuntimeSearchFiltersConfig(config);
                 resolve(config);
             }),
             error: (error) => {
@@ -68,5 +66,17 @@ export class AppInitService {
             }
         });
     });
+  }
+
+  private getAnalyticsUrl(config: any): string {
+    if (typeof config?.analytics === 'string') {
+      return config.analytics;
+    }
+
+    if (config?.analytics && typeof config.analytics === 'object') {
+      return config.analytics.link ?? config.analytics.url ?? config.analytics.domain ?? '';
+    }
+
+    return '';
   }
 }

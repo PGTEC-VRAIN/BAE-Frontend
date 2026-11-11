@@ -1,18 +1,34 @@
-import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, map, catchError, of, forkJoin } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { EMPTY, Observable, catchError, expand, forkJoin, lastValueFrom, map, of, reduce } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { FilterOptions } from '../models/filter-options.model';
-import { SearchOrganizationsFilters } from '../models/search-organizations-filters.model';
+import {
+  PROVIDER_COUNTRY_LIST_URL,
+  ProviderCountryListResponse,
+  ProviderCountryOption,
+  SearchOrganizationsFilters,
+  parseProviderCountryList,
+} from '../models/search-organizations-filters.model';
 
 export interface Provider {
   id?: string;
   href?: string;
+  name?: string;
   tradingName?: string;
+  partyCharacteristic?: Array<{
+    name?: string;
+    value?: string;
+  }>;
   externalReference?: Array<{
     externalReferenceType?: string;
     name?: string;
   }>;
+}
+
+export interface ProviderPageResponse {
+  items: Provider[];
+  filteredPaginationToken: string | null;
 }
 
 @Injectable({
@@ -22,7 +38,7 @@ export class ProviderService {
   private http = inject(HttpClient);
   private readonly endpoint = `${environment.BASE_URL}/party/organization`;
 
-  getProviders(params: { fields?: string; offset?: number; limit?: number } = {}): Observable<Provider[]> {
+  getProviders(params: { fields?: string; offset?: number; limit?: number; keyword?: string } = {}): Observable<Provider[]> {
     let httpParams = new HttpParams();
     if (params.fields) {
       httpParams = httpParams.set('fields', params.fields);
@@ -33,9 +49,12 @@ export class ProviderService {
     if (params.limit !== undefined) {
       httpParams = httpParams.set('limit', params.limit.toString());
     }
-    
+    if (params.keyword) {
+      httpParams = httpParams.set('keyword', params.keyword);
+    }
+
     const url = `${this.endpoint}${httpParams.toString() ? '?' + httpParams.toString() : ''}`;
-    
+
     return this.http.get<Provider[]>(url).pipe(
       map(response => {
         return Array.isArray(response) ? response : [];
@@ -47,13 +66,49 @@ export class ProviderService {
     );
   }
 
+  getProviderDirectoryPage(params: {
+    offset: number;
+    limit: number;
+    keyword?: string;
+    lifecycleStatus?: string;
+    filteredPaginationToken?: string | null;
+  }): Promise<ProviderPageResponse> {
+    const tokenRequestHeader = 'X-Filtered-Pagination-Token';
+    const tokenResponseHeader = 'x-filtered-pagination-token';
+    let httpParams = new HttpParams()
+      .set('offset', params.offset.toString())
+      .set('limit', params.limit.toString());
+
+    if (params.keyword) {
+      httpParams = httpParams.set('keyword', params.keyword);
+    }
+    if (params.lifecycleStatus) {
+      httpParams = httpParams.set('lifecycleStatus', params.lifecycleStatus);
+    }
+
+    let options: { observe: 'response', params: HttpParams, headers?: { [header: string]: string } } = {
+      observe: 'response',
+      params: httpParams
+    };
+
+    if (params.filteredPaginationToken) {
+      options.headers = { [tokenRequestHeader]: params.filteredPaginationToken };
+    }
+
+    return lastValueFrom(this.http.get<Provider[]>(this.endpoint, options)).then(response => ({
+      items: response.body ?? [],
+      filteredPaginationToken: response.headers.get(tokenResponseHeader)
+        || response.headers.get(tokenRequestHeader)
+    }));
+  }
+
   getProviderById(id: string): Observable<Provider> {
     const targetUrl = `${this.endpoint}/${id}`;
-    
+
     // Use CORS proxy if calling external DOME API directly
     const isExternalUrl = targetUrl.startsWith('https://');
     const url = isExternalUrl ? `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}` : targetUrl;
-    
+
     return this.http.get<any>(url).pipe(
       map(response => {
         // Parse CORS proxy response if used
@@ -68,11 +123,11 @@ export class ProviderService {
 
   getProvidersForTender(): Observable<Provider[]> {
     const targetUrl = this.endpoint;
-    
+
     // Use CORS proxy if calling external DOME API directly
     const isExternalUrl = targetUrl.startsWith('https://');
     const url = isExternalUrl ? `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}` : targetUrl;
-    
+
     return this.http.get<any>(url).pipe(
       map(response => {
         // Parse CORS proxy response if used
@@ -86,24 +141,55 @@ export class ProviderService {
     );
   }
 
-  
-  getProvidersForTenderNew(filters: SearchOrganizationsFilters): Observable<Provider[]> {
-    const url = environment.searchOrganizationsEndpoint;
 
-    return this.http.post<any>(url, filters).pipe(
-      map((response) => {
-        if (Array.isArray(response)) return response as Provider[];
-        if (response?.data && Array.isArray(response.data)) return response.data as Provider[];
-        return [];
+  getProvidersForTenderNew(filters: SearchOrganizationsFilters): Observable<Provider[]> {
+    // search-bck is a Spring Data (Pageable) backend: it paginates with `page` (a
+    // 0-indexed page number) + `size`. It IGNORES `offset`/`from` — verified against
+    // DEV — which is why the previous offset-based loop re-fetched page 0 forever.
+    const PAGE_SIZE = 100;
+    // Hard safety cap so a backend regression (e.g. paging silently breaking again)
+    // can never storm the cluster. 100 pages * 100 = 10k providers, far beyond any real list.
+    const MAX_PAGES = 100;
+    // Strip any ?size=N the endpoint URL may already have (e.g. the ?size=1000 k8s workaround)
+    const baseUrl = this.buildBackendUrl(environment.searchOrganizationsEndpoint).split('?')[0];
+
+    const fetchPage = (page: number): Observable<{ items: Provider[]; page: number }> =>
+      this.http.post<any>(`${baseUrl}?page=${page}&size=${PAGE_SIZE}`, filters).pipe(
+        map(response => {
+          const items: Provider[] = Array.isArray(response) ? response as Provider[] :
+            (response?.data && Array.isArray(response.data) ? response.data as Provider[] : []);
+          return { items, page };
+        })
+      );
+
+    // Walk pages until one comes back shorter than a full page (the last page), or the
+    // safety cap is reached, then flatten everything into a single Provider[].
+    return fetchPage(0).pipe(
+      expand(({ items, page }) =>
+        items.length < PAGE_SIZE || page + 1 >= MAX_PAGES ? EMPTY : fetchPage(page + 1)
+      ),
+      reduce((acc: Provider[], { items }) => acc.concat(items), [])
+    );
+    // No catchError here — callers must handle HTTP errors themselves so they can
+    // distinguish a genuine empty search result from a failed request.
+  }
+
+  getProviderCountryOptions(locale = 'en'): Observable<ProviderCountryOption[]> {
+    const url = environment.providerCountriesUrl || PROVIDER_COUNTRY_LIST_URL;
+
+    return this.http.get<ProviderCountryListResponse>(url).pipe(
+      map(response => parseProviderCountryList(response, locale)),
+      catchError(err => {
+        console.warn('Provider country list failed:', err);
+        return of<ProviderCountryOption[]>([]);
       })
-      // No catchError here — callers must handle HTTP errors themselves so they can
-      // distinguish a genuine empty search result from a failed request.
     );
   }
 
   //Methods for the search engine
+  //TODO: Check if this is still necessary after we change the main endpoint
   getFilterOptions(): Observable<FilterOptions> {
-    const base = environment.searchOrganizationsEndpoint.replace(/\/searchOrganizations$/, '');
+    const base = this.buildBackendUrl(environment.searchOrganizationsEndpoint).replace(/\/searchOrganizations.*$/, '');
     const categories$ = this.http.get<any>(`${base}/categories`).pipe(
       map(res => (Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : [])),
       catchError(err => {
@@ -111,7 +197,7 @@ export class ProviderService {
         return of<string[]>([]);
       })
     );
-  
+
     const countries$ = this.http.get<any>(`${base}/countries`).pipe(
       map(res => (Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : [])),
       catchError(err => {
@@ -119,7 +205,7 @@ export class ProviderService {
         return of<string[]>([]);
       })
     );
-  
+
     const complianceLevels$ = this.http.get<any>(`${base}/complianceLevels`).pipe(
       map(res => (Array.isArray(res) ? res : Array.isArray(res?.data) ? res.data : [])),
       catchError(err => {
@@ -127,7 +213,7 @@ export class ProviderService {
         return of<string[]>([]);
       })
     );
-  
+
     return forkJoin({
       categories: categories$,
       countries: countries$,
@@ -135,5 +221,14 @@ export class ProviderService {
     });
   }
 
-}
+  private buildBackendUrl(endpoint: string): string {
+    if (/^https?:\/\//i.test(endpoint)) {
+      return endpoint;
+    }
 
+    const baseUrl = environment.BASE_URL.replace(/\/+$/, '');
+    const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    return `${baseUrl}${path}`;
+  }
+
+}

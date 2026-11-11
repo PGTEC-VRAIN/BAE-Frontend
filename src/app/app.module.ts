@@ -8,6 +8,7 @@ import { FaIconComponent, FontAwesomeModule } from '@fortawesome/angular-fontawe
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { NgxFileDropModule } from 'ngx-file-drop';
+import { NotificationComponent } from './shared/notification/notification.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { MatomoInitializationMode, MatomoInitializerService, MatomoModule, MatomoRouterModule } from 'ngx-matomo-client';
 import { CartCardComponent } from 'src/app/shared/cart-card/cart-card.component';
@@ -23,10 +24,15 @@ import { GalleryComponent } from "./offerings/gallery/gallery.component";
 import { HowItWorksComponent } from "./offerings/how-it-works/how-it-works.component";
 import { PlatformBenefitsComponent } from "./offerings/platform-benefits/platform-benefits.component";
 import { AdminComponent } from './pages/admin/admin.component';
+import { AnalyticsConfigComponent } from './pages/admin/analytics-config/analytics-config.component';
 import { CategoriesComponent } from './pages/admin/categories/categories.component';
 import { CreateCategoryComponent } from './pages/admin/categories/create-category/create-category.component';
 import { UpdateCategoryComponent } from './pages/admin/categories/update-category/update-category.component';
 import { EmailComponent } from './pages/admin/email/email.component';
+import { FeaturesConfigComponent } from './pages/admin/features-config/features-config.component';
+import { DefaultCatalogComponent } from './pages/admin/default-catalog/default-catalog.component';
+import { SearchConfigComponent } from './pages/admin/search-config/search-config.component';
+import { SearchFiltersConfigComponent } from './pages/admin/search-filters-config/search-filters-config.component';
 import { VerificationComponent } from './pages/admin/verification/verification.component';
 import { CatalogsComponent } from "./pages/catalogs/catalogs.component";
 import { BillingAddressComponent } from "./pages/checkout/billing-address/billing-address.component";
@@ -53,6 +59,9 @@ import { SellerProductSpecComponent } from './pages/seller-offerings/offerings/s
 import { UpdateProductSpecComponent } from './pages/seller-offerings/offerings/seller-product-spec/update-product-spec/update-product-spec.component';
 import { CreateResourceSpecComponent } from './pages/seller-offerings/offerings/seller-resource-spec/create-resource-spec/create-resource-spec.component';
 import { SellerResourceSpecComponent } from './pages/seller-offerings/offerings/seller-resource-spec/seller-resource-spec.component';
+import { SellerUsageSpecComponent } from './pages/seller-offerings/offerings/seller-usage-spec/seller-usage-spec.component';
+import { CreateUsageSpecComponent } from './pages/usage-specs/usage-sections/create-usage-spec/create-usage-spec.component';
+import { UpdateUsageSpecComponent } from './pages/usage-specs/usage-sections/update-usage-spec/update-usage-spec.component';
 import { UpdateResourceSpecComponent } from './pages/seller-offerings/offerings/seller-resource-spec/update-resource-spec/update-resource-spec.component';
 import { CreateServiceSpecComponent } from './pages/seller-offerings/offerings/seller-service-spec/create-service-spec/create-service-spec.component';
 import { SellerServiceSpecComponent } from './pages/seller-offerings/offerings/seller-service-spec/seller-service-spec.component';
@@ -68,11 +77,13 @@ import { AccountHeaderComponent } from "./shared/account-header/account-header.c
 import { OrgNamePipe } from "./shared/org-name";
 import { PolicyViewerComponent } from "./shared/policy-viewer/policy-viewer.component";
 import { AppInitService } from './services/app-init.service';
+import { GoogleTagManagerService } from './services/google-tag-manager.service';
 import { ThemeAwareTranslateLoader } from './services/theme-aware-translate.loader';
 import { ThemeService } from './services/theme.service';
 import { BadgeComponent } from "./shared/badge/badge.component";
 import { BillingAccountFormComponent } from "./shared/billing-account-form/billing-account-form.component";
 import { CardComponent } from "./shared/card/card.component";
+import { CarouselComponent } from "./shared/carousel/carousel.component";
 import { CategoriesFilterComponent } from "./shared/categories-filter/categories-filter.component";
 import { CategoriesPanelComponent } from "./shared/categories-panel/categories-panel.component";
 import { CategoriesRecursionListComponent } from './shared/categories-recursion-list/categories-recursion-list.component';
@@ -96,6 +107,7 @@ import { OperatorRevenueSharingComponent } from "src/app/pages/admin/operator-re
 import { ProviderRevenueSharingComponent } from "src/app/pages/user-profile/profile-sections/provider-revenue-sharing/provider-revenue-sharing.component";
 import { MarkdownTextareaComponent } from "src/app/shared/forms/markdown-textarea/markdown-textarea.component";
 import { RequestValidationModalComponent } from './pages/seller-offerings/offerings/seller-product-spec/update-product-spec/request-validation-modal/request-validation-modal.component';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -129,6 +141,7 @@ import { RequestValidationModalComponent } from './pages/seller-offerings/offeri
     SellerProductSpecComponent,
     SellerServiceSpecComponent,
     SellerResourceSpecComponent,
+    SellerUsageSpecComponent,
     SellerOfferComponent,
     CreateProductSpecComponent,
     CreateServiceSpecComponent,
@@ -144,6 +157,7 @@ import { RequestValidationModalComponent } from './pages/seller-offerings/offeri
     ErrorMessageComponent,
     CartCardComponent,
     AdminComponent,
+    AnalyticsConfigComponent,
     CategoriesComponent,
     CreateCategoryComponent,
     UpdateCategoryComponent,
@@ -151,6 +165,10 @@ import { RequestValidationModalComponent } from './pages/seller-offerings/offeri
     ContactUsComponent,
     VerificationComponent,
     EmailComponent,
+    FeaturesConfigComponent,
+    SearchConfigComponent,
+    SearchFiltersConfigComponent,
+    DefaultCatalogComponent,
     InventoryResourcesComponent,
     InventoryServicesComponent,
     ProductInvDetailComponent,
@@ -171,6 +189,8 @@ import { RequestValidationModalComponent } from './pages/seller-offerings/offeri
     ReactiveFormsModule,
     PickerComponent,
     NgxFileDropModule,
+    ChatbotWidgetComponent,
+    NotificationComponent,
     QuotesModule,
     MarkdownModule.forRoot(),
     TranslateModule.forRoot({
@@ -195,16 +215,17 @@ import { RequestValidationModalComponent } from './pages/seller-offerings/offeri
     MarkdownTextareaComponent,
     ProviderRevenueSharingComponent,
     OperatorRevenueSharingComponent,
-    AccountHeaderComponent,
-    PolicyViewerComponent,
-    OrgNamePipe
+    CreateUsageSpecComponent,
+    UpdateUsageSpecComponent,
+    ConfirmDialogComponent,
+    CarouselComponent
   ],
   providers: [
     AppInitService,
     {
       provide: APP_INITIALIZER,
       useFactory: appConfigFactory,
-      deps: [AppInitService, MatomoInitializerService],
+      deps: [AppInitService, MatomoInitializerService, GoogleTagManagerService],
       multi: true
     },
     {

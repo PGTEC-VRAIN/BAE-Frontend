@@ -5,7 +5,7 @@ import { AboutDomeComponent } from "src/app/pages/about-dome/about-dome.componen
 import { BlogEntryDetailComponent } from "src/app/pages/dome-blog/blog-entry-detail/blog-entry-detail.component";
 import { DomeBlogComponent } from "src/app/pages/dome-blog/dome-blog.component";
 import { EntryFormComponent } from "src/app/pages/dome-blog/entry-form/entry-form.component";
-import { GuidesComponent } from './pages/guides/guides.component';
+import { FaqComponent } from "src/app/offerings/faq/faq.component";
 import { UsageSpecsComponent } from "src/app/pages/usage-specs/usage-specs.component";
 import { AuthGuard } from './guard/auth.guard';
 import { quoteGuardGuard } from './guard/quote-guard.guard';
@@ -19,7 +19,6 @@ import { ProductDetailsComponent } from "./pages/product-details/product-details
 import { ProductInvDetailComponent } from './pages/product-inventory/inventory-items/product-inv-detail/product-inv-detail.component';
 import { ProductInventoryComponent } from './pages/product-inventory/product-inventory.component';
 import { ProductOrdersComponent } from './pages/product-orders/product-orders.component';
-import { SearchCatalogComponent } from "./pages/search-catalog/search-catalog.component";
 import { SearchComponent } from "./pages/search/search.component";
 import { SellerOfferingsComponent } from "./pages/seller-offerings/seller-offerings.component";
 import { ShoppingCartComponent } from "./pages/shopping-cart/shopping-cart.component";
@@ -46,11 +45,13 @@ const routes: Routes = [
   },
   {
     path: 'org-details/:id',
-    component: OrganizationDetailsComponent
+    component: OrganizationDetailsComponent,
+    data: { mode: 'organization' }
   },
   {
     path: 'search/catalogue/:id',
-    component: SearchCatalogComponent
+    component: OrganizationDetailsComponent,
+    data: { mode: 'catalog' }
   },
   {
     path: 'catalogues',
@@ -105,6 +106,11 @@ const routes: Routes = [
     canActivate: [AuthGuard], data: { roles: [] }
   },
   {
+    path: 'analytics',
+    loadComponent: () => import('./pages/analytics/analytics.component').then(c => c.AnalyticsComponent),
+    canActivate: [AuthGuard], data: { roles: [] }
+  },
+  {
     path: 'quote-list',
     component: QuoteListComponent,
     canActivate: [AuthGuard, quoteGuardGuard], data: { roles: [] }
@@ -126,11 +132,27 @@ const routes: Routes = [
   },
   {
     path: 'blog',
-    component: DomeBlogComponent
+    component: DomeBlogComponent,
+    data: { contentType: 'blog' }
   },
   {
     path: 'blog/:slugOrId',
-    component: BlogEntryDetailComponent
+    component: BlogEntryDetailComponent,
+    data: { contentType: 'blog' }
+  },
+  {
+    path: 'news',
+    component: DomeBlogComponent,
+    data: { contentType: 'news' }
+  },
+  {
+    path: 'news/:slugOrId',
+    component: BlogEntryDetailComponent,
+    data: { contentType: 'news' }
+  },
+  {
+    path: 'faq',
+    component: FaqComponent
   },
   {
     path: 'blog-entry',
@@ -141,6 +163,15 @@ const routes: Routes = [
     path: 'blog-entry/:id',
     component: EntryFormComponent,
     canActivate: [AuthGuard], data: { roles: ['admin'] }
+  },
+
+  {
+    path: 'browse',
+    loadComponent: () => import('./pages/browse/browse.component').then(c => c.BrowseComponent),
+  },
+  {
+    path: 'redsys-payment',
+    loadComponent: () => import('./pages/redsys-payment/redsys-payment.component').then(c => c.RedsysPaymentComponent),
   },
 
   {

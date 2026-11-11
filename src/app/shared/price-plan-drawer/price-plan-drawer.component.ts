@@ -19,6 +19,10 @@ type AttachmentRefOrValue = components["schemas"]["AttachmentRefOrValue"];
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { lastValueFrom, Subscription } from 'rxjs';
+import {
+  applyCharacteristicConstraints,
+  CharacteristicConstraintValueUse
+} from '../price-plan-constraint.utils';
 
 
 @Component({
@@ -74,6 +78,7 @@ export class PricePlanDrawerComponent implements OnInit, OnDestroy {
   rangeCharacteristics: ProductSpecificationCharacteristic[] = [];
   disabledCharacteristics: any[] = [];
   canBeDisabledChars: any[]=[];
+  constraintValueUses: CharacteristicConstraintValueUse[] = [];
   private readonly boundHandleEscape = (event: KeyboardEvent) => this.handleEscape(event);
 
   @HostListener('document:keydown.escape', ['$event'])
@@ -109,14 +114,12 @@ export class PricePlanDrawerComponent implements OnInit, OnDestroy {
     console.log('---- producto')
     console.log(this.productOff)
 
-    this.productOff?.productOfferingTerm?.forEach((term) => {
-      console.log(term.name)
-      console.log('----')
-      if (term.name != 'procurement') {
-        console.log('---- Setting the term')
-        this.tsAndCs = term;
-      }
-    });
+    const licenseTerm = this.productOff?.productOfferingTerm?.find(
+      element => String(element?.name || '').toLowerCase() === 'license'
+    );
+    if (licenseTerm) {
+      this.tsAndCs = { description: licenseTerm.description };
+    }
 
     this.isFree = this.productOff?.productOfferingPrice?.length === 0;
 
@@ -162,7 +165,7 @@ export class PricePlanDrawerComponent implements OnInit, OnDestroy {
         }
       });*/
       const licenseTerm = this.productOff?.productOfferingTerm?.find(
-        element => element.name === 'License'
+        element => String(element?.name || '').toLowerCase() === 'license'
       );
       if(licenseTerm){
         this.tsAndCs={ description: licenseTerm.description };
@@ -237,8 +240,13 @@ export class PricePlanDrawerComponent implements OnInit, OnDestroy {
       })
       .map(c => c.name?.replace(/ - enabled$/, '').trim());
   
+    const constrainedCharacteristics = applyCharacteristicConstraints(
+      this.characteristics,
+      this.constraintValueUses
+    );
+
     // Filter out certifications, self-att, and disabled prefixes
-    this.filteredCharacteristics = this.characteristics.filter(char => {
+    this.filteredCharacteristics = constrainedCharacteristics.filter(char => {
       const isCertification = certifications.some(cert => cert.name === char.name);
       const iscredentialConfig = char.valueType === 'credentialsConfiguration';
       const isAuthPolicy = char.valueType === 'authorizationPolicy';
@@ -248,7 +256,10 @@ export class PricePlanDrawerComponent implements OnInit, OnDestroy {
         char.name === prefix || char.name === `${prefix} - enabled`
       );*/
   
-      return !isCertification && !isCompliance && !iscredentialConfig && !isAuthPolicy;
+      return !isCertification
+        && !isCompliance
+        && !iscredentialConfig
+        && !isAuthPolicy;
     });
   
     const characteristicsGroup = this.fb.group({});
@@ -359,6 +370,8 @@ export class PricePlanDrawerComponent implements OnInit, OnDestroy {
     console.log('precio')
     console.log(pricePlan)
     this.form.get('selectedPricePlan')?.setValue(pricePlan);
+    this.selectedPricePlan = pricePlan;
+    this.constraintValueUses = await this.loadConstraintValueUses(pricePlan);
 
 
     // Set chars based on selected price plan
@@ -372,10 +385,34 @@ export class PricePlanDrawerComponent implements OnInit, OnDestroy {
     }
 
     this.filterCharacteristics();
-    this.selectedPricePlan = pricePlan;
     await this.refreshAppliedMetrics();
     console.log(this.selectedPricePlan);
     await this.calculatePrice();
+  }
+
+  private async loadConstraintValueUses(pricePlan: any): Promise<CharacteristicConstraintValueUse[]> {
+    const localForbiddenCharacteristics = Array.isArray(pricePlan?.forbiddenCharacteristic)
+      ? pricePlan.forbiddenCharacteristic
+      : [];
+    if (localForbiddenCharacteristics.length > 0) {
+      return localForbiddenCharacteristics;
+    }
+
+    const constraintRefs = (Array.isArray(pricePlan?.popRelationship) ? pricePlan.popRelationship : [])
+      .filter((relationship: any) =>
+        relationship?.id && String(relationship.relationshipType || '').toLowerCase() === 'constraint'
+      );
+
+    for (const constraintRef of constraintRefs) {
+      const constraintPrice = await this.priceService.getProductPrice(constraintRef.id);
+      if (String(constraintPrice?.priceType || '').toLowerCase() !== 'constraint') continue;
+      const characteristicUses = Array.isArray(constraintPrice?.prodSpecCharValueUse)
+        ? constraintPrice.prodSpecCharValueUse
+        : [];
+      return characteristicUses;
+    }
+
+    return [];
   }
 
   onUsageSpecChange(event: Event): void {
@@ -512,6 +549,16 @@ export class PricePlanDrawerComponent implements OnInit, OnDestroy {
   }
   getValues(obj: any): any[] {
     return Object.values(obj);
+  }
+
+  formatPrice(value: string | number): string {
+    const str = (typeof value === 'number' ? value.toString() : (value ?? '').toString()).trim();
+    const num = parseFloat(str);
+    if (isNaN(num)) {
+      return String(value ?? '');
+    }
+    const rounded = Math.round(Number(str + 'e2')) / 100;
+    return rounded.toFixed(2);
   }
 
   updateOrderChars() {

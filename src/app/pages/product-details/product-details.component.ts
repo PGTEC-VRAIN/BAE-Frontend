@@ -153,8 +153,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy, AfterViewInit
   private isManualScroll = false;
   private scrollTimeout: any;
   private destroy$ = new Subject<void>();
-  hideCompliance = false;
-  private baseTitle = '';
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -555,17 +553,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy, AfterViewInit
     this.showQuoteModal = true;
   }
 
-  // Clave de traducción (i18n) de la descripción del nivel de cumplimiento
-  getComplianceKey(): string {
-    switch (this.complianceLevel) {
-      case 'NL': return 'PGTEC._no_level_desc';
-      case 'BL': return 'PGTEC._basic_level_desc';
-      case 'P': return 'PGTEC._pro_level_desc';
-      case 'PP': return 'PGTEC._pro_plus_level_desc';
-      default: return '';
-    }
-  }
-
   getComplianceDescription(): string {
     switch (this.complianceLevel) {
       case 'NL':
@@ -926,7 +913,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   getProductImage() {
-    return this.images.length > 0 ? this.images?.at(0)?.url : 'assets/images/placeholder.svg';
+    return this.images.length > 0 ? this.images?.at(0)?.url : 'https://placehold.co/600x400/svg';
   }
 
   removeClass(elem: HTMLElement, cls: string) {
@@ -1082,17 +1069,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy, AfterViewInit
     } else {
       return false
     }
-  }
-
-  // Políticas (ODRL o de credenciales): se muestran explicadas con el JSON tras el icono (i)
-  isPolicyCharacteristic(char: any): boolean {
-    return !!this.getPolicyValue(char) && isPolicyValue(this.getPolicyValue(char));
-  }
-
-  getPolicyValue(char: any): any {
-    const vals = char?.productSpecCharacteristicValue ?? [];
-    const def = vals.find((v: any) => v?.isDefault) ?? vals[0];
-    return def?.value;
   }
 
   getCharacteristicValueLabel(valueSpec: any): string {

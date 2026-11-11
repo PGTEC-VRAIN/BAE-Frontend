@@ -23,6 +23,7 @@ import { SearchComponent } from "./pages/search/search.component";
 import { SellerOfferingsComponent } from "./pages/seller-offerings/seller-offerings.component";
 import { ShoppingCartComponent } from "./pages/shopping-cart/shopping-cart.component";
 import { UserProfileComponent } from "./pages/user-profile/user-profile.component";
+import { GuidesComponent } from './pages/guides/guides.component';
 
 
 

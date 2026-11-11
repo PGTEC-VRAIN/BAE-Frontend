@@ -317,7 +317,7 @@ describe('ProductDetailsComponent', () => {
     expect(component.getProductImage()).toBe('https://example.com/image.png');
 
     component.images = [];
-    expect(component.getProductImage()).toBe('assets/images/placeholder.svg');
+    expect(component.getProductImage()).toBe('https://placehold.co/600x400/svg');
   });
 
   it('toggleTermsReadMore should switch expanded state', () => {

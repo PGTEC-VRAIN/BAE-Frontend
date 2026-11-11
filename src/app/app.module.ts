@@ -189,7 +189,6 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
     ReactiveFormsModule,
     PickerComponent,
     NgxFileDropModule,
-    ChatbotWidgetComponent,
     NotificationComponent,
     QuotesModule,
     MarkdownModule.forRoot(),
@@ -218,7 +217,7 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
     CreateUsageSpecComponent,
     UpdateUsageSpecComponent,
     ConfirmDialogComponent,
-    CarouselComponent
+    CarouselComponent,
     AccountHeaderComponent,
     PolicyViewerComponent,
     OrgNamePipe

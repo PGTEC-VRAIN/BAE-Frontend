@@ -210,7 +210,6 @@ export class HeaderComponent implements OnInit, AfterViewInit, DoCheck, OnDestro
 
     this.themeSubscription = this.themeService.currentTheme$.subscribe(theme => {
       this.currentTheme = theme;
-      this.isDarkMode = document.documentElement.classList.contains('dark');
       this.themeAuthUrls = theme?.authUrls;
 
       const links = theme?.links?.headerLinks || [];

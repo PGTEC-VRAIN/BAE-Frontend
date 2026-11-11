@@ -15,7 +15,7 @@ type ProductOffering = components["schemas"]["ProductOffering"];
 import { phoneNumbers, countries } from 'src/app/models/country.const'
 import {Drawer, initFlowbite, Modal} from 'flowbite';
 import {EventMessageService} from "src/app/services/event-message.service";
-import * as moment from 'moment';
+import moment from 'moment';
 import { environment } from 'src/environments/environment';
 import {faIdCard, faSort, faSwatchbook} from "@fortawesome/pro-solid-svg-icons";
 import { TranslateModule } from '@ngx-translate/core';
@@ -478,16 +478,6 @@ export class OrderInfoComponent implements OnInit, AfterViewInit, OnDestroy {
     } finally {
       this.isUpdating = false;
     }
-  }
-
-  goToCustomerDeatils() {
-    const customer = this.orderToShow.relatedParty.find(
-      (party: any) => party.role?.toLowerCase() === this.buyerRole.toLowerCase()
-    );
-
-    window.open(this.router.serializeUrl(
-      this.router.createUrlTree(['/org-details', customer?.id])
-    ), '_blank');
   }
 
   private async getCustomerName(): Promise<string> {

@@ -1,23 +1,25 @@
 import { environment } from '../../environments/environment';
 import { NavHeaderLink, NavLink, ThemeConfig } from './theme.interfaces';
+import { DomeCatalogsHeroComponent } from './dome/components/catalogs-hero/dome-catalogs-hero.component';
 
 const domeHeaderLinks: NavLink[] = [
 
   {
     label: 'HEADER._forCustomers',
-    url: 'landing-page/customers'
-
+    url: '/landing-page/customers',
+    isRouterLink: true
   },
   {
     label: 'HEADER._forProviders',
-    url: 'landing-page/providers'
+    url: '/landing-page/providers',
+    isRouterLink: true
   },
   {
     id: 'dropdown-marketplace',
     label: 'HEADER._marketplaceH',
     children: [{
       label: 'HEADER._browse_serv',
-      url: '/search',
+      url: '/browse',
       isRouterLink: true,
     },
     {
@@ -27,14 +29,18 @@ const domeHeaderLinks: NavLink[] = [
     }
     ]
   },
+  // {
+  //   label: 'HEADER._resources',
+  //   url: 'https://knowledgebase.dome-marketplace-prd.org/'
+  // },
   {
-    label: 'HEADER._resources',
-    url: 'https://knowledgebase.dome-marketplace-prd.org/'
+    label: 'FOOTER.news',
+    url: '/news',
+    isRouterLink: true
   },
-
   {
-    label: 'HEADER._blog',
-    url: '/blog',
+    label: 'FOOTER.faqs',
+    url: '/faq',
     isRouterLink: true
   },
 ];
@@ -81,13 +87,18 @@ const domeFooterLinks: NavHeaderLink[] = [
         isRouterLink: false
       },
       {
-        label: 'FOOTER.support',
-        url: 'https://dome-marketplace.eu/contact-us',
-        isRouterLink: false
-      }
-      , {
+        label: 'FOOTER.news',
+        url: '/news',
+        isRouterLink: true
+      },
+      {
         label: 'FOOTER.faqs',
         url: '/faq',
+        isRouterLink: true
+      },
+      {
+        label: 'HEADER._blog',
+        url: '/blog',
         isRouterLink: true
       }
     ]
@@ -132,6 +143,7 @@ export const DOME_THEME_CONFIG: ThemeConfig = {
     headerLinks: domeHeaderLinks,
     footerLinks: domeFooterLinks,
     footerLinksColsNumber: domeFooterLinks.length,
+    marketplaceHomeUrl: '/browse',
 
     linkedin: environment.DOME_LINKEDIN,
     youtube: environment.DOME_YOUTUBE,
@@ -142,5 +154,37 @@ export const DOME_THEME_CONFIG: ThemeConfig = {
   dashboard: {
     showFeaturedOfferings: true,
     showPlatformBenefits: true,
-  }
+  },
+  features: {
+    colorSchemeSelector: false,
+    darkMode: false,
+  },
+  catalogs: {
+    sections: {
+      header: DomeCatalogsHeroComponent
+    },
+    cards: {
+      fallbackLogoUrl: 'assets/images/Dome-Marketplace.svg'
+    }
+  },
+  workspace: {
+    sellerOfferingsHelp: {
+      title: 'OFFERINGS._need_help',
+      description: 'OFFERINGS._explore_guidelines',
+      actionLabel: 'OFFERINGS._view_kb'
+    },
+    offerForm: {
+      categoryHelp: {
+        title: 'CREATE_OFFER._cant_find_cat_title',
+        description: 'CREATE_OFFER._cant_find_cat_text'
+      }
+    }
+  },
+  metaTags: [
+    { property: 'og:title', content: 'DOME Marketplace - Dashboard' },
+    { property: 'og:description', content: 'The European federated ecosystem for secure and trusted Cloud and Edge service procurement.' },
+    { property: 'og:image', content: 'https://dome-marketplace.eu' },
+    { property: 'og:url', content: 'https://dome-marketplace.eu/dashboard' },
+    { property: 'og:type', content: 'website' }
+  ]
 };

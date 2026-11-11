@@ -313,3 +313,11 @@
 .dropdown-item--danger .dropdown-item-icon {
   color: inherit;
 }
+
+/* Light header: the theme selector button must be dark, not white on white */
+.header-light [data-cy="themeSelector"] {
+  color: var(--hdr-light-ink, #1f242c) !important;
+}
+.header-light [data-cy="themeSelector"]:hover {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+}

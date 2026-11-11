@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "build:pgtec": "ng build --configuration production && scripts/rename-bundle.sh dist/bae-frontend",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -35,6 +36,7 @@
     "@fortawesome/sharp-solid-svg-icons": "^6.4.2",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
+    "@superset-ui/embedded-sdk": "^0.4.0",
     "@types/tailwindcss": "^3.1.0",
     "currencies.json": "^1.0.2",
     "fast-average-color": "^9.4.0",

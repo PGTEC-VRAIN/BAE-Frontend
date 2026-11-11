@@ -6,7 +6,7 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
 import {TranslateModule} from "@ngx-translate/core";
 import {NgClass} from "@angular/common";
 import { initFlowbite } from 'flowbite';
-import * as moment from 'moment';
+import moment from 'moment';
 import { certifications } from 'src/app/models/certification-standards.const';
 import { LoginInfo } from 'src/app/models/interfaces';
 
@@ -124,7 +124,7 @@ export class PriceComponentDrawerComponent implements OnInit {
       }
     }
     this.initPartyInfo();
-    this.usageService.getAllUsageSpecs(this.partyId).then(data => {
+    this.usageService.getUsageSpecsByStatus(['Launched'], this.partyId).then(data => {
       this.usageSpecs=data;
       if(this.priceComponentForm.get('usageSpecId')){
         this.selectedUsageSpec = this.usageSpecs.find((element: { id: any; }) => element.id == this.priceComponentForm.get('usageSpecId')?.value)

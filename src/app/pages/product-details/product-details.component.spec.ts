@@ -34,8 +34,10 @@ describe('ProductDetailsComponent', () => {
   beforeEach(async () => {
     apiSpy = jasmine.createSpyObj<ApiServiceService>('ApiServiceService', [
       'getProductById',
+      'getProductOfferByOwner',
       'getProductSpecification',
       'getProductPrice',
+      'getProductPrices',
       'getOfferingPrice',
       'getServiceSpec',
       'getResourceSpec',
@@ -62,6 +64,7 @@ describe('ProductDetailsComponent', () => {
 
     localStorageSpy.getObject.and.returnValue({} as any);
     apiSpy.getComplianceLevel.and.returnValue('NL');
+    apiSpy.getProductOfferByOwner.and.resolveTo([]);
     cartSpy.addItemShoppingCart.and.resolveTo();
     cartSpy.removeItemShoppingCart.and.resolveTo();
     cartSpy.getShoppingCart.and.resolveTo([]);
@@ -113,18 +116,18 @@ describe('ProductDetailsComponent', () => {
     expect(component.showQuoteModal).toBeTrue();
   });
 
-  it('getComplianceDescription should return text by level', () => {
+  it('getComplianceDescription should return translation keys by level', () => {
     component.complianceLevel = 'NL';
-    expect(component.getComplianceDescription()).toContain("hasn't reached any compliance level");
+    expect(component.getComplianceDescription()).toBe('PRODUCT_DETAILS._compliance_no_level_desc');
 
     component.complianceLevel = 'BL';
-    expect(component.getComplianceDescription()).toContain('self attestation');
+    expect(component.getComplianceDescription()).toBe('PRODUCT_DETAILS._compliance_baseline_desc');
 
     component.complianceLevel = 'P';
-    expect(component.getComplianceDescription()).toContain('Professional level');
+    expect(component.getComplianceDescription()).toBe('PRODUCT_DETAILS._compliance_professional_desc');
 
     component.complianceLevel = 'PP';
-    expect(component.getComplianceDescription()).toContain('CNDCP');
+    expect(component.getComplianceDescription()).toBe('PRODUCT_DETAILS._compliance_professional_plus_desc');
 
     component.complianceLevel = 'UNKNOWN';
     expect(component.getComplianceDescription()).toBe('');
@@ -314,24 +317,16 @@ describe('ProductDetailsComponent', () => {
     expect(component.getProductImage()).toBe('https://example.com/image.png');
 
     component.images = [];
-    expect(component.getProductImage()).toBe('assets/images/placeholder.svg');
+    expect(component.getProductImage()).toBe('https://placehold.co/600x400/svg');
   });
 
-  it('toggleTermsReadMore should switch clamp class based on expanded state', () => {
-    const removeSpy = jasmine.createSpy('remove');
-    const addSpy = jasmine.createSpy('add');
-    component.termsTextRef = {
-      nativeElement: { classList: { remove: removeSpy, add: addSpy } },
-    } as any;
-
+  it('toggleTermsReadMore should switch expanded state', () => {
     component.showTermsMore = false;
     component.toggleTermsReadMore();
     expect(component.showTermsMore).toBeTrue();
-    expect(removeSpy).toHaveBeenCalledWith('line-clamp-5');
 
     component.toggleTermsReadMore();
     expect(component.showTermsMore).toBeFalse();
-    expect(addSpy).toHaveBeenCalledWith('line-clamp-5');
   });
 
   it('checkOverflow should update read-more visibility', () => {
@@ -361,6 +356,9 @@ describe('ProductDetailsComponent', () => {
 
     expect(accountSpy.getOrgInfo).toHaveBeenCalledWith('urn:ngsi-ld:organization:provider-1');
     expect(component.orgInfo).toEqual({ id: 'org-1', tradingName: 'Org One' } as any);
+    expect(apiSpy.getProductOfferByOwner).toHaveBeenCalledOnceWith(
+      0, ['Launched'], 'urn:ngsi-ld:organization:provider-1', undefined, false,
+    );
   });
 
   it('goToOrgDetails should navigate to organization details page', () => {
@@ -369,38 +367,24 @@ describe('ProductDetailsComponent', () => {
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/org-details', 'org-42']);
   });
 
-  it('updateTabs should ignore scroll events during manual scroll', () => {
-    (component as any).isManualScroll = true;
-    spyOn(component, 'goToDetails');
-    spyOn(component, 'goToChars');
-    spyOn(component, 'goToAttach');
-    spyOn(component, 'goToAgreements');
-    spyOn(component, 'goToRelationships');
-
-    component.updateTabs({});
-
-    expect(component.goToDetails).not.toHaveBeenCalled();
-    expect(component.goToChars).not.toHaveBeenCalled();
-    expect(component.goToAttach).not.toHaveBeenCalled();
-    expect(component.goToAgreements).not.toHaveBeenCalled();
-    expect(component.goToRelationships).not.toHaveBeenCalled();
-  });
-
   it('loadUsageMetrics should collect linked metrics and deduplicate by usageSpecId + metric name', async () => {
-    apiSpy.getOfferingPrice.and.callFake(async (id: string) => {
-      if (id === 'price-comp-1') {
-        return {
-          usageSpecId: 'usage-1',
-          unitOfMeasure: { units: 'RAM_gb_hour' },
-          description: 'Fallback RAM description',
-        };
-      }
-      return {
-        usageSpecId: 'usage-2',
-        unitOfMeasure: { units: 'CPU_core_hour' },
-        description: 'Fallback CPU description',
-      };
-    });
+    apiSpy.getProductPrices.and.callFake(async (ids: any[]) =>
+      ids.map((id: string) =>
+        id === 'price-comp-1'
+          ? {
+              id,
+              usageSpecId: 'usage-1',
+              unitOfMeasure: { units: 'RAM_gb_hour' },
+              description: 'Fallback RAM description',
+            }
+          : {
+              id,
+              usageSpecId: 'usage-2',
+              unitOfMeasure: { units: 'CPU_core_hour' },
+              description: 'Fallback CPU description',
+            }
+      )
+    );
     usageSpy.getUsageSpec.and.callFake(async (id: string) => {
       if (id === 'usage-1') {
         return { id: 'usage-1', description: 'RAM metric description' };

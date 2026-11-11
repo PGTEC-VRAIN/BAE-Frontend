@@ -13,6 +13,11 @@ const baeHeaderLinks: NavLink[] = [
       { label: 'HEADER._services', url: '/search', isRouterLink: true },
       { label: 'HEADER._catalogs', url: '/catalogues', isRouterLink: true }
     ]
+  },
+  {
+    label: 'HEADER._blog',
+    url: '/blog',
+    isRouterLink: true
   }
 ];
 
@@ -30,6 +35,7 @@ export const BAE_THEME_CONFIG: ThemeConfig = {
   },
   links: {
     headerLinks: baeHeaderLinks,
+    marketplaceHomeUrl: '/search',
 
     linkedin: 'https://linkedin.com/company/ocean-theme-example',
     youtube: 'https://youtube.com/c/ocean-theme-example',
@@ -38,5 +44,9 @@ export const BAE_THEME_CONFIG: ThemeConfig = {
   dashboard: {
     showFeaturedOfferings: true,
     showPlatformBenefits: false,
+  },
+  features: {
+    colorSchemeSelector: true,
+    darkMode: true,
   }
 };

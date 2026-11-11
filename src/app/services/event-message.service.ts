@@ -2,6 +2,11 @@ import { Injectable } from '@angular/core';
 import {Subject} from "rxjs";
 import {Category, cartProduct, FormChangeState, PricePlanChangeState, SubformType} from "../models/interfaces";
 import { LoginInfo } from 'src/app/models/interfaces';
+import {
+  applyProviderStatsTransition,
+  ProviderStats,
+  ProviderStatsTransition
+} from '../models/provider-stats.model';
 
 export interface EventMessage {
   type: 'AddedFilter' | 'RemovedFilter' | 'AddedCartItem' | 'RemovedCartItem' | 'FilterShown' | 'ToggleCartDrawer' | 'LoginProcess' | 'BillAccChanged' |
@@ -10,9 +15,19 @@ export interface EventMessage {
   'SellerCatalog' | 'SellerCatalogCreate' | 'SellerCatalogUpdate' | 'CategoryAdded' | 'CategoryRemoved' | 'ChangedSession' | 'CloseCartCard'|
   'AdminCategories' | 'CreateCategory' | 'UpdateCategory' | 'ShowCartToast' | 'HideCartToast' | 'CloseContact' | 'OpenServiceDetails' | 'OpenResourceDetails' | 'OpenProductInvDetails' |
   'SavePricePlan' | 'UpdatePricePlan' | 'ToggleEditPrice' | 'ToggleNewPrice' |
-  'SubformChange' | 'CloseFeedback' | 'UpdateOffer' | 'CloseQuoteRequest' | 'UpdateUsageSpec' | 'UsageSpecList' | 'CreateUsageSpec' | 'AiSearchFacets' | 'AiSearchCleared';
+  'SubformChange' | 'CloseFeedback' | 'UpdateOffer' | 'CloseQuoteRequest' | 'UpdateUsageSpec' | 'UsageSpecList' | 'CreateUsageSpec' |
+  'FiltersCommitted' | 'SpecCreated' | 'LeaveOfferEditorRequest' | 'LeaveProductSpecEditorRequest' | 'LeaveServiceSpecEditorRequest' | 'LeaveResourceSpecEditorRequest' | 'UsageSpecChanged' | 'ProviderStatsLoaded' | 'ProviderStatsTransition';
   text?: string,
-  value?: object | boolean | FormChangeState | PricePlanChangeState
+  toastType?: 'success' | 'error',
+  refreshCounts?: boolean,
+  value?: object | boolean | FormChangeState | PricePlanChangeState | UsageSpecChange | ProviderStats | ProviderStatsTransition | null
+}
+
+export interface UsageSpecChange {
+  action: 'created' | 'updated';
+  usageSpec: any;
+  previousLifecycleStatus?: string;
+  nextLifecycleStatus?: string;
 }
 
 
@@ -23,6 +38,7 @@ export class EventMessageService {
 
   // Tip: never expose the Subject itself.
   private eventMessageSubject = new Subject<EventMessage>();
+  private latestProviderStats: ProviderStats | null = null;
 
   /** Observable of all messages */
   messages$ = this.eventMessageSubject.asObservable();
@@ -89,6 +105,10 @@ export class EventMessageService {
     this.eventMessageSubject.next({ type: 'SellerResourceSpec', value: show });
   }
 
+  emitSpecCreated(text: string, toastType: 'success' | 'error' = 'success', refreshCounts: boolean = true){
+    this.eventMessageSubject.next({ type: 'SpecCreated', text: text, toastType: toastType, refreshCounts });
+  }
+
   emitSellerCreateResourceSpec(show:boolean){
     this.eventMessageSubject.next({ type: 'SellerCreateResourceSpec', value: show });
   }
@@ -113,7 +133,23 @@ export class EventMessageService {
     this.eventMessageSubject.next({type: 'SellerCreateCustomOffer', value: {offer, partyId}})
   }
 
-  emitSellerCatalog(show:boolean){    
+  emitLeaveOfferEditorRequest(){
+    this.eventMessageSubject.next({ type: 'LeaveOfferEditorRequest' });
+  }
+
+  emitLeaveProductSpecEditorRequest(){
+    this.eventMessageSubject.next({ type: 'LeaveProductSpecEditorRequest' });
+  }
+
+  emitLeaveServiceSpecEditorRequest(){
+    this.eventMessageSubject.next({ type: 'LeaveServiceSpecEditorRequest' });
+  }
+
+  emitLeaveResourceSpecEditorRequest(){
+    this.eventMessageSubject.next({ type: 'LeaveResourceSpecEditorRequest' });
+  }
+
+  emitSellerCatalog(show:boolean){
     this.eventMessageSubject.next({ type: 'SellerCatalog', value: show });
   }
 
@@ -143,7 +179,7 @@ export class EventMessageService {
   emitHideCartToast(val:cartProduct | undefined){
     this.eventMessageSubject.next({type:'HideCartToast', value: val})
   }
-  
+
   emitAdminCategories(show:boolean){
     this.eventMessageSubject.next({ type: 'AdminCategories', value: show });
   }
@@ -190,8 +226,8 @@ export class EventMessageService {
 
   emitSubformChange(changeState: FormChangeState | PricePlanChangeState) {
     this.eventMessageSubject.next({
-      type: 'SubformChange', 
-      value: changeState 
+      type: 'SubformChange',
+      value: changeState
     });
   }
 
@@ -201,7 +237,7 @@ export class EventMessageService {
 
   emitCloseQuoteRequest(show:boolean) {
     this.eventMessageSubject.next({type: 'CloseQuoteRequest', value: show})
-  }  
+  }
 
   emitUpdateOffer(show:boolean) {
     this.eventMessageSubject.next({type: 'UpdateOffer', value: show})
@@ -219,12 +255,37 @@ export class EventMessageService {
     this.eventMessageSubject.next({type: 'CreateUsageSpec', value: show})
   }
 
-  emitAiSearchFacets(facets: Record<string, Record<string | number, number>>){
-    this.eventMessageSubject.next({type: 'AiSearchFacets', value: facets})
+  emitUsageSpecChanged(change: UsageSpecChange){
+    this.eventMessageSubject.next({type: 'UsageSpecChanged', value: change})
   }
 
-  emitAiSearchCleared(){
-    this.eventMessageSubject.next({type: 'AiSearchCleared', value: true})
+  emitProviderStatsLoaded(stats: ProviderStats | null){
+    this.latestProviderStats = stats;
+    this.eventMessageSubject.next({type: 'ProviderStatsLoaded', value: this.latestProviderStats})
+  }
+
+  getLatestProviderStats(): ProviderStats | null {
+    return this.latestProviderStats;
+  }
+
+  clearProviderStats(){
+    this.latestProviderStats = null;
+    this.eventMessageSubject.next({type: 'ProviderStatsLoaded', value: null})
+  }
+
+  emitProviderStatsTransition(transition: ProviderStatsTransition){
+    if (!this.latestProviderStats) {
+      this.eventMessageSubject.next({type: 'ProviderStatsTransition', value: transition});
+      return;
+    }
+
+    this.latestProviderStats = applyProviderStatsTransition(this.latestProviderStats, transition);
+    this.eventMessageSubject.next({type: 'ProviderStatsTransition', value: transition});
+    this.eventMessageSubject.next({type: 'ProviderStatsLoaded', value: this.latestProviderStats});
+  }
+
+  emitFiltersCommitted() {
+    this.eventMessageSubject.next({ type: 'FiltersCommitted', value: true });
   }
 
 }

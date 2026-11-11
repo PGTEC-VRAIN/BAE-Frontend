@@ -84,6 +84,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     } as Category;*/
     this.localStorage.addCategoryFilter(cat);
     this.eventMessage.emitAddedFilter(cat);
+    this.eventMessage.emitFiltersCommitted();
     this.router.navigate(['/search']);
 
   }

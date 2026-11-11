@@ -20,6 +20,7 @@ export const environment = {
   CHARGING: '/charging',
 
   searchOrganizationsEndpoint: '/search-bck/api/searchOrganizations',
+  providerCountriesUrl: 'https://raw.githubusercontent.com/DOME-Marketplace/eu-eea-countries/refs/heads/main/countries.json',
   //searchOrganizationsEndpoint: 'org-api/searchOrganizations',
 
   CUSTOMER_BILLING: '/customerBill',
@@ -70,10 +71,12 @@ export const environment = {
   DOME_X: 'https://x.com/DomeMarketplace',
   BUNDLE_ENABLED: false,
   DATA_SPACE_ENABLED: false,
+  CATALOG_MANAGEMENT_ENABLED: true,
   DFT_CATALOG_ID: '',
   MAX_FILE_SIZE: 3145728,
   providerThemeName: 'default',
   quoteApi: 'http://localhost:8080/quoteManagement',
+  documentApi: '/document',
   quoteEndpoints: {
     createQuote: '/createQuote',
     listAllQuotes: '/listAllQuotes',
@@ -87,7 +90,10 @@ export const environment = {
   },
   QUOTES_ENABLED: true,
   TENDER_ENABLED: true,
+  analyticsEnabled: false,
+  googleTagManagerId: '',
   analytics: '',
+  analyticsGuestTokenEndpoint: '/analytics/guest-token',
   feedbackCampaign: false,
   feedbackCampaignExpiration: 0,
   SELLER_ROLE: 'Seller',
@@ -95,12 +101,10 @@ export const environment = {
   ADMIN_ROLE: 'Admin',
   ORG_ADMIN_ROLE: 'orgAdmin',
   CERTIFIER_ROLE: 'certifier',
-  AI_SEARCH_ENABLED: true,
-  AI_SEARCH_API_KEY: '28791420a51be86495cab108f32221fa458469e29a04b33567b057c95878bd72',
-  AI_SEARCH_API_URL: 'https://dome.expertcustomers.ai/rag/',
-  AI_SEARCH_SCORE_THRESHOLD: 0.3,
-  AI_SEARCH_ANSWER_MAX_ITEMS: 5,
-  AI_SEARCH_PROFILE: 'dome_prod',
   LEAR_URL: '',
-  LAUNCH_VALIDATION_ENABLED: false
+  LAUNCH_VALIDATION_ENABLED: false,
+  TENDER_DEV_BUTTONS_OPEN_CLOSE_ENABLED: true,
+  DSP_ENABLED: true,
+  DSP_CONTRACT_DEFINITION_SCHEMA: 'https://raw.githubusercontent.com/wistefan/edc-dsc/refs/heads/init/schemas/contract-definition.json',
+  DSP_SCHEMA: 'https://raw.githubusercontent.com/wistefan/edc-dsc/refs/heads/init/schemas/external-id.json'
 };

@@ -23,7 +23,7 @@ import { PriceServiceService } from 'src/app/services/price-service.service';
 import { initFlowbite } from 'flowbite';
 import { LoginInfo, cartProduct,productSpecCharacteristicValueCart } from '../../models/interfaces';
 import { ShoppingCartServiceService } from 'src/app/services/shopping-cart-service.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { certifications } from 'src/app/models/certification-standards.const';
 import { jwtDecode } from "jwt-decode";
 import { environment } from 'src/environments/environment';
@@ -32,6 +32,7 @@ import {Subscription} from "rxjs";
 import {ThemeService} from "../../services/theme.service";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { getShortOfferDescription, getVisibleOfferDescription } from './offer-card-text.util';
 
 @Component({
   selector: 'bae-off-card',
@@ -43,6 +44,7 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() productOff: Product | undefined;
   @Input() prodSpecInput: ProductSpecification | undefined;
   @Input() cardId: number;
+  @Input() viewMode: 'grid' | 'list' = 'grid';
 
   providerThemeName = environment.providerThemeName;
   quotesEnabled = environment.QUOTES_ENABLED;
@@ -70,6 +72,11 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
   selected_chars:productSpecCharacteristicValueCart[]=[];
   formattedPrices:any[]=[];
   @ViewChild('myProdImage') myProdImage!: ElementRef<HTMLImageElement>;
+  @ViewChild('descWrapper') descWrapper?: ElementRef<HTMLElement>;
+  @ViewChild('descWrapperList') descWrapperList?: ElementRef<HTMLElement>;
+  descLineClamp = 2;
+  descLineClampList = 2;
+  private descResizeObserver?: ResizeObserver;
   check_logged:boolean=false;
   protected readonly faAtom = faAtom;
   protected readonly faClose = faClose;
@@ -95,6 +102,7 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
   showQuoteModal:boolean=false;
   customerId:string='';
   isCustomPrice:boolean = false;
+  cheapestPrice: any = null;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -214,8 +222,30 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
     }
+    this.descResizeObserver?.disconnect();
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private setupDescriptionClamp(): void {
+    if (typeof ResizeObserver === 'undefined') return;
+    const target = this.descWrapper?.nativeElement ?? this.descWrapperList?.nativeElement;
+    if (!target) return;
+    const lineHeightPx = 24;
+    this.descResizeObserver = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        const h = entry.contentRect.height;
+        const lines = Math.max(1, Math.floor(h / lineHeightPx));
+        if (this.viewMode === 'grid' && lines !== this.descLineClamp) {
+          this.descLineClamp = lines;
+          this.cdr.detectChanges();
+        } else if (this.viewMode === 'list' && lines !== this.descLineClampList) {
+          this.descLineClampList = lines;
+          this.cdr.detectChanges();
+        }
+      }
+    });
+    this.descResizeObserver.observe(target);
   }
 
   async ngOnInit() {
@@ -264,6 +294,7 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.isCustomPrice = await this.priceService.isCustomOffering(this.productOff)
+    this.cheapestPrice = this.priceService.formatCheapestPricePlan(this.productOff);
 
     this.prepareOffData();
 
@@ -283,7 +314,15 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
       return str.split(/\s+/).some(word => word.length > threshold);
     } else {
       return false
-    }   
+    }
+  }
+
+  getShortDescription(): string {
+    return getShortOfferDescription(this.productOff?.description);
+  }
+
+  getVisibleDescription(): string {
+    return getVisibleOfferDescription(this.productOff?.description);
   }
   
 
@@ -303,6 +342,7 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     initFlowbite();
+    this.setupDescriptionClamp();
     /*const fac = new FastAverageColor();
     fac.getColorAsync(this.myProdImage.nativeElement)
       .then(color => {
@@ -546,7 +586,7 @@ async deleteProduct(product: Product | undefined){
 
     if(this.productOff?.productOfferingTerm != undefined){
       const licenseTerm = this.productOff.productOfferingTerm.find(
-        element => element.name === 'License'
+        element => String(element?.name || '').toLowerCase() === 'license'
       );
 
       if (!licenseTerm) {

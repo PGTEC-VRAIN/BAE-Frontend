@@ -1,3 +1,5 @@
+import { Type } from '@angular/core';
+
 export interface ThemeAssetConfig {
   logoUrl: string;
   logoDarkUrl?: string;
@@ -32,6 +34,7 @@ export interface ThemeLinkConfig {
   headerLinks?: NavLink[];
   footerLinks?: NavHeaderLink[];
   footerLinksColsNumber?: number;
+  marketplaceHomeUrl?: string;
 
   // Social networks
   linkedin?: string;
@@ -66,6 +69,50 @@ export interface DashboardConfig {
   // Add more sections
 }
 
+export interface CatalogsPageSectionsConfig {
+  header?: Type<unknown>;
+}
+
+export interface CatalogsCardsConfig {
+  fallbackLogoUrl?: string;
+}
+
+export interface CatalogsPageConfig {
+  sections?: CatalogsPageSectionsConfig;
+  cards?: CatalogsCardsConfig;
+}
+
+export interface WorkspaceHelpConfig {
+  title: string;
+  description: string;
+  actionLabel: string;
+}
+
+export interface WorkspaceInfoMessageConfig {
+  title: string;
+  description: string;
+}
+
+export interface WorkspaceOfferFormConfig {
+  categoryHelp?: WorkspaceInfoMessageConfig;
+}
+
+export interface WorkspaceConfig {
+  sellerOfferingsHelp?: WorkspaceHelpConfig;
+  offerForm?: WorkspaceOfferFormConfig;
+}
+
+export interface ThemeFeaturesConfig {
+  colorSchemeSelector?: boolean;
+  darkMode?: boolean;
+}
+
+export interface ThemeMetaTagConfig {
+  name?: string;
+  property?: string;
+  content: string;
+}
+
 
 export interface ThemeConfig {
   name: string; // Theme Id, ej: 'DOME', 'OCEAN'
@@ -77,9 +124,12 @@ export interface ThemeConfig {
   authUrls?: ThemeAuthUrlsConfig;
   colors?: ThemeColorsConfig;
   dashboard?: DashboardConfig;
+  catalogs?: CatalogsPageConfig;
+  workspace?: WorkspaceConfig;
+  features?: ThemeFeaturesConfig;
+  metaTags?: ThemeMetaTagConfig[];
   forceLightMode?: boolean; // Optional: ignore the OS/stored dark preference for this theme
   lightHeader?: boolean; // Optional: white header with brand label instead of the dark glass one
   hideCompliance?: boolean; // Optional: hide the DOME compliance level badges and section
-  colorSchemeToggle?: boolean; // Optional: show a light/dark switch in the header
   // More theme specific propierties
 }

@@ -48,5 +48,8 @@ export const PGTEC_THEME_CONFIG: ThemeConfig = {
   },
   lightHeader: true,
   hideCompliance: true,
-  colorSchemeToggle: true
+  features: {
+    colorSchemeSelector: true,
+    darkMode: true,
+  }
 };

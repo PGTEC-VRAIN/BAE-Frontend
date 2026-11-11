@@ -1,13 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { jwtDecode } from "jwt-decode";
 import { catchError, lastValueFrom, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Category } from '../models/interfaces';
 import { components } from "../models/product-catalog";
 import { ProductOffering as ProductOfferingModel } from '../models/product.model';
+import { extractComplianceLevelFromVcToken } from '../shared/compliance-credential.utils';
 import { LocalStorageService } from "./local-storage.service";
 type ProductOffering = components["schemas"]["ProductOffering"];
+
+export interface CatalogPageResponse {
+  items: any[];
+  filteredPaginationToken: string | null;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -27,10 +32,13 @@ export class ApiServiceService {
     return this.http.get<ProductOfferingModel[]>(url);
   }
 
-  getProducts(page: any, keywords: any) {
+  getProducts(page: any, keywords: any, sort?: any) {
     let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/productOffering?limit=${ApiServiceService.PRODUCT_LIMIT}&offset=${page}&lifecycleStatus=Launched`;
     if (keywords != undefined) {
       url = url + '&keyword=' + keywords;
+    }
+    if (sort != undefined) {
+      url = url + '&sort=' + sort;
     }
 
     return lastValueFrom(this.http.get<any[]>(url));
@@ -51,8 +59,8 @@ export class ApiServiceService {
           offer.productSpecification?.id
             ? this.getProductSpecification(offer.productSpecification.id)
             : Promise.resolve(undefined),
-          offer.productOfferingPrice
-            ? Promise.all(offer.productOfferingPrice.map((p: { id: any; }) => this.getProductPrice(p.id)))
+          offer.productOfferingPrice?.length
+            ? this.getProductPrices(offer.productOfferingPrice.map((p: { id: any; }) => p.id))
             : Promise.resolve([])
         ]);
 
@@ -95,7 +103,7 @@ export class ApiServiceService {
     }));
   }
 
-  getProductsByCategory(ids: Category[], page: any, keywords: any) {
+  getProductsByCategory(ids: Category[], page: any, keywords: any, sort?: any) {
     let id_str = '';
     for (let i = 0; i < ids.length; i++) {
       if (i == 0) {
@@ -118,16 +126,30 @@ export class ApiServiceService {
     if (keywords != undefined) {
       url = url + '&keyword=' + keywords;
     }
+    if (sort != undefined) {
+      url = url + '&sort=' + sort;
+    }
     return lastValueFrom(this.http.get<any[]>(url));
   }
 
-  getProductsByCatalog(catalogId: any, page: any) {
+  getProductsByCatalog(catalogId: any, page: any, keywords?: any) {
     let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/catalog/${catalogId}/productOffering?lifecycleStatus=Launched&limit=${ApiServiceService.PRODUCT_LIMIT}&offset=${page}`
+    if (keywords != undefined) {
+      url = url + '&keyword=' + keywords;
+    }
 
     return lastValueFrom(this.http.get<any[]>(url));
   }
 
-  getProductsByCategoryAndCatalog(ids: Category[], catalogId: any, page: any) {
+  catalogHasLaunchedOffers(catalogId: any): Promise<boolean> {
+    let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/catalog/${catalogId}/productOffering?lifecycleStatus=Launched&limit=1`;
+
+    return lastValueFrom(this.http.get<any[]>(url))
+      .then(res => Array.isArray(res) && res.length > 0)
+      .catch(() => false);
+  }
+
+  getProductsByCategoryAndCatalog(ids: Category[], catalogId: any, page: any, keywords?: any) {
     let id_str = '';
     for (let i = 0; i < ids.length; i++) {
       if (i == 0) {
@@ -137,6 +159,9 @@ export class ApiServiceService {
       }
     }
     let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/catalog/${catalogId}/productOffering?lifecycleStatus=Launched&${id_str}&limit=${ApiServiceService.PRODUCT_LIMIT}&offset=${page}`;
+    if (keywords != undefined) {
+      url = url + '&keyword=' + keywords;
+    }
 
     return lastValueFrom(this.http.get<any[]>(url));
   }
@@ -171,6 +196,23 @@ export class ApiServiceService {
     return lastValueFrom(this.http.get<any>(url));
   }
 
+  getLaunchedProductOffersByOwnerAndCategory(page: any, keywords: any, categories: Category[], partyId: any, limit = ApiServiceService.PRODUCT_LIMIT) {
+    let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/productOffering?limit=${limit}&offset=${page}&relatedParty.id=${partyId}&lifecycleStatus=Launched`;
+
+    const categoryIds = (categories ?? [])
+      .map(category => category?.id)
+      .filter(id => id != null && id !== '');
+
+    if (categoryIds.length > 0) {
+      url = url + '&category.id=' + categoryIds.join(',');
+    }
+    if (keywords != undefined) {
+      url = url + '&keyword=' + keywords;
+    }
+
+    return lastValueFrom(this.http.get<any[]>(url));
+  }
+
   getProductSpecification(id: any) {
     let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/productSpecification/${id}`;
 
@@ -186,6 +228,62 @@ export class ApiServiceService {
     let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/productOfferingPrice/${id}`
 
     return lastValueFrom(this.http.get<any>(url));
+  }
+
+  getProductPrices(ids: any[]): Promise<any[]> {
+    if (!ids || ids.length === 0) {
+      return Promise.resolve([]);
+    }
+    const url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/productOfferingPrice?id=${ids.join(',')}&limit=${ids.length}`;
+    return lastValueFrom(this.http.get<any[]>(url)).then(prices => {
+      const byId = new Map((prices ?? []).map((p: any) => [p.id, p]));
+      return ids.map(id => byId.get(id)).filter((p: any) => p != null);
+    });
+  }
+
+  async getOfferingPricesByUsageSpecId(usageSpecId: string): Promise<any[]> {
+    return this.getPaginatedCatalogItems('productOfferingPrice', {
+      usageSpecId
+    });
+  }
+
+  async getOfferingPricesByBundledPopRelationshipId(priceComponentId: string): Promise<any[]> {
+    return this.getPaginatedCatalogItems('productOfferingPrice', {
+      'bundledPopRelationship.id': priceComponentId
+    });
+  }
+
+  async getProductOfferingsByPricePlanId(pricePlanId: string): Promise<any[]> {
+    return this.getPaginatedCatalogItems('productOffering', {
+      'productOfferingPrice.id': pricePlanId
+    });
+  }
+
+  private async getPaginatedCatalogItems(resource: string, filters: Record<string, string | number>): Promise<any[]> {
+    const limit = 100;
+    let offset = 0;
+    const items: any[] = [];
+
+    while (true) {
+      const query = [
+        `limit=${limit}`,
+        `offset=${offset}`,
+        ...Object.entries(filters).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+      ].join('&');
+      const url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/${resource}?${query}`;
+      const page = await lastValueFrom(this.http.get<any[]>(url));
+      const pageItems = Array.isArray(page) ? page : [];
+
+      items.push(...pageItems);
+
+      if (pageItems.length < limit) {
+        break;
+      }
+
+      offset += limit;
+    }
+
+    return items;
   }
 
   getLaunchedCategories() {
@@ -267,10 +365,14 @@ export class ApiServiceService {
     return this.http.patch<any>(url, category);
   }
 
-  getCatalogs(page: any, filter: any): Promise<any> {
-    let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/catalog?limit=${ApiServiceService.CATALOG_LIMIT}&offset=${page}&lifecycleStatus=Launched`;
-    if (filter != undefined) {
-      url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/catalog?limit=${ApiServiceService.CATALOG_LIMIT}&offset=${page}&lifecycleStatus=Launched&body=${filter}`;
+  getCatalogs(page: any, keyword: any): Promise<any> {
+    return this.getCatalogsWithLimit(page, keyword, ApiServiceService.CATALOG_LIMIT);
+  }
+
+  getCatalogsWithLimit(page: any, keyword: any, limit: number): Promise<any> {
+    let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/catalog?limit=${limit}&offset=${page}&lifecycleStatus=Launched`;
+    if (keyword != undefined) {
+      url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/catalog?limit=${limit}&offset=${page}&lifecycleStatus=Launched&keyword=${keyword}`;
     }
     console.log('getcatalogs')
     console.log(this)
@@ -278,7 +380,36 @@ export class ApiServiceService {
     return lastValueFrom(this.http.get<any>(url));
   }
 
-  getCatalogsByUser(page: any, filter: any, status: any[], partyId: any) {
+  getLaunchedCatalogsPage(
+    page: any,
+    keyword: any,
+    limit: number,
+    filteredPaginationToken?: string | null,
+    relatedPartyId?: string | null
+  ): Promise<CatalogPageResponse> {
+    const tokenRequestHeader = 'X-Filtered-Pagination-Token';
+    const tokenResponseHeader = 'x-filtered-pagination-token';
+    let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/catalog?limit=${limit}&offset=${page}&lifecycleStatus=Launched`;
+    if (keyword != undefined) {
+      url = url + `&keyword=${keyword}`;
+    }
+    if (relatedPartyId) {
+      url = url + `&relatedParty.id=${relatedPartyId}`;
+    }
+
+    let options: { observe: 'response', headers?: { [header: string]: string } } = { observe: 'response' };
+    if (filteredPaginationToken && !relatedPartyId) {
+      options.headers = { [tokenRequestHeader]: filteredPaginationToken };
+    }
+
+    return lastValueFrom(this.http.get<any[]>(url, options)).then(response => ({
+      items: response.body ?? [],
+      filteredPaginationToken: response.headers.get(tokenResponseHeader)
+        || response.headers.get(tokenRequestHeader)
+    }));
+  }
+
+  getCatalogsByUser(page: any, keyword: any, status: any[], partyId: any) {
     let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/catalog?limit=${ApiServiceService.CATALOG_LIMIT}&offset=${page}&relatedParty.id=${partyId}`;
     let lifeStatus = ''
     if (status)
@@ -293,8 +424,8 @@ export class ApiServiceService {
         url = url + '&lifecycleStatus=' + lifeStatus;
       }
 
-    if (filter != undefined) {
-      url = url + `&body=${filter}`;
+    if (keyword != undefined) {
+      url = url + `&keyword=${keyword}`;
     }
 
     return lastValueFrom(this.http.get<any>(url));
@@ -312,10 +443,34 @@ export class ApiServiceService {
     return this.http.post<any>(url, catalog);
   }
 
+  postAdminCatalog(catalog: any) {
+    let url = `${ApiServiceService.BASE_URL}/admin/catalog/catalog`;
+
+    return this.http.post<any>(url, catalog);
+  }
+
+  createDefaultCatalog(catalog: any) {
+    let url = `${ApiServiceService.BASE_URL}/admin/defaultcatalog/create`;
+
+    return this.http.post<any>(url, catalog);
+  }
+
   updateCatalog(catalog: any, id: any) {
     let url = `${ApiServiceService.BASE_URL}${ApiServiceService.API_PRODUCT}/catalog/${id}`;
 
     return this.http.patch<any>(url, catalog);
+  }
+
+  updateAdminCatalog(catalog: any, id: any) {
+    let url = `${ApiServiceService.BASE_URL}/admin/catalog/catalog/${id}`;
+
+    return this.http.patch<any>(url, catalog);
+  }
+
+  setDefaultCatalog(catalogId: string) {
+    let url = `${ApiServiceService.BASE_URL}/admin/defaultcatalog`;
+
+    return this.http.post<any>(url, { catalogId });
   }
 
   getServiceSpec(id: any) {
@@ -385,22 +540,7 @@ export class ApiServiceService {
 
       if (vcProf) {
         const vcToken: any = vcProf.productSpecCharacteristicValue?.at(0)?.value
-        const decoded = jwtDecode(vcToken)
-        let credential: any = null
-
-        if ('verifiableCredential' in decoded) {
-          credential = decoded.verifiableCredential;
-        } else if ('vc' in decoded) {
-          credential = decoded.vc;
-        }
-
-        if (credential != null) {
-          const subject = credential.credentialSubject;
-
-          if ('gx:labelLevel' in subject) {
-            level = subject['gx:labelLevel'];
-          }
-        }
+        level = extractComplianceLevelFromVcToken(vcToken);
       }
     }
 

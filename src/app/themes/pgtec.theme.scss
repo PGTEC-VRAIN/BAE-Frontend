@@ -22,6 +22,49 @@ body.theme-pgtec {
   --theme-secondary-200: 44 49 85;
   /* HEX: #171A33 - Night surface */
   --theme-secondary-300: 23 26 51;
+
+  /* Offerings / catalogue pages (Ficodes layout): PGTEC indigo palette */
+  --theme-offerings-page-bg: 247 248 253;
+  --theme-offerings-surface-bg: 255 255 255;
+  --theme-offerings-subtle-surface-bg: 249 250 253;
+  --theme-offerings-muted-bg: 236 238 246;
+  --theme-offerings-neutral-bg: 242 244 250;
+  --theme-offerings-selected-bg: 238 240 255;
+  --theme-offerings-selected-border: 54 52 232;
+  --theme-offerings-icon-bg: 238 240 255;
+  --theme-offerings-table-header-bg: 238 240 255;
+  --theme-offerings-border: 232 234 244;
+  --theme-offerings-border-strong: 211 214 232;
+  --theme-offerings-border-muted: 225 227 240;
+  --theme-offerings-separator: 226 229 242;
+  --theme-offerings-dashed-border: 160 158 245;
+  --theme-offerings-price-border: 188 191 214;
+  --theme-offerings-text: 23 26 51;
+  --theme-offerings-strong-text: 17 20 42;
+  --theme-offerings-heading-text: 44 49 85;
+  --theme-offerings-body-text: 76 84 118;
+  --theme-offerings-description-text: 100 108 140;
+  --theme-offerings-feature-text: 75 83 115;
+  --theme-offerings-label-text: 150 156 184;
+  --theme-offerings-muted-text: 82 90 125;
+  --theme-offerings-title-text: 23 26 51;
+  --theme-offerings-link: 54 52 232;
+  --theme-offerings-link-hover: 36 34 176;
+  --theme-offerings-confirm-hover: 36 34 176;
+  --theme-offerings-active-chip-bg: 199 198 250;
+  --theme-offerings-disabled-text: 161 165 190;
+  --theme-offerings-disabled-strong-text: 133 139 165;
+  --theme-offerings-metric-success-bg: 240 253 244;
+  --theme-offerings-metric-accent-bg: 238 240 255;
+  --theme-offerings-on-dark-text: 255 255 255;
+  --theme-offerings-on-dark-body-text: 209 213 235;
+  --theme-offerings-dark-surface-bg: 31 35 66;
+  --theme-offerings-dark-hover-bg: 44 49 85;
+  --theme-offerings-backdrop: 15 18 38;
+  --theme-offerings-shadow-rgb: 54 52 232;
+  --theme-offerings-elevated-shadow-rgb: 23 26 51;
+  --theme-offerings-neutral-shadow-rgb: 23 26 51;
+  --theme-offerings-thumb-border: 232 234 244;
   /* HEX: #24275C - Night indigo tint */
   --theme-secondary-400: 36 39 92;
   /* HEX: #16193A - Ink */
@@ -115,6 +158,43 @@ body.theme-pgtec {
 }
 
 html.dark body.theme-pgtec {
+
+  /* Offerings / catalogue pages on the night palette */
+  --theme-offerings-page-bg: 15 18 38;
+  --theme-offerings-surface-bg: 23 26 51;
+  --theme-offerings-subtle-surface-bg: 31 35 66;
+  --theme-offerings-muted-bg: 44 49 85;
+  --theme-offerings-neutral-bg: 31 35 66;
+  --theme-offerings-selected-bg: 36 39 92;
+  --theme-offerings-selected-border: 138 136 255;
+  --theme-offerings-icon-bg: 36 39 92;
+  --theme-offerings-table-header-bg: 31 35 66;
+  --theme-offerings-border: 44 49 85;
+  --theme-offerings-border-strong: 69 75 124;
+  --theme-offerings-border-muted: 44 49 85;
+  --theme-offerings-separator: 44 49 85;
+  --theme-offerings-dashed-border: 105 103 214;
+  --theme-offerings-price-border: 69 75 124;
+  --theme-offerings-text: 238 240 250;
+  --theme-offerings-strong-text: 245 246 252;
+  --theme-offerings-heading-text: 226 229 245;
+  --theme-offerings-body-text: 200 204 226;
+  --theme-offerings-description-text: 165 171 200;
+  --theme-offerings-feature-text: 190 195 220;
+  --theme-offerings-label-text: 140 147 182;
+  --theme-offerings-muted-text: 165 171 200;
+  --theme-offerings-title-text: 238 240 250;
+  --theme-offerings-link: 155 153 255;
+  --theme-offerings-link-hover: 190 189 255;
+  --theme-offerings-confirm-hover: 36 34 176;
+  --theme-offerings-active-chip-bg: 58 61 130;
+  --theme-offerings-disabled-text: 110 117 150;
+  --theme-offerings-disabled-strong-text: 140 147 182;
+  --theme-offerings-metric-success-bg: 27 51 32;
+  --theme-offerings-metric-accent-bg: 36 39 92;
+  --theme-offerings-dark-surface-bg: 31 35 66;
+  --theme-offerings-dark-hover-bg: 44 49 85;
+  --theme-offerings-backdrop: 5 7 20;
   /* HEX: #8A88FF - Indigo readable on night surfaces */
   --theme-primary-50: 138 136 255;
 
@@ -977,5 +1057,26 @@ html.dark .pg-footer-logos {
 
   .pg-footer-logos img.pg-footer-vrain {
     height: 22px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Dark mode for the Ficodes-layout pages (offer detail, provider page,
+ * catalogues). They colour text with text-secondary-100/500 (night blue on
+ * light) and tint boxes with bg-secondary-50, which is unreadable on the night
+ * background, so remap them to the offerings tokens defined above.
+ * ------------------------------------------------------------------------- */
+html.dark body.theme-pgtec :is(app-product-details, app-organization-details, app-catalogs) {
+  .text-secondary-100 {
+    color: rgb(var(--theme-offerings-heading-text));
+  }
+  .text-secondary-500 {
+    color: rgb(var(--theme-offerings-body-text));
+  }
+  .bg-secondary-50 {
+    background-color: rgb(var(--theme-offerings-neutral-bg));
+  }
+  .border-secondary-50 {
+    border-color: rgb(var(--theme-offerings-border));
   }
 }

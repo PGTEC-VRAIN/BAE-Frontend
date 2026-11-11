@@ -11,6 +11,8 @@ import { LocalStorageService } from '../../services/local-storage.service';
 import { EventMessageService } from '../../services/event-message.service';
 import { SearchStateService } from '../../services/search-state.service';
 import { LoginServiceService } from 'src/app/services/login-service.service';
+import { ThemeService } from 'src/app/services/theme.service';
+import { PriceServiceService } from 'src/app/services/price-service.service';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -19,6 +21,7 @@ describe('SearchComponent', () => {
   let paginationSpy: jasmine.SpyObj<PaginationService>;
   let localStorageSpy: jasmine.SpyObj<LocalStorageService>;
   let eventMessageSpy: jasmine.SpyObj<EventMessageService>;
+  let priceSpy: jasmine.SpyObj<PriceServiceService>;
   let stateMock: {
     products: any[];
     nextProducts: any[];
@@ -41,14 +44,19 @@ describe('SearchComponent', () => {
     paginationSpy = jasmine.createSpyObj<PaginationService>('PaginationService', ['getItemsPaginated', 'getProducts']);
     localStorageSpy = jasmine.createSpyObj<LocalStorageService>('LocalStorageService', [
       'getObject',
+      'getItem',
       'removeCategoryFilter',
+      'removeItem',
       'setItem',
       'setObject',
     ]);
     eventMessageSpy = jasmine.createSpyObj<EventMessageService>('EventMessageService', [
+      'emitAddedFilter',
       'emitFilterShown',
+      'emitFiltersCommitted',
       'emitRemovedFilter',
     ]);
+    priceSpy = jasmine.createSpyObj<PriceServiceService>('PriceServiceService', ['isCustomOffering']);
     routerSpy = jasmine.createSpyObj<Router>('Router', ['navigate'], {
       events: undefined,
     });
@@ -78,12 +86,14 @@ describe('SearchComponent', () => {
       page_check: false,
     });
     apiSpy.getProductsDetails.and.callFake(async (items: any[]) => items as any);
+    priceSpy.isCustomOffering.and.resolveTo(false);
     localStorageSpy.getObject.and.callFake((key: string) => {
       if (key === 'selected_categories') return [];
       if (key === 'login_items') return {};
       if (key === 'feedback') return {};
       return {};
     });
+    localStorageSpy.getItem.and.returnValue(null);
     spyOn(window, 'scrollTo');
 
     await TestBed.configureTestingModule({
@@ -97,6 +107,8 @@ describe('SearchComponent', () => {
         { provide: EventMessageService, useValue: eventMessageSpy },
         { provide: SearchStateService, useValue: stateMock },
         { provide: LoginServiceService, useValue: {} },
+        { provide: PriceServiceService, useValue: priceSpy },
+        { provide: ThemeService, useValue: { currentTheme$: new Subject<any>().asObservable() } },
         { provide: Router, useValue: routerSpy },
         {
           provide: ActivatedRoute,
@@ -122,8 +134,7 @@ describe('SearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('constructor should react to AddedFilter and RemovedFilter events', async () => {
-    component.aiSearchEnabled = false;
+  it('constructor should refresh selections for AddedFilter and RemovedFilter events', async () => {
     const getProductsSpy = spyOn(component, 'getProducts').and.resolveTo();
     const checkPanelSpy = spyOn(component, 'checkPanel').and.stub();
 
@@ -131,8 +142,7 @@ describe('SearchComponent', () => {
     messages$.next({ type: 'RemovedFilter' });
     await flushPromises();
 
-    expect(getProductsSpy).toHaveBeenCalledTimes(2);
-    expect(getProductsSpy).toHaveBeenCalledWith(false);
+    expect(getProductsSpy).not.toHaveBeenCalled();
     expect(checkPanelSpy).toHaveBeenCalledTimes(2);
   });
 
@@ -142,6 +152,26 @@ describe('SearchComponent', () => {
     messages$.next({ type: 'CloseFeedback' });
 
     expect(component.feedback).toBeFalse();
+  });
+
+  it('FiltersCommitted should reload normal search with configured filter IDs intact', async () => {
+    const filters = [{ id: 'procurement_type::Request Quote', name: 'Request Quote' }];
+    localStorageSpy.getObject.and.callFake((key: string) => key === 'selected_categories' ? filters : {});
+    component.keywords = 'cloud';
+
+    messages$.next({ type: 'FiltersCommitted' });
+    await flushPromises();
+
+    expect(paginationSpy.getItemsPaginated).toHaveBeenCalledWith(
+      0,
+      component.PRODUCT_LIMIT,
+      false,
+      [],
+      [],
+      { keywords: 'cloud', filters },
+      jasmine.any(Function),
+    );
+    expect(localStorageSpy.removeCategoryFilter).not.toHaveBeenCalled();
   });
 
   it('ngOnInit should restore state and skip loading when cached state exists', async () => {
@@ -165,7 +195,6 @@ describe('SearchComponent', () => {
   });
 
   it('ngOnInit should load products when there is no cached state', async () => {
-    component.aiSearchEnabled = false;
     stateMock.hasState.and.returnValue(false);
     routeParamGetSpy.and.callFake((key: string) => (key === 'keywords' ? 'cloud' : null));
     paginationSpy.getItemsPaginated.and.resolveTo({
@@ -278,6 +307,34 @@ describe('SearchComponent', () => {
     expect(getProductsSpy).toHaveBeenCalledWith(false);
   });
 
+  it('onUnifiedSearch should treat whitespace-only search as empty', async () => {
+    const event = { preventDefault: jasmine.createSpy('preventDefault') };
+    component.searchField.setValue('   ');
+    const updateSpy = spyOn(component, 'updateQueryParams').and.stub();
+    const getProductsSpy = spyOn(component, 'getProducts').and.resolveTo();
+
+    await component.onUnifiedSearch(event);
+
+    expect(event.preventDefault).toHaveBeenCalled();
+    expect(component.keywords).toBeUndefined();
+    expect(updateSpy).toHaveBeenCalledWith(undefined as any);
+    expect(getProductsSpy).toHaveBeenCalledWith(false);
+  });
+
+  it('onUnifiedSearch should submit trimmed keywords through normal search', async () => {
+    const event = { preventDefault: jasmine.createSpy('preventDefault') };
+    component.searchField.setValue('  cloud  ');
+    const updateSpy = spyOn(component, 'updateQueryParams').and.stub();
+    const getProductsSpy = spyOn(component, 'getProducts').and.resolveTo();
+
+    await component.onUnifiedSearch(event);
+
+    expect(event.preventDefault).toHaveBeenCalled();
+    expect(component.keywords).toBe('cloud');
+    expect(updateSpy).toHaveBeenCalledWith('cloud');
+    expect(getProductsSpy).toHaveBeenCalledWith(false);
+  });
+
   it('updateQueryParams should navigate with and without keywords', () => {
     component.updateQueryParams('ai');
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/search', { keywords: 'ai' }], { replaceUrl: true });
@@ -311,7 +368,7 @@ describe('SearchComponent', () => {
     component.onClick();
 
     expect(component.showDrawer).toBeFalse();
-    expect(detectSpy).toHaveBeenCalled();
+    expect(detectSpy).not.toHaveBeenCalled();
   });
 
   it('ngOnDestroy should clear selected filters and state when not navigating to detail', () => {

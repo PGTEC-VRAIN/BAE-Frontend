@@ -7,9 +7,10 @@ import {LocalStorageService} from "src/app/services/local-storage.service";
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginInfo } from 'src/app/models/interfaces';
-import * as moment from 'moment';
+import moment from 'moment';
 import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
 import { environment } from "src/environments/environment";
+import { DomeBlogContentType } from "src/app/services/dome-blog-service.service";
 
 @Component({
   selector: 'app-entry-form',
@@ -33,12 +34,15 @@ export class EntryFormComponent implements OnInit {
   }
 
   entryForm = new FormGroup({
+    contentType: new FormControl<DomeBlogContentType>('blog', [Validators.required]),
     title: new FormControl('', [Validators.required]),
     slug: new FormControl('', [Validators.required, Validators.pattern(this.slugRegex)]),
     featuredImage: new FormControl(''),
     metaDescription: new FormControl('', [Validators.maxLength(160)]),
     excerpt: new FormControl('', [Validators.maxLength(300)]),
     tags: new FormControl(''),
+    author: new FormControl(''),
+    date: new FormControl(''),
     content: new FormControl('', [Validators.required]),
   });
 
@@ -56,13 +60,22 @@ export class EntryFormComponent implements OnInit {
   deleteConfirmButtonText = 'Delete';
   deleteConfirmButtonClass = 'px-4 py-2 text-sm font-medium text-white bg-red-700 border border-transparent rounded-md hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500';
   uploadingFeaturedImage = false;
+  contentTypes: { value: DomeBlogContentType; label: string }[] = [
+    { value: 'blog', label: 'Blog' },
+    { value: 'news', label: 'News / Event' },
+    { value: 'faq', label: 'FAQ' }
+  ];
 
   async ngOnInit(): Promise<void> {
+    this.applyInitialContentType();
     this.setupSlugHandlers();
+    this.setupContentTypeHandlers();
     this.blogId = this.route.snapshot.paramMap.get('id')!;
     await this.loadExistingEntries();
     if(this.blogId){
       let blogInfo = await this.domeBlogService.getBlogEntryById(this.blogId);
+      this.entryForm.controls['contentType'].setValue(this.normalizeContentType(blogInfo.contentType || this.entryForm.controls['contentType'].value), { emitEvent: false });
+      this.applyContentTypeRules();
       this.entryForm.controls['title'].setValue(blogInfo.title);
       const slugValue = this.slugify(blogInfo.slug || blogInfo.title || '');
       this.entryForm.controls['slug'].setValue(slugValue, { emitEvent: false });
@@ -70,6 +83,8 @@ export class EntryFormComponent implements OnInit {
       this.entryForm.controls['metaDescription'].setValue(blogInfo.metaDescription || '');
       this.entryForm.controls['excerpt'].setValue(blogInfo.excerpt || '');
       this.entryForm.controls['tags'].setValue(this.formatTagsForInput(blogInfo.tags));
+      this.entryForm.controls['author'].setValue((blogInfo.author || '').toString().trim());
+      this.entryForm.controls['date'].setValue(this.formatDateForInput(blogInfo.date));
       this.slugManuallyEdited = slugValue.length > 0 && slugValue !== this.slugify(blogInfo.title || '');
       this.entryForm.controls['content'].setValue(blogInfo.content);
     } else {
@@ -79,7 +94,7 @@ export class EntryFormComponent implements OnInit {
   }
 
   goBack(){
-    this.router.navigate(['/blog']);
+    this.router.navigate([this.getLandingRoute()]);
   }
 
   async create(){
@@ -88,16 +103,14 @@ export class EntryFormComponent implements OnInit {
       return;
     }
 
-    let body={
-      title: this.entryForm.value.title,
-      slug: this.entryForm.value.slug,
-      featuredImage: this.getFeaturedImageUrl(),
-      metaDescription: this.entryForm.value.metaDescription,
-      excerpt: this.entryForm.value.excerpt,
-      tags: this.parseTagsFromForm(),
+    const authorFromForm = this.normalizeOptionalText(this.entryForm.controls['author'].value);
+    const dateFromForm = this.normalizeOptionalText(this.entryForm.controls['date'].value);
+    let body:any=this.buildEntryBody({
       partyId: this.partyId,
-      author: this.name,
-      content: this.entryForm.value.content,
+      author: authorFromForm || this.name
+    });
+    if (dateFromForm) {
+      body.date = dateFromForm;
     }
     //await lastValueFrom(this.domeBlogService.createBlogEntry(body))
     this.domeBlogService.createBlogEntry(body).subscribe({
@@ -128,14 +141,14 @@ export class EntryFormComponent implements OnInit {
       return;
     }
 
-    let body={
-      title: this.entryForm.value.title,
-      slug: this.entryForm.value.slug,
-      featuredImage: this.getFeaturedImageUrl(),
-      metaDescription: this.entryForm.value.metaDescription,
-      excerpt: this.entryForm.value.excerpt,
-      tags: this.parseTagsFromForm(),
-      content: this.entryForm.value.content
+    const authorFromForm = this.normalizeOptionalText(this.entryForm.controls['author'].value);
+    const dateFromForm = this.normalizeOptionalText(this.entryForm.controls['date'].value);
+    let body:any=this.buildEntryBody();
+    if (authorFromForm) {
+      body.author = authorFromForm;
+    }
+    if (dateFromForm) {
+      body.date = dateFromForm;
     }
     //await lastValueFrom(this.domeBlogService.createBlogEntry(body))
     try {
@@ -229,6 +242,13 @@ export class EntryFormComponent implements OnInit {
     });
   }
 
+  setupContentTypeHandlers() {
+    this.entryForm.controls['contentType'].valueChanges.subscribe(() => {
+      this.applyContentTypeRules();
+    });
+    this.applyContentTypeRules();
+  }
+
   slugify(value: string): string {
     return value
       .toLowerCase()
@@ -245,9 +265,10 @@ export class EntryFormComponent implements OnInit {
       return false;
     }
 
+    const currentContentType = this.getSelectedContentType();
     return this.existingEntries.some((entry) => {
       const existingSlug = this.slugify((entry.slug || entry.title || '') as string);
-      return existingSlug === slug && entry._id !== this.blogId;
+      return existingSlug === slug && entry._id !== this.blogId && this.normalizeContentType(entry.contentType) === currentContentType;
     });
   }
 
@@ -343,6 +364,31 @@ export class EntryFormComponent implements OnInit {
     this.entryForm.controls['featuredImage'].setValue('');
   }
 
+  isFaqEntry(): boolean {
+    return this.getSelectedContentType() === 'faq';
+  }
+
+  getTitleLabel(): string {
+    return this.isFaqEntry() ? 'Question' : 'Title';
+  }
+
+  getContentLabel(): string {
+    return this.isFaqEntry() ? 'Answer' : 'Content';
+  }
+
+  getUrlPreviewBase(): string {
+    const contentType = this.getSelectedContentType();
+    if (contentType === 'news') {
+      return '/news';
+    }
+
+    if (contentType === 'faq') {
+      return '/faq';
+    }
+
+    return '/blog';
+  }
+
   getFeaturedImageUrl(): string {
     return this.extractFeaturedImageUrl(this.entryForm.controls['featuredImage'].value);
   }
@@ -402,6 +448,99 @@ export class EntryFormComponent implements OnInit {
     }
 
     return '';
+  }
+
+  private normalizeOptionalText(value: any): string {
+    if (value === null || value === undefined) {
+      return '';
+    }
+
+    return value.toString().trim();
+  }
+
+  private applyInitialContentType() {
+    const requestedType = this.route.snapshot.queryParamMap?.get('type');
+    this.entryForm.controls['contentType'].setValue(this.normalizeContentType(requestedType), { emitEvent: false });
+  }
+
+  private applyContentTypeRules() {
+    if (this.isFaqEntry()) {
+      this.entryForm.controls['slug'].clearValidators();
+      this.entryForm.controls['slug'].setValue(this.slugify(this.entryForm.controls['title'].value || ''), { emitEvent: false });
+      this.entryForm.controls['featuredImage'].setValue('', { emitEvent: false });
+    } else {
+      this.entryForm.controls['slug'].setValidators([Validators.required, Validators.pattern(this.slugRegex)]);
+    }
+
+    this.entryForm.controls['slug'].updateValueAndValidity({ emitEvent: false });
+  }
+
+  private buildEntryBody(extraFields: any = {}): any {
+    const contentType = this.getSelectedContentType();
+    const body: any = {
+      title: this.entryForm.value.title,
+      slug: this.slugify(this.entryForm.value.slug || this.entryForm.value.title || ''),
+      contentType,
+      content: this.entryForm.value.content,
+      ...extraFields
+    };
+
+    if (contentType !== 'faq') {
+      body.featuredImage = this.getFeaturedImageUrl();
+      body.metaDescription = this.entryForm.value.metaDescription;
+      body.excerpt = this.entryForm.value.excerpt;
+      body.tags = this.parseTagsFromForm();
+    }
+
+    return body;
+  }
+
+  private getLandingRoute(): string {
+    const contentType = this.getSelectedContentType();
+    if (contentType === 'news') {
+      return '/news';
+    }
+
+    if (contentType === 'faq') {
+      return '/faq';
+    }
+
+    return '/blog';
+  }
+
+  private getSelectedContentType(): DomeBlogContentType {
+    return this.normalizeContentType(this.entryForm.controls['contentType'].value);
+  }
+
+  private normalizeContentType(value: any): DomeBlogContentType {
+    const normalized = (value || '').toString().trim().toLowerCase();
+    if (normalized === 'news' || normalized === 'news/event' || normalized === 'event') {
+      return 'news';
+    }
+
+    if (normalized === 'faq') {
+      return 'faq';
+    }
+
+    return 'blog';
+  }
+
+  private formatDateForInput(value: any): string {
+    const rawDate = this.normalizeOptionalText(value);
+    if (!rawDate) {
+      return '';
+    }
+
+    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(rawDate)) {
+      return rawDate;
+    }
+
+    const parsedDate = moment(rawDate);
+    if (!parsedDate.isValid()) {
+      return '';
+    }
+
+    return parsedDate.format('YYYY-MM-DDTHH:mm');
   }
 
   private showTemporaryError(message: string) {

@@ -143,6 +143,10 @@ export class HeaderComponent implements OnInit, AfterViewInit, DoCheck, OnDestro
   private themeSubscription: Subscription = new Subscription();
   private destroy$ = new Subject<void>();
 
+  get isLightHeader(): boolean {
+    return !!this.currentTheme?.lightHeader;
+  }
+
   get colorSchemeSelectorEnabled(): boolean {
     return this.currentTheme?.features?.colorSchemeSelector === true;
   }

@@ -219,6 +219,9 @@ import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.c
     UpdateUsageSpecComponent,
     ConfirmDialogComponent,
     CarouselComponent
+    AccountHeaderComponent,
+    PolicyViewerComponent,
+    OrgNamePipe
   ],
   providers: [
     AppInitService,

@@ -43,9 +43,9 @@ export interface IDashboardStats {
     './dashboard.sections.component.css'
   ],
   standalone: true,
-  imports: [TranslateModule, ReactiveFormsModule, FeaturedComponent, NgClass, DashboardWhatsDome, DashboardHeroComponent, DashboardStatsComponent, DashboardServicesComponent, DashboardCustomersComponent, DashboardProvidersComponent, DashboardNewsComponent, DashboardEcosystemComponent],
+  imports: [TranslateModule, ReactiveFormsModule, FeaturedComponent, NgClass, DashboardWhatsDome, DashboardHeroComponent, DashboardStatsComponent, DashboardServicesComponent, DashboardCustomersComponent, DashboardProvidersComponent, DashboardEcosystemComponent, HeroMosaicComponent, ProviderLogoComponent],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   customersLink = environment.DOME_CUSTOMER_REGISTER_LINK;
   providersLink = environment.DOME_REGISTER_LINK;
 

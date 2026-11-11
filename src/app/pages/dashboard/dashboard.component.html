@@ -1,7 +1,7 @@
 @if (providerThemeName === 'DOME') {
 <div class="page">
 
-  <app-dashboard-hero></app-dashboard-hero>
+  <app-dashboard-hero [providersLink]="providersLink" [customersLink]="customersLink"></app-dashboard-hero>
 
   @if(stats) {
   <app-dashboard-stats [stats]="stats"></app-dashboard-stats>
@@ -17,9 +17,7 @@
 
   <app-dashboard-providers [providersLink]="providersLink"></app-dashboard-providers>
 
-  <app-dashboard-news></app-dashboard-news>
-
-  <app-dashboard-ecosystem></app-dashboard-ecosystem>
+  <app-dashboard-ecosystem [providersLink]="providersLink" [customersLink]="customersLink"></app-dashboard-ecosystem>
 </div>
 } @else {
 <div class="ob-page">
@@ -72,12 +70,9 @@
               </div>
               @for (serv of services; track serv; let pos = $index) {
               @if (currentIndexServ === pos) {
-              <a data-cy="nameServices" [style.display]="'-webkit-box'" [style.webkitBoxOrient]="'vertical'"
-                [style.webkitLineClamp]="'2'" [class.break-all]="hasLongWord(serv, 20)"
-                [class.break-words]="!hasLongWord(serv, 20)"
-                class="text-md text-wrap line-clamp-2 mb-2 font-medium block items-center px-2.5 py-0.5 rounded-md text-primary-100 dark:text-primary-50 bg-secondary-50 dark:bg-secondary-200 w-fit animate-in">
-                {{ serv }}
-              </a>
+              <p data-cy="nameServices" class="ob-hero-stat-tag" [title]="serv">
+                {{ 'DASHBOARD.landing._includes' | translate }} · <strong>{{ serv }}</strong>
+              </p>
               }
               }
             </div>
@@ -98,12 +93,9 @@
               </div>
               @for (pub of publishers; track pub; let pos = $index) {
               @if (currentIndexPub === pos) {
-              <a data-cy="nameOrgs" [style.display]="'-webkit-box'" [style.webkitBoxOrient]="'vertical'"
-                [style.webkitLineClamp]="'2'" [class.break-all]="hasLongWord(pub, 20)"
-                [class.break-words]="!hasLongWord(pub, 20)"
-                class="text-md text-wrap line-clamp-2 font-medium block items-center px-2.5 py-0.5 rounded-md text-primary-100 dark:text-primary-50 bg-secondary-50 dark:bg-secondary-200 w-fit animate-in">
-                {{ pub }}
-              </a>
+              <p data-cy="nameOrgs" class="ob-hero-stat-tag" [title]="pub">
+                {{ 'DASHBOARD.landing._includes' | translate }} · <strong>{{ pub }}</strong>
+              </p>
               }
               }
             </div>

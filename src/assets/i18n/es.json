@@ -1900,6 +1900,7 @@
     "_owner": "Propietario",
     "_description": "Descripción",
     "_how_it_works": "Cómo funciona",
+    "_usage_policies": "Políticas de uso",
     "_key_features": "Características principales",
     "_business_benefits": "Beneficios para el negocio",
     "_use_cases": "Casos de uso",
@@ -4054,5 +4055,48 @@
     "espacio_de_datos_de_confianza_cred": "Espacio de datos de confianza - CRED",
     "citcom_ai_logo": "Logo de CitCom.ai",
     "co_funded_by_the_european_union": "Cofinanciado por la Unión Europea"
+  },
+  "MAS": {
+    "_vc": "VC",
+    "_vc_required_hint": "Requiere una credencial verificable para invocar este agente",
+    "_skills": "Skills del agente",
+    "_protocols": "Protocolos",
+    "_mesh_live": "en vivo",
+    "_mesh_aria": "Ilustración de la red de agentes: un orquestador intercambia mensajes A2A con los agentes, los descubre en el registro ANP, comprueba credenciales verificables con el verifier y accede a los datos con MCP.",
+    "_vc_card_title": "Credencial de acceso del agente",
+    "_vc_card_status": "firma verificada · política: permitir",
+    "_layers_eyebrow": "Pila de protocolos",
+    "_layers_title": "Cómo se conectan los agentes",
+    "_layers_text": "Cuatro capas hacen que cada agente del marketplace sea interoperable y responsable: mensajería, descubrimiento, herramientas y confianza.",
+    "layers": {
+      "a2a": {
+        "_code": "A2A",
+        "_tag": "mensajería",
+        "_title": "Agent-to-Agent",
+        "_text": "Los agentes exponen una agent card con sus skills y reciben tareas por JSON-RPC, con streaming y seguimiento de tareas.",
+        "_mono": "message/send · message/stream · tasks/*"
+      },
+      "anp": {
+        "_code": "ANP",
+        "_tag": "descubrimiento",
+        "_title": "Agent Network Protocol",
+        "_text": "Un registro de descripciones de agentes ligadas a DIDs permite al orquestador encontrar el agente adecuado para cada paso del flujo.",
+        "_mono": "did:wba · agent description · registro"
+      },
+      "mcp": {
+        "_code": "MCP",
+        "_tag": "herramientas",
+        "_title": "Model Context Protocol",
+        "_text": "Los agentes acceden a datos y herramientas del espacio de datos mediante servidores MCP, en solo lectura sobre brokers NGSI-LD.",
+        "_mono": "tools/list · tools/call · NGSI-LD"
+      },
+      "vc": {
+        "_code": "VC",
+        "_tag": "confianza",
+        "_title": "Credenciales verificables",
+        "_text": "Quien llama presenta una MachineCredential (OID4VC); el verifier la comprueba contra la lista de emisores de confianza y la pasarela aplica la política ODRL.",
+        "_mono": "OID4VP · TIL · ODRL · APISIX + OPA"
+      }
+    }
   }
 }

@@ -23,6 +23,7 @@ import { UsageServiceService } from 'src/app/services/usage-service.service';
 import { environment } from 'src/environments/environment';
 import { cartProduct, LoginInfo, productSpecCharacteristicValueCart } from '../../models/interfaces';
 import { EventMessageService } from "../../services/event-message.service";
+import { isPolicyValue } from 'src/app/shared/policy-viewer/policy-explainer';
 
 interface UsageMetricCard {
   id: string;
@@ -97,6 +98,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy, AfterViewInit
   checkCustom: boolean = false;
   textDivHeight: any;
   prodChars: any[] = [];
+  // Policy characteristics (ODRL / credentials) are shown explained in their own section
+  policyChars: any[] = [];
   usageMetrics: UsageMetricCard[] = [];
   selfAtt: any = '';
   complianceDocuments: { name: string, url: string, isSelfAtt: boolean }[] = [];
@@ -322,6 +325,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy, AfterViewInit
       this.prodChars = this.prodSpec.productSpecCharacteristic.filter((char: any) => {
         return !char.name.startsWith('Compliance:') && !char.name?.endsWith(' - enabled')
       })
+      this.splitPolicyCharacteristics();
 
       this.additionalCerts = this.prodSpec.productSpecCharacteristic.filter((char: any) => {
         const cleanedName = char.name.replace('Compliance:', '').trim();
@@ -1063,6 +1067,24 @@ export class ProductDetailsComponent implements OnInit, OnDestroy, AfterViewInit
     this.isDrawerOpen = false;
   }
 
+
+  // Políticas (ODRL o de credenciales): se muestran explicadas en "Políticas de uso", con el JSON tras el icono (i)
+  isPolicyCharacteristic(char: any): boolean {
+    const value = this.getPolicyValue(char);
+    return !!value && isPolicyValue(value);
+  }
+
+  getPolicyValue(char: any): any {
+    const vals = char?.productSpecCharacteristicValue ?? [];
+    const def = vals.find((v: any) => v?.isDefault) ?? vals[0];
+    return def?.value;
+  }
+
+  private splitPolicyCharacteristics(): void {
+    this.policyChars = this.prodChars.filter((char: any) => this.isPolicyCharacteristic(char));
+    this.prodChars = this.prodChars.filter((char: any) => !this.isPolicyCharacteristic(char));
+  }
+
   hasLongWord(str: string | undefined, threshold = 20) {
     if (str) {
       return str.split(/\s+/).some(word => word.length > threshold);
@@ -1283,6 +1305,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy, AfterViewInit
       this.prodChars = (this.prodSpec as any).productSpecCharacteristic.filter((char: any) =>
         !char.name?.startsWith('Compliance:') && !char.name?.endsWith(' - enabled')
       );
+      this.splitPolicyCharacteristics();
     }
 
     this.parseComplianceInfo(this.prodSpec);

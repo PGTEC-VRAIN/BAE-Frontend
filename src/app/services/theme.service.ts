@@ -119,8 +119,9 @@ export class ThemeService implements OnDestroy {
     }
 
     const html = this.document.documentElement;
-    const isDark = this.activeThemeSupportsDarkMode()
-      && (mode === ThemeMode.Dark || (mode === ThemeMode.System && this.prefersDarkColorScheme()));
+    const activeTheme = this.currentThemeSubject.value ?? this.defaultTheme;
+    const isDark = activeTheme?.forceDarkMode === true || (this.activeThemeSupportsDarkMode()
+      && (mode === ThemeMode.Dark || (mode === ThemeMode.System && this.prefersDarkColorScheme())));
 
     if (isDark) {
       this.renderer.addClass(html, 'dark');

@@ -1901,6 +1901,7 @@
     "_owner": "Owner",
     "_description": "Description",
     "_how_it_works": "How it works",
+    "_usage_policies": "Usage policies",
     "_key_features": "Key Features",
     "_business_benefits": "Business Benefits",
     "_use_cases": "Use Cases",
@@ -4059,5 +4060,48 @@
     "espacio_de_datos_de_confianza_cred": "Espacio de datos de confianza - CRED",
     "citcom_ai_logo": "CitCom.ai logo",
     "co_funded_by_the_european_union": "Co-funded by the European Union"
+  },
+  "MAS": {
+    "_vc": "VC",
+    "_vc_required_hint": "Requires a verifiable credential to invoke this agent",
+    "_skills": "Agent skills",
+    "_protocols": "Protocols",
+    "_mesh_live": "live",
+    "_mesh_aria": "Illustration of the agent network: an orchestrator exchanges A2A messages with the agents, discovers them through the ANP registry, checks verifiable credentials with the verifier and reaches data through MCP.",
+    "_vc_card_title": "Agent access credential",
+    "_vc_card_status": "signature verified · policy permit",
+    "_layers_eyebrow": "Protocol stack",
+    "_layers_title": "How the agents connect",
+    "_layers_text": "Four layers make every agent of the marketplace interoperable and accountable: messaging, discovery, tools and trust.",
+    "layers": {
+      "a2a": {
+        "_code": "A2A",
+        "_tag": "messaging",
+        "_title": "Agent-to-Agent",
+        "_text": "Agents expose an agent card with their skills and receive tasks over JSON-RPC, with streaming and task tracking.",
+        "_mono": "message/send · message/stream · tasks/*"
+      },
+      "anp": {
+        "_code": "ANP",
+        "_tag": "discovery",
+        "_title": "Agent Network Protocol",
+        "_text": "A registry of agent descriptions bound to DIDs lets orchestrators find the right agent for each step of a flow.",
+        "_mono": "did:wba · agent description · registry"
+      },
+      "mcp": {
+        "_code": "MCP",
+        "_tag": "tools",
+        "_title": "Model Context Protocol",
+        "_text": "Agents reach data and tools of the data space through MCP servers, read-only over NGSI-LD context brokers.",
+        "_mono": "tools/list · tools/call · NGSI-LD"
+      },
+      "vc": {
+        "_code": "VC",
+        "_tag": "trust",
+        "_title": "Verifiable credentials",
+        "_text": "Callers present a MachineCredential (OID4VC); the verifier checks it against the trusted issuers list and the gateway enforces the ODRL policy.",
+        "_mono": "OID4VP · TIL · ODRL · APISIX + OPA"
+      }
+    }
   }
 }

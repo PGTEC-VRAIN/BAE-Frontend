@@ -115,6 +115,66 @@
     </div>
   </div>
 </footer>
+} @else if (isMasTheme) {
+<footer class="mas-footer w-full antialiased">
+  <div class="mas-footer__shell">
+    <div class="mas-footer__top">
+      <div>
+        <img class="mas-footer__logo" src="assets/themes/mas/mas-logo.svg" alt="MAS Agent Marketplace" />
+        <p class="mas-footer__tagline">{{ 'FOOTER._mas_tagline' | translate }}</p>
+        <ul class="mas-footer__stack" [attr.aria-label]="'MAS._protocols' | translate">
+          <li>A2A</li>
+          <li>ANP</li>
+          <li>MCP</li>
+          <li>OID4VC</li>
+          <li>ODRL</li>
+          <li>TM Forum</li>
+        </ul>
+      </div>
+      <nav class="mas-footer__nav" [attr.aria-label]="'AUTO.marketplace' | translate">
+        <p class="mas-footer__nav-title">{{ 'AUTO.marketplace' | translate }}</p>
+        <a (click)="goToRoute('/search')" tabindex="0" (keydown.enter)="goToRoute('/search')">{{ 'HEADER._browse_serv' | translate }}</a>
+        <a (click)="goToRoute('/catalogues')" tabindex="0" (keydown.enter)="goToRoute('/catalogues')">{{ 'HEADER._catalogs' | translate }}</a>
+        <a (click)="goToRoute('/guides')" tabindex="0" (keydown.enter)="goToRoute('/guides')">{{ 'PGTEC._guides' | translate }}</a>
+        <a href="https://onboarding.pgtec-vrain-dataspace.eu/" target="_blank" rel="noopener noreferrer">{{ 'FOOTER._onboarding' | translate }}</a>
+        <a href="https://onboarding-docs.pgtec-vrain-dataspace.eu/documents/onboarding/agreement.pdf" target="_blank"
+          rel="noopener noreferrer">{{ 'FOOTER._agreement' | translate }}</a>
+        @if (projectUrl) {
+        <a [href]="projectUrl" target="_blank" rel="noopener noreferrer">{{ 'FOOTER._project' | translate }}</a>
+        }
+        @if (githubUrl) {
+        <a [href]="githubUrl" target="_blank" rel="noopener noreferrer">{{ 'AUTO.github' | translate }}</a>
+        }
+      </nav>
+    </div>
+
+    <div class="mas-footer__logos">
+      <a href="https://next-generation-eu.europa.eu/index_es" target="_blank" rel="noopener noreferrer">
+        <img src="assets/themes/pgtec/logo_EU-NG_es.png" alt="Financiado por la Unión Europea - NextGenerationEU" />
+      </a>
+      <a href="https://avance.digital.gob.es/" target="_blank" rel="noopener noreferrer">
+        <img src="assets/themes/pgtec/logo_MTDFP-SEDIA.png"
+          alt="Gobierno de España - Ministerio para la Transformación Digital y de la Función Pública - Secretaría de Estado de Digitalización e Inteligencia Artificial" />
+      </a>
+      <a href="https://planderecuperacion.gob.es/" target="_blank" rel="noopener noreferrer">
+        <img src="assets/themes/pgtec/logo_PRTR.png" alt="Plan de Recuperación, Transformación y Resiliencia" />
+      </a>
+      <a href="https://www.upv.es/" target="_blank" rel="noopener noreferrer">
+        <img src="assets/themes/pgtec/logo_UPV.png" alt="Universitat Politècnica de València" />
+      </a>
+      <a href="https://vrain.upv.es/" target="_blank" rel="noopener noreferrer">
+        <img class="mas-footer__vrain" src="assets/themes/pgtec/logo_VRAIN.png"
+          [alt]="'AUTO.vrain_valencian_research_institute_f' | translate" />
+      </a>
+    </div>
+    <p class="mas-footer__funding">{{ 'FOOTER._funding' | translate }}</p>
+
+    <div class="mas-footer__bottom">
+      <span>© {{ currentYear }} {{ 'FOOTER._copyright' | translate }}</span>
+      <span>{{ 'FOOTER._mas_build' | translate }}</span>
+    </div>
+  </div>
+</footer>
 } @else {
 <footer class="w-full bg-[#1c2430] text-white antialiased border-t border-white/10">
   <div class="mx-auto max-w-[1240px] px-6 sm:px-8 lg:px-12">

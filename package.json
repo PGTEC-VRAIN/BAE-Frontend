@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build:pgtec": "ng build --configuration production && scripts/rename-bundle.sh dist/bae-frontend",
+    "build:mas": "ng build --configuration production && BUNDLE_PREFIX=frontend_mas scripts/rename-bundle.sh dist/bae-frontend",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

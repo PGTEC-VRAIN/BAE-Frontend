@@ -28,6 +28,8 @@ import { DashboardStatsComponent } from './dashboard-stats/dashboard-stats.compo
 import { DashboardWhatsDome } from './dashboard-whatsdome/dashboard-whatsdome.component';
 import { HeroMosaicComponent } from './landing-motion/hero-mosaic.component';
 import { ProviderLogoComponent } from './landing-motion/provider-logo.component';
+import { AgentMeshComponent } from './landing-motion/agent-mesh.component';
+import { AgentProfile, getAgentProfile } from 'src/app/shared/card/agent-offer.util';
 
 export interface IDashboardStats {
   services: number;
@@ -43,7 +45,7 @@ export interface IDashboardStats {
     './dashboard.sections.component.css'
   ],
   standalone: true,
-  imports: [TranslateModule, ReactiveFormsModule, FeaturedComponent, NgClass, DashboardWhatsDome, DashboardHeroComponent, DashboardStatsComponent, DashboardServicesComponent, DashboardCustomersComponent, DashboardProvidersComponent, DashboardEcosystemComponent, HeroMosaicComponent, ProviderLogoComponent],
+  imports: [TranslateModule, ReactiveFormsModule, FeaturedComponent, NgClass, DashboardWhatsDome, DashboardHeroComponent, DashboardStatsComponent, DashboardServicesComponent, DashboardCustomersComponent, DashboardProvidersComponent, DashboardEcosystemComponent, HeroMosaicComponent, ProviderLogoComponent, AgentMeshComponent],
 })
 export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
   customersLink = environment.DOME_CUSTOMER_REGISTER_LINK;
@@ -104,9 +106,34 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     private zone: NgZone,
   ) { }
 
-  // Landing animations based on the PGTEC logo's data line
+  // Landing animations (counters, typed search examples, lit categories): any theme motion
   get motion(): boolean {
+    return !!this.currentTheme?.dashboard?.motion;
+  }
+
+  // PGTEC: animated climate mosaic and provider logo based on the logo's data line
+  get dataLine(): boolean {
     return this.currentTheme?.dashboard?.motion === 'data-line';
+  }
+
+  // MAS: network of agents in the hero, protocol stack and agent cards
+  get agentMesh(): boolean {
+    return this.currentTheme?.dashboard?.motion === 'agent-mesh';
+  }
+
+  // Protocol / trust layers of the multi-agent system shown on the MAS landing
+  readonly agentLayers = ['a2a', 'anp', 'mcp', 'vc'];
+
+  private agentProfiles = new Map<string, AgentProfile>();
+
+  getAgent(offering: ProductOffering): AgentProfile {
+    const key = offering.id ?? offering.name ?? '';
+    let profile = this.agentProfiles.get(key);
+    if (!profile) {
+      profile = getAgentProfile(offering);
+      this.agentProfiles.set(key, profile);
+    }
+    return profile;
   }
 
   get projectUrl(): string {
@@ -291,7 +318,14 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe((picked) => {
         this.productService.getProductsDetails(picked).then((data) => {
-          this.productOfferings = (data as ProductOffering[]).filter((offering) =>
+          const offerings = data as ProductOffering[];
+          if (this.agentMesh) {
+            // Agent cards do not need a picture: agents first, then the rest of the offerings
+            this.productOfferings = [...offerings].sort((a, b) =>
+              Number(this.getAgent(b).isAgent) - Number(this.getAgent(a).isAgent));
+            return;
+          }
+          this.productOfferings = offerings.filter((offering) =>
             offering.attachment?.some(
               (a) => a.attachmentType === 'Picture' || a.name === 'Profile Picture'
             )
@@ -313,7 +347,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     const attachments = offering?.attachment ?? [];
     const profile = attachments.filter((a) => a.name === 'Profile Picture');
     const pictures = profile.length > 0 ? profile : attachments.filter((a) => a.attachmentType === 'Picture');
-    return pictures.at(0)?.url ?? 'assets/images/placeholder.svg';
+    return pictures.at(0)?.url ?? this.currentTheme?.assets?.offerPlaceholderUrl ?? 'assets/images/placeholder.svg';
   }
 
   getOfferingCategory(offering: ProductOffering): string | undefined {

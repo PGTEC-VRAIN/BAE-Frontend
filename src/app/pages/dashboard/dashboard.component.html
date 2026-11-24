@@ -105,7 +105,9 @@
       </div>
 
       <div class="ob-hero-media">
-        @if (motion) {
+        @if (agentMesh) {
+        <app-agent-mesh class="ob-hero-mesh"></app-agent-mesh>
+        } @else if (dataLine) {
         <app-hero-mosaic class="ob-hero-img"></app-hero-mosaic>
         } @else {
         <img class="ob-hero-img" [src]="heroUrl" alt="" />
@@ -189,6 +191,30 @@
     </div>
   </section>
 
+  <!-- ===== MAS: how agents connect (protocol and trust layers) ===== -->
+  @if (agentMesh) {
+  <section class="ob-section mas-layers" aria-labelledby="masLayersTitle">
+    <div class="ob-shell">
+      <p class="ob-eyebrow ob-eyebrow--on-light"><span class="ob-eyebrow-line" aria-hidden="true"></span>{{ 'MAS._layers_eyebrow' | translate }}</p>
+      <h2 id="masLayersTitle" class="ob-display-title">{{ 'MAS._layers_title' | translate }}</h2>
+      <p class="mas-layers__intro">{{ 'MAS._layers_text' | translate }}</p>
+      <div class="mas-layers__grid">
+        @for (layer of agentLayers; track layer) {
+        <article class="mas-layer" [ngClass]="'mas-layer--' + layer">
+          <div class="mas-layer__top">
+            <span class="mas-layer__code">{{ ('MAS.layers.' + layer + '._code') | translate }}</span>
+            <span class="mas-layer__tag">{{ ('MAS.layers.' + layer + '._tag') | translate }}</span>
+          </div>
+          <h3 class="mas-layer__title">{{ ('MAS.layers.' + layer + '._title') | translate }}</h3>
+          <p class="mas-layer__text">{{ ('MAS.layers.' + layer + '._text') | translate }}</p>
+          <p class="mas-layer__mono">{{ ('MAS.layers.' + layer + '._mono') | translate }}</p>
+        </article>
+        }
+      </div>
+    </div>
+  </section>
+  }
+
   <!-- ===== Featured services (offerings already loaded by this page) ===== -->
   @if (productOfferings && productOfferings.length > 0) {
   <section class="ob-section ob-section--muted" aria-labelledby="obFeatTitle">
@@ -203,6 +229,49 @@
         </button>
       </div>
 
+      @if (agentMesh) {
+      <div class="ob-feat-grid">
+        @for (offering of productOfferings.slice(0, 3); track offering.id) {
+        <article class="ob-feat-card mas-mini-agent">
+          <div class="mas-mini-agent__head">
+            <span class="mas-mini-agent__glyph" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 2.5 20.2 7.2v9.6L12 21.5l-8.2-4.7V7.2Z" /><circle cx="12" cy="12" r="2.6" /></svg>
+            </span>
+            <div class="mas-mini-agent__id">
+              <h3 class="ob-feat-title">
+                <button type="button" class="ob-feat-link" (click)="goToOffering(offering)">{{ offering.name }}</button>
+              </h3>
+              @if (getOfferingCategory(offering); as category) {
+              <p class="mas-mini-agent__cat">{{ category }}</p>
+              }
+            </div>
+          </div>
+          @if (offering.description) {
+          <div class="ob-feat-desc" [innerHTML]="offering.description"></div>
+          }
+          @if (getAgent(offering); as agent) {
+          <div class="mas-mini-agent__chips">
+            @for (protocol of agent.protocols; track protocol) {
+            <span class="mas-badge mas-badge--protocol">{{ protocol }}</span>
+            }
+            @if (agent.requiresVc) {
+            <span class="mas-badge mas-badge--vc">{{ 'MAS._vc' | translate }}</span>
+            }
+            @for (skill of agent.skills.slice(0, 4); track skill) {
+            <span class="mas-chip">{{ skill }}</span>
+            }
+          </div>
+          }
+          <span class="ob-feat-more" aria-hidden="true">
+            {{ 'DASHBOARD.landing._view_details' | translate }}
+            <svg class="ob-icon ob-icon-sm" viewBox="0 0 24 24">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </span>
+        </article>
+        }
+      </div>
+      } @else {
       <div class="ob-feat-grid">
         @for (offering of productOfferings.slice(0, 3); track offering.id) {
         <article class="ob-feat-card">
@@ -229,6 +298,7 @@
         </article>
         }
       </div>
+      }
     </div>
   </section>
   }
@@ -288,8 +358,28 @@
         </div>
       </div>
       <div class="ob-provider-media" aria-hidden="true">
-        @if (motion) {
+        @if (dataLine) {
         <app-provider-logo></app-provider-logo>
+        } @else if (agentMesh) {
+        <!-- Illustrative verifiable credential of an agent (decorative) -->
+        <div class="mas-vc-card">
+          <div class="mas-vc-card__head">
+            <span class="mas-vc-card__seal">
+              <svg viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6l-7-3Z" /><path d="m9 12 2 2 4-4" /></svg>
+            </span>
+            <div>
+              <p class="mas-vc-card__type">VerifiableCredential · MachineCredential</p>
+              <p class="mas-vc-card__title">{{ 'MAS._vc_card_title' | translate }}</p>
+            </div>
+          </div>
+          <dl class="mas-vc-card__fields">
+            <div><dt>issuer</dt><dd>did:web:participant.example</dd></div>
+            <div><dt>subject</dt><dd>did:key:z6Mk…agent</dd></div>
+            <div><dt>roles</dt><dd>agent-consumer</dd></div>
+            <div><dt>policy</dt><dd>odrl:use · a2a:invoke</dd></div>
+          </dl>
+          <p class="mas-vc-card__status"><span class="mas-vc-card__led"></span>{{ 'MAS._vc_card_status' | translate }}</p>
+        </div>
         }
       </div>
     </div>

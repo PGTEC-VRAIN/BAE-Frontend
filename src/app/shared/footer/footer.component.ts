@@ -32,6 +32,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   feedback: boolean = false;
   isDomeTheme: boolean = false;
   isPgtecTheme: boolean = false;
+  isMasTheme: boolean = false;
   projectUrl?: string;
   githubUrl?: string;
   currentYear = new Date().getFullYear();
@@ -84,6 +85,7 @@ export class FooterComponent implements OnInit, OnDestroy {
       .subscribe((theme) => {
         this.isDomeTheme = (theme?.name || '').toUpperCase() === 'DOME';
         this.isPgtecTheme = (theme?.name || '').toUpperCase() === 'PGTEC';
+        this.isMasTheme = (theme?.name || '').toUpperCase() === 'MAS';
         this.projectUrl = theme?.links?.projectUrl;
         this.githubUrl = theme?.links?.github;
         this.footerLinks = theme?.links?.footerLinks || [];

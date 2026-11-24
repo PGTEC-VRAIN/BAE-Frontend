@@ -9,6 +9,7 @@
 @import 'app/themes/bae.theme.scss';
 @import 'app/themes/citcom.theme.scss';
 @import 'app/themes/pgtec.theme.scss';
+@import 'app/themes/mas.theme.scss';
 
 /* 3. CAPAS PERSONALIZADAS Y ESTILOS GLOBALES AL FINAL */
 /* You can add global styles to this file, and also import other style files */

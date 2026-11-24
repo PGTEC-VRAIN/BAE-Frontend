@@ -7,6 +7,7 @@ export interface ThemeAssetConfig {
   jumboBgUrl?: string;
   cardDefaultBgUrl?: string;
   heroUrl?: string; // Optional: illustration shown in the landing hero
+  offerPlaceholderUrl?: string; // Optional: image for offering cards without a picture (instead of the generic placeholder)
   // other specific theme assets
 }
 
@@ -65,7 +66,7 @@ export interface DashboardConfig {
   showFeaturedOfferings?: boolean;
   showPlatformBenefits?: boolean;
   heroStats?: 'overlay' | 'cards'; // Landing metrics over the hero image (default) or as cards under the hero actions
-  motion?: 'data-line'; // Landing animations based on the PGTEC logo's data line (animated mosaic and provider logo)
+  motion?: 'data-line' | 'agent-mesh'; // Landing animations: PGTEC logo's data line (mosaic and provider logo) or the multi-agent network (MAS)
   // Add more sections
 }
 
@@ -129,6 +130,8 @@ export interface ThemeConfig {
   features?: ThemeFeaturesConfig;
   metaTags?: ThemeMetaTagConfig[];
   forceLightMode?: boolean; // Optional: ignore the OS/stored dark preference for this theme
+  forceDarkMode?: boolean; // Optional: always render the dark palette (themes designed only for dark mode)
+  agentCards?: boolean; // Optional: render offerings as agent cards (skills, protocols, credential requirements)
   lightHeader?: boolean; // Optional: white header with brand label instead of the dark glass one
   hideCompliance?: boolean; // Optional: hide the DOME compliance level badges and section
   // More theme specific propierties

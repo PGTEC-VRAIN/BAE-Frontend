@@ -33,6 +33,7 @@ import {ThemeService} from "../../services/theme.service";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { getShortOfferDescription, getVisibleOfferDescription } from './offer-card-text.util';
+import { AgentProfile, getAgentProfile } from './agent-offer.util';
 
 @Component({
   selector: 'bae-off-card',
@@ -94,6 +95,9 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedPricePlan:any = null;
 
   currentTheme: ThemeConfig | null = null;
+  // Agent metadata (skills, protocols, credential requirements) for themes with agent cards
+  agent: AgentProfile = { isAgent: false, skills: [], protocols: [], requiresVc: false, hasOdrl: false };
+  readonly maxAgentSkills = 5;
   private themeSubscription: Subscription = new Subscription();
   private destroy$ = new Subject<void>();
 
@@ -288,6 +292,7 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
       this.images = profile;
     }
     this.prodSpec = this.productOff?.productSpecification ?? {};
+    this.agent = getAgentProfile(this.productOff, this.prodSpec);
     this.getOwner();
     if(this.prodSpec.productSpecCharacteristic != undefined) {
       this.complianceLevel = this.api.getComplianceLevel(this.prodSpec);
@@ -305,8 +310,13 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.isCustomPrice;
   }
 
+  get agentCards(): boolean {
+    return this.currentTheme?.agentCards === true;
+  }
+
   getProductImage() {
-    return this.images.length > 0 ? this.images?.at(0)?.url : 'assets/images/placeholder.svg';
+    const placeholder = this.currentTheme?.assets?.offerPlaceholderUrl ?? 'assets/images/placeholder.svg';
+    return this.images.length > 0 ? this.images?.at(0)?.url : placeholder;
   }
 
   hasLongWord(str: string | undefined, threshold = 20) {

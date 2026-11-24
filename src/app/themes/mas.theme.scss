@@ -1,0 +1,1826 @@
+/*
+ * MAS theme: marketplace of AI agents for the multi-agent system of the data space.
+ *
+ * Dark only (ThemeConfig.forceDarkMode keeps the `dark` class on <html>), deep night
+ * background with a faint grid, neon cyan / violet / green accents, technical type
+ * (Space Grotesk + JetBrains Mono) and moderate glassmorphism.
+ *
+ * The --mas-* tokens hold the palette; the --theme-* tokens feed Tailwind (primary,
+ * secondary, tertiary, offerings...). Component overrides are written as
+ * body.theme-mas <selector> so they win over the component styles without touching them.
+ *
+ * Contrast: body text #c3cbe6 and muted #94a0c4 on #060914 / #10162e are above 7:1 and
+ * 6:1; white on the violet buttons (#7c3aed) is 5.7:1. Animations are disabled with
+ * prefers-reduced-motion.
+ */
+body.theme-mas {
+  /* Tailwind palette */
+  /* HEX: #6D28D9 - violet hover */
+  --theme-primary-50: 109 40 217;
+  /* HEX: #7C3AED - violet */
+  --theme-primary-100: 124 58 237;
+
+  /* HEX: #161E3E - tint */
+  --theme-secondary-50: 22 30 62;
+  /* HEX: #10162E - card surface */
+  --theme-secondary-100: 16 22 46;
+  /* HEX: #1E2A4F - line / hover */
+  --theme-secondary-200: 30 42 79;
+  /* HEX: #0C1124 - inset surface */
+  --theme-secondary-300: 12 17 36;
+  /* HEX: #241E5A - violet night */
+  --theme-secondary-400: 36 30 90;
+  /* HEX: #0A0F1F - ink */
+  --theme-secondary-500: 10 15 31;
+
+  /* BG COLOR - deep night */
+  --theme-tertiary-50: 6 9 20;
+  /* CARD/MODAL BG COLOR */
+  --theme-tertiary-100: 16 22 46;
+
+  /* Offerings / catalogue pages (Ficodes layout) */
+  --theme-offerings-page-bg: 6 9 20;
+  --theme-offerings-surface-bg: 16 22 46;
+  --theme-offerings-subtle-surface-bg: 20 27 56;
+  --theme-offerings-muted-bg: 30 42 79;
+  --theme-offerings-neutral-bg: 20 27 56;
+  --theme-offerings-selected-bg: 36 30 90;
+  --theme-offerings-selected-border: 34 211 238;
+  --theme-offerings-icon-bg: 36 30 90;
+  --theme-offerings-table-header-bg: 20 27 56;
+  --theme-offerings-border: 30 42 79;
+  --theme-offerings-border-strong: 52 66 112;
+  --theme-offerings-border-muted: 30 42 79;
+  --theme-offerings-separator: 30 42 79;
+  --theme-offerings-dashed-border: 103 232 249;
+  --theme-offerings-price-border: 52 66 112;
+  --theme-offerings-text: 238 242 255;
+  --theme-offerings-strong-text: 245 247 255;
+  --theme-offerings-heading-text: 226 232 250;
+  --theme-offerings-body-text: 195 203 230;
+  --theme-offerings-description-text: 168 178 212;
+  --theme-offerings-feature-text: 195 203 230;
+  --theme-offerings-label-text: 148 160 196;
+  --theme-offerings-muted-text: 168 178 212;
+  --theme-offerings-title-text: 238 242 255;
+  --theme-offerings-link: 103 232 249;
+  --theme-offerings-link-hover: 165 243 252;
+  --theme-offerings-confirm-hover: 109 40 217;
+  --theme-offerings-active-chip-bg: 49 46 129;
+  --theme-offerings-disabled-text: 110 120 160;
+  --theme-offerings-disabled-strong-text: 140 150 190;
+  --theme-offerings-metric-success-bg: 6 46 36;
+  --theme-offerings-metric-accent-bg: 36 30 90;
+  --theme-offerings-on-dark-text: 255 255 255;
+  --theme-offerings-on-dark-body-text: 195 203 230;
+  --theme-offerings-dark-surface-bg: 16 22 46;
+  --theme-offerings-dark-hover-bg: 30 42 79;
+  --theme-offerings-backdrop: 2 4 12;
+  --theme-offerings-shadow-rgb: 34 211 238;
+  --theme-offerings-elevated-shadow-rgb: 0 0 0;
+  --theme-offerings-neutral-shadow-rgb: 0 0 0;
+  --theme-offerings-thumb-border: 30 42 79;
+
+  --theme-status-complete-bg: 13 148 136;
+  --theme-status-success-bg: 6 78 59;
+  --theme-status-success-text: 167 243 208;
+  --theme-status-success-border: 52 211 153;
+  --theme-status-success-bright: 52 211 153;
+  --theme-status-ready-bg: 6 78 59;
+  --theme-status-ready-text: 167 243 208;
+  --theme-status-ready-border: 52 211 153;
+  --theme-status-danger-bg: 76 5 25;
+  --theme-status-danger-text: 254 205 211;
+  --theme-status-danger-border: 251 113 133;
+  --theme-status-warning-bg: 69 42 4;
+  --theme-status-warning-text: 253 230 138;
+  --theme-status-warning-border: 251 191 36;
+  --theme-status-neutral-bg: 30 42 79;
+  --theme-status-neutral-text: 203 213 240;
+  --theme-status-neutral-border: 52 66 112;
+  --theme-status-error-soft-bg: 76 5 25;
+  --theme-status-error-soft-border: 251 113 133;
+  --theme-status-error-soft-text: 254 205 211;
+  --theme-status-critical-bg: 76 5 25;
+  --theme-status-critical-border: 251 113 133;
+  --theme-status-critical-text: 254 205 211;
+
+  /* Fonts */
+  --theme-font-display: "Space Grotesk";
+  --theme-font-body: "Inter";
+
+  /* MAS palette */
+  --mas-bg: #060914;
+  --mas-bg-2: #0a0f1f;
+  --mas-surface: #10162e;
+  --mas-surface-2: #141b38;
+  --mas-glass: rgba(16, 22, 46, 0.68);
+  --mas-glass-strong: rgba(12, 17, 36, 0.9);
+  --mas-line: rgba(125, 211, 252, 0.16);
+  --mas-line-strong: rgba(125, 211, 252, 0.32);
+  --mas-ink: #eef2ff;
+  --mas-body: #c3cbe6;
+  --mas-muted: #94a0c4;
+  --mas-cyan: #22d3ee;
+  --mas-cyan-soft: #67e8f9;
+  --mas-violet: #a78bfa;
+  --mas-violet-strong: #7c3aed;
+  --mas-green: #34d399;
+  --mas-amber: #fbbf24;
+  --mas-gradient: linear-gradient(120deg, #22d3ee 0%, #818cf8 50%, #a78bfa 100%);
+  --mas-btn-gradient: linear-gradient(120deg, #6d28d9 0%, #4f46e5 55%, #0e7490 100%);
+  --mas-focus-ring: 0 0 0 3px rgba(34, 211, 238, 0.55);
+  --mas-shadow-card: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --mas-shadow-glow: 0 0 0 1px rgba(34, 211, 238, 0.35), 0 12px 40px rgba(34, 211, 238, 0.14);
+  --mas-radius-sm: 10px;
+  --mas-radius-md: 18px;
+  --mas-font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --mas-font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mas-font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Header (dark glass) */
+  --theme-header-v2-top-bg: rgba(6, 9, 20, 0.82);
+  --theme-header-v2-glass-bg: rgba(6, 9, 20, 0.72);
+  --theme-header-v2-solid-bg: #7c3aed;
+  --theme-header-v2-solid-hover-bg: #6d28d9;
+  --theme-header-v2-outline-border: rgba(34, 211, 238, 0.6);
+  --theme-header-v2-outline-hover-bg: rgba(34, 211, 238, 0.16);
+  --theme-header-v2-outline-hover-text: #ffffff;
+
+  /* Marketplace accents used by shared components */
+  --mk-accent: var(--mas-cyan);
+  --mk-accent-bright: var(--mas-cyan);
+  --mk-accent-tint: rgba(34, 211, 238, 0.12);
+  --mk-accent-ink: var(--mas-cyan-soft);
+
+  /* Blockquotes (markdown) */
+  --blockquote-border-color: var(--mas-violet);
+  --blockquote-bg-color: rgba(167, 139, 250, 0.1);
+  --blockquote-text-color: var(--mas-ink);
+
+  color-scheme: dark;
+  font-family: var(--mas-font-body);
+  color: var(--mas-body);
+  background-color: var(--mas-bg);
+  /* Faint grid and two neon glows behind every page */
+  background-image:
+    radial-gradient(1100px 560px at 8% -8%, rgba(124, 58, 237, 0.2), transparent 62%),
+    radial-gradient(900px 520px at 100% 0%, rgba(34, 211, 238, 0.11), transparent 60%),
+    linear-gradient(rgba(125, 211, 252, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125, 211, 252, 0.035) 1px, transparent 1px);
+  background-size: auto, auto, 48px 48px, 48px 48px;
+  background-attachment: fixed;
+}
+
+body.theme-mas ::selection {
+  background: rgba(34, 211, 238, 0.35);
+  color: #ffffff;
+}
+
+body.theme-mas h1,
+body.theme-mas h2,
+body.theme-mas h3 {
+  font-family: var(--mas-font-display);
+}
+
+body.theme-mas markdown {
+  font-family: inherit;
+}
+
+body.theme-mas markdown code,
+body.theme-mas markdown pre,
+body.theme-mas markdown table th {
+  background-color: #0c1124;
+  color: #a5f3fc;
+  font-family: var(--mas-font-mono);
+}
+
+body.theme-mas markdown pre {
+  border: 1px solid var(--mas-line);
+}
+
+body.theme-mas markdown pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+body.theme-mas markdown a {
+  color: var(--mas-cyan-soft);
+}
+
+/* Keyboard focus: one visible neon ring everywhere */
+body.theme-mas :focus-visible {
+  outline: 2px solid var(--mas-cyan);
+  outline-offset: 2px;
+}
+
+body.theme-mas ngx-file-drop .ngx-file-drop__drop-zone {
+  border-color: var(--mas-line-strong) !important;
+}
+
+/* Scrollbars */
+body.theme-mas * {
+  scrollbar-color: #2b3766 transparent;
+}
+
+/* Let the grid background show through the pages that paint the plain night colour */
+body.theme-mas .dark\:bg-tertiary-50 {
+  background-color: transparent;
+}
+
+/* ---------------------------------------------------------------------------
+ * Tailwind colour remaps: in this dark-only theme the "light mode" text colours
+ * (night blue on white) would be unreadable, so map them to the readable tokens.
+ * Violet stays for filled buttons (white text), accent text turns light.
+ * ------------------------------------------------------------------------- */
+body.theme-mas .text-primary-100,
+body.theme-mas .dark\:text-primary-50 {
+  color: var(--mas-cyan-soft);
+}
+
+body.theme-mas .hover\:text-primary-100:hover {
+  color: var(--mas-cyan);
+}
+
+body.theme-mas .text-secondary-100 {
+  color: rgb(var(--theme-offerings-heading-text));
+}
+
+body.theme-mas .text-secondary-500 {
+  color: rgb(var(--theme-offerings-body-text));
+}
+
+body.theme-mas .border-primary-100 {
+  border-color: rgba(34, 211, 238, 0.55);
+}
+
+/* Active tab / selected pill (bg-offerings-dashed-border with night text in the base layout) */
+body.theme-mas .bg-offerings-dashed-border,
+body.theme-mas .bg-offerings-dashed-border.text-secondary-500 {
+  background-color: rgba(124, 58, 237, 0.85);
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(124, 58, 237, 0.35);
+}
+
+body.theme-mas .bg-primary-100 {
+  background-image: var(--mas-btn-gradient);
+  color: #ffffff;
+}
+
+body.theme-mas .bg-primary-100:not(:disabled):hover {
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.45);
+}
+
+body.theme-mas .bg-white:not(img) {
+  background-color: var(--mas-surface);
+}
+
+body.theme-mas .bg-gray-50,
+body.theme-mas .bg-gray-100 {
+  background-color: var(--mas-surface-2);
+}
+
+body.theme-mas .text-gray-900,
+body.theme-mas .text-gray-800,
+body.theme-mas .text-black {
+  color: var(--mas-ink);
+}
+
+body.theme-mas .text-gray-700,
+body.theme-mas .text-gray-600 {
+  color: var(--mas-body);
+}
+
+body.theme-mas .text-gray-500 {
+  color: var(--mas-muted);
+}
+
+/* Form controls: dark glass fields with a neon focus */
+body.theme-mas input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+body.theme-mas select,
+body.theme-mas textarea {
+  background-color: var(--mas-glass-strong);
+  border-color: rgba(125, 211, 252, 0.24);
+  color: var(--mas-ink);
+}
+
+body.theme-mas input::placeholder,
+body.theme-mas textarea::placeholder {
+  color: #7d88ad;
+}
+
+body.theme-mas input:focus,
+body.theme-mas select:focus,
+body.theme-mas textarea:focus {
+  border-color: var(--mas-cyan);
+  box-shadow: var(--mas-focus-ring);
+  outline: none;
+}
+
+body.theme-mas input[type="checkbox"],
+body.theme-mas input[type="radio"] {
+  accent-color: var(--mas-violet-strong);
+}
+
+/* ===================================================================
+ * Header
+ * =================================================================== */
+body.theme-mas .header-top,
+body.theme-mas .header-glass {
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid var(--mas-line);
+  box-shadow: 0 1px 0 rgba(167, 139, 250, 0.08), 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+body.theme-mas .header-solid-btn,
+body.theme-mas .mobile-action-btn--solid {
+  background-image: var(--mas-btn-gradient);
+  border-radius: 12px;
+}
+
+body.theme-mas .border-color-c,
+body.theme-mas .mobile-action-btn {
+  border-radius: 12px;
+}
+
+body.theme-mas .header-solid-btn:hover,
+body.theme-mas .mobile-action-btn--solid:hover {
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.5);
+}
+
+body.theme-mas .dropdown-glass {
+  background: rgba(10, 15, 31, 0.94);
+  border: 1px solid var(--mas-line);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(167, 139, 250, 0.06);
+}
+
+body.theme-mas .dropdown-item {
+  color: var(--mas-ink);
+}
+
+body.theme-mas .dropdown-item:hover,
+body.theme-mas .dropdown-session-btn:hover {
+  background: rgba(34, 211, 238, 0.08);
+}
+
+body.theme-mas .dropdown-item-icon {
+  color: var(--mas-muted);
+}
+
+body.theme-mas .dropdown-item--danger,
+body.theme-mas .dropdown-item--danger .dropdown-item-icon {
+  color: #fda4af;
+}
+
+body.theme-mas .dropdown-session {
+  background: rgba(125, 211, 252, 0.06);
+}
+
+body.theme-mas .dropdown-glass .text-slate-900 {
+  color: var(--mas-ink);
+}
+
+body.theme-mas .dropdown-glass .text-slate-600,
+body.theme-mas .dropdown-glass .text-\[\#5b6472\] {
+  color: var(--mas-muted);
+}
+
+body.theme-mas .dropdown-glass .bg-\[\#1f242c\] {
+  background: var(--mas-violet-strong);
+}
+
+body.theme-mas .dropdown-glass .bg-slate-900\/10 {
+  background: var(--mas-line);
+}
+
+/* ===================================================================
+ * Landing (dashboard)
+ * =================================================================== */
+body.theme-mas .ob-page {
+  --ob-ink: var(--mas-ink);
+  --ob-border: var(--mas-line);
+  --ob-muted: var(--mas-body);
+  --ob-caption: var(--mas-muted);
+  --ob-surface-muted: transparent;
+  --ob-accent: var(--mas-cyan);
+  --ob-accent-bright: var(--mas-cyan);
+  --ob-accent-ink: #04111a;
+  --ob-display: var(--mas-font-display);
+
+  background: transparent;
+  color: var(--mas-ink);
+}
+
+body.theme-mas .ob-shell {
+  max-width: 1240px;
+  padding: 0 32px;
+}
+
+body.theme-mas .ob-btn:focus-visible,
+body.theme-mas .ob-link-light:focus-visible,
+body.theme-mas .ob-text-link:focus-visible,
+body.theme-mas .ob-search-btn:focus-visible,
+body.theme-mas .ob-feat-link:focus-visible {
+  outline: none;
+  box-shadow: var(--mas-focus-ring);
+}
+
+body.theme-mas .ob-eyebrow {
+  gap: 10px;
+  font-family: var(--mas-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--mas-cyan);
+}
+
+body.theme-mas .ob-eyebrow-line {
+  width: 32px;
+  height: 2px;
+  background: var(--mas-gradient);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.7);
+}
+
+/* Hero */
+body.theme-mas .ob-hero {
+  --ob-hero-body: var(--mas-body);
+  --ob-hero-muted: var(--mas-muted);
+  --ob-hero-card-bg: var(--mas-glass);
+  --ob-hero-card-border: var(--mas-line);
+
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(700px 420px at 78% 40%, rgba(124, 58, 237, 0.22), transparent 70%),
+    radial-gradient(520px 360px at 15% 85%, rgba(34, 211, 238, 0.1), transparent 70%);
+  color: #ffffff;
+  padding: 72px 0 96px;
+  border-bottom: 1px solid var(--mas-line);
+}
+
+/* Scan line along the bottom edge of the hero */
+body.theme-mas .ob-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--mas-cyan), var(--mas-violet), transparent);
+  opacity: 0.8;
+  animation: mas-scan 6s ease-in-out infinite alternate;
+}
+
+body.theme-mas .ob-hero-grid {
+  position: relative;
+  z-index: 1;
+  gap: 48px 64px;
+}
+
+body.theme-mas .ob-title {
+  margin-top: 20px;
+  font-family: var(--mas-font-display);
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  text-transform: none;
+  color: #ffffff;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  body.theme-mas .ob-title {
+    background: linear-gradient(100deg, #ffffff 0%, #e0f2fe 38%, #67e8f9 70%, #c4b5fd 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+body.theme-mas .ob-subtitle {
+  margin-top: 22px;
+  max-width: 600px;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--mas-body);
+}
+
+body.theme-mas .ob-actions {
+  margin-top: 32px;
+  gap: 12px;
+}
+
+body.theme-mas .ob-btn {
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  font-family: var(--mas-font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+body.theme-mas .ob-btn-accent,
+body.theme-mas .ob-hero .ob-btn-accent {
+  border: 0;
+  background: var(--mas-btn-gradient);
+  color: #ffffff;
+  box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.4) inset, 0 10px 30px rgba(79, 70, 229, 0.35);
+}
+
+body.theme-mas .ob-btn-accent:hover,
+body.theme-mas .ob-hero .ob-btn-accent:hover {
+  color: #ffffff;
+  box-shadow: 0 0 0 1px rgba(103, 232, 249, 0.6) inset, 0 0 32px rgba(34, 211, 238, 0.4);
+  transform: translateY(-1px);
+}
+
+body.theme-mas .ob-btn-ghost-light,
+body.theme-mas .ob-hero .ob-btn-ghost-light,
+body.theme-mas .ob-provider .ob-btn-ghost-light {
+  border: 1px solid rgba(34, 211, 238, 0.5);
+  background: rgba(34, 211, 238, 0.06);
+  color: #cffafe;
+}
+
+body.theme-mas .ob-btn-ghost-light:hover,
+body.theme-mas .ob-hero .ob-btn-ghost-light:hover,
+body.theme-mas .ob-provider .ob-btn-ghost-light:hover {
+  border-color: var(--mas-cyan);
+  background: rgba(34, 211, 238, 0.16);
+  color: #ffffff;
+}
+
+body.theme-mas .ob-link-light {
+  color: var(--mas-body);
+}
+
+body.theme-mas .ob-link-light:hover {
+  color: var(--mas-cyan-soft);
+}
+
+body.theme-mas .ob-hero-media {
+  flex: 0 1 480px;
+}
+
+body.theme-mas .ob-hero-mesh {
+  display: block;
+  width: 100%;
+}
+
+/* Metric cards: glass with neon edges */
+body.theme-mas .ob-hero-stat {
+  --ob-hero-stat-edge: linear-gradient(90deg, #22d3ee, #a78bfa);
+  --ob-hero-stat-icon-bg: rgba(34, 211, 238, 0.14);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body.theme-mas .ob-hero-stat--providers {
+  --ob-hero-stat-edge: linear-gradient(90deg, #34d399, #22d3ee);
+  --ob-hero-stat-icon-bg: rgba(52, 211, 153, 0.14);
+}
+
+body.theme-mas .ob-hero-stat-icon {
+  color: var(--mas-cyan-soft);
+  border: 1px solid var(--mas-line-strong);
+}
+
+body.theme-mas .ob-hero-stat--providers .ob-hero-stat-icon {
+  color: #6ee7b7;
+}
+
+body.theme-mas .ob-hero-stat-number {
+  font-family: var(--mas-font-mono);
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.55);
+}
+
+/* Search card */
+body.theme-mas .ob-search-card {
+  border-radius: var(--mas-radius-md);
+  border: 1px solid var(--mas-line);
+  background: var(--mas-glass-strong);
+  box-shadow: var(--mas-shadow-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+body.theme-mas .ob-search-label {
+  font-family: var(--mas-font-display);
+  text-transform: none;
+  color: var(--mas-ink);
+}
+
+body.theme-mas .ob-search-inner {
+  border-radius: 12px;
+  border-color: rgba(125, 211, 252, 0.24);
+  background: rgba(6, 9, 20, 0.8);
+}
+
+body.theme-mas .ob-search-inner:focus-within {
+  border-color: var(--mas-cyan);
+  box-shadow: var(--mas-focus-ring);
+}
+
+body.theme-mas .ob-search-input {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+body.theme-mas .ob-search-btn {
+  border-radius: 10px;
+  background: var(--mas-btn-gradient);
+  font-weight: 600;
+}
+
+body.theme-mas .ob-search-hint {
+  color: var(--mas-muted);
+}
+
+/* Sections */
+body.theme-mas .ob-section {
+  position: relative;
+  padding: 88px 0;
+}
+
+body.theme-mas .ob-section--muted {
+  background: linear-gradient(180deg, rgba(16, 22, 46, 0.55), rgba(16, 22, 46, 0.15));
+  border-top: 1px solid var(--mas-line);
+  border-bottom: 1px solid var(--mas-line);
+}
+
+body.theme-mas .ob-section-head--rule {
+  border-bottom: 1px solid var(--mas-line);
+}
+
+body.theme-mas .ob-display-title,
+body.theme-mas .ob-about-title {
+  margin-top: 12px;
+  font-family: var(--mas-font-display);
+  font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--mas-ink);
+}
+
+body.theme-mas .ob-text-link {
+  border-radius: 10px;
+  font-family: var(--mas-font-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--mas-cyan);
+}
+
+body.theme-mas .ob-text-link:hover {
+  color: #ffffff;
+}
+
+body.theme-mas .ob-about-text {
+  color: var(--mas-body);
+}
+
+/* Featured offerings (generic cards when an offering has a picture) */
+body.theme-mas .ob-feat-card {
+  border: 1px solid var(--mas-line);
+  border-radius: var(--mas-radius-md);
+  background: var(--mas-glass);
+  box-shadow: var(--mas-shadow-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+body.theme-mas .ob-feat-card:hover,
+body.theme-mas .ob-feat-card:focus-within {
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow: var(--mas-shadow-glow);
+}
+
+body.theme-mas .ob-feat-media {
+  background: #0c1124;
+}
+
+body.theme-mas .ob-feat-badge {
+  background: rgba(34, 211, 238, 0.14);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  color: #cffafe;
+  font-family: var(--mas-font-mono);
+  font-weight: 500;
+}
+
+body.theme-mas .ob-feat-title {
+  font-family: var(--mas-font-display);
+  font-size: 1.25rem;
+  color: var(--mas-ink);
+}
+
+body.theme-mas .ob-feat-desc {
+  color: var(--mas-body);
+}
+
+body.theme-mas .ob-feat-more {
+  font-family: var(--mas-font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--mas-cyan);
+}
+
+/* Featured agents (compact agent cards on the landing) */
+body.theme-mas .mas-mini-agent {
+  gap: 14px;
+  padding: 22px;
+}
+
+body.theme-mas .mas-mini-agent__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+body.theme-mas .mas-mini-agent__id {
+  min-width: 0;
+}
+
+body.theme-mas .mas-mini-agent__glyph {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: radial-gradient(circle at 50% 40%, rgba(124, 58, 237, 0.4), rgba(12, 17, 36, 0.9));
+  border: 1px solid var(--mas-line-strong);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.25);
+}
+
+body.theme-mas .mas-mini-agent__glyph svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--mas-cyan-soft);
+  stroke-width: 1.6;
+}
+
+body.theme-mas .mas-mini-agent__glyph svg circle {
+  fill: var(--mas-green);
+  stroke: none;
+}
+
+body.theme-mas .mas-mini-agent__cat {
+  margin: 2px 0 0;
+  font-family: var(--mas-font-mono);
+  font-size: 0.75rem;
+  color: var(--mas-muted);
+}
+
+body.theme-mas .mas-mini-agent__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Protocol / trust layers */
+body.theme-mas .mas-layers__intro {
+  margin: 16px 0 0;
+  max-width: 760px;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--mas-body);
+}
+
+body.theme-mas .mas-layers__grid {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+body.theme-mas .mas-layer {
+  --mas-layer-color: var(--mas-cyan);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 20px 20px;
+  overflow: hidden;
+  border-radius: var(--mas-radius-md);
+  border: 1px solid var(--mas-line);
+  background: var(--mas-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+body.theme-mas .mas-layer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--mas-layer-color), transparent);
+  box-shadow: 0 0 14px var(--mas-layer-color);
+}
+
+body.theme-mas .mas-layer:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--mas-layer-color) 55%, transparent);
+  box-shadow: 0 0 32px color-mix(in srgb, var(--mas-layer-color) 18%, transparent);
+}
+
+body.theme-mas .mas-layer--anp {
+  --mas-layer-color: var(--mas-violet);
+}
+
+body.theme-mas .mas-layer--mcp {
+  --mas-layer-color: var(--mas-green);
+}
+
+body.theme-mas .mas-layer--vc {
+  --mas-layer-color: var(--mas-amber);
+}
+
+body.theme-mas .mas-layer__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+body.theme-mas .mas-layer__code {
+  font-family: var(--mas-font-mono);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--mas-layer-color);
+  text-shadow: 0 0 16px color-mix(in srgb, var(--mas-layer-color) 55%, transparent);
+}
+
+body.theme-mas .mas-layer__tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--mas-layer-color) 45%, transparent);
+  font-family: var(--mas-font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mas-ink);
+}
+
+body.theme-mas .mas-layer__title {
+  margin: 4px 0 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--mas-ink);
+}
+
+body.theme-mas .mas-layer__text {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--mas-body);
+}
+
+body.theme-mas .mas-layer__mono {
+  margin: auto 0 0;
+  padding-top: 12px;
+  border-top: 1px dashed var(--mas-line);
+  font-family: var(--mas-font-mono);
+  font-size: 0.75rem;
+  color: var(--mas-muted);
+  overflow-wrap: anywhere;
+}
+
+/* About + benefits */
+body.theme-mas .ob-benefits {
+  gap: 18px;
+}
+
+body.theme-mas .ob-benefit {
+  padding: 26px;
+  border: 1px solid var(--mas-line);
+  border-radius: var(--mas-radius-md);
+  background: var(--mas-glass);
+}
+
+body.theme-mas .ob-benefit-icon {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  background: rgba(34, 211, 238, 0.08);
+  color: var(--mas-cyan-soft);
+}
+
+body.theme-mas .ob-benefit:nth-child(2) .ob-benefit-icon {
+  border-color: rgba(167, 139, 250, 0.4);
+  background: rgba(167, 139, 250, 0.1);
+  color: #c4b5fd;
+}
+
+body.theme-mas .ob-benefit:nth-child(3) .ob-benefit-icon {
+  border-color: rgba(52, 211, 153, 0.4);
+  background: rgba(52, 211, 153, 0.1);
+  color: #6ee7b7;
+}
+
+body.theme-mas .ob-benefit-title {
+  font-family: var(--mas-font-display);
+  font-size: 1.1875rem;
+  color: var(--mas-ink);
+}
+
+body.theme-mas .ob-benefit-text {
+  color: var(--mas-body);
+}
+
+/* Providers band */
+body.theme-mas .ob-provider {
+  position: relative;
+  background:
+    radial-gradient(600px 300px at 85% 50%, rgba(52, 211, 153, 0.12), transparent 70%),
+    linear-gradient(180deg, rgba(16, 22, 46, 0.8), rgba(6, 9, 20, 0.9));
+  border-top: 1px solid var(--mas-line);
+}
+
+body.theme-mas .ob-provider .ob-eyebrow {
+  color: var(--mas-green);
+}
+
+body.theme-mas .ob-provider-title {
+  font-family: var(--mas-font-display);
+  font-size: clamp(2rem, 3.6vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: #ffffff;
+}
+
+body.theme-mas .ob-provider-text {
+  color: var(--mas-body);
+}
+
+body.theme-mas .ob-provider-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  background-image: none;
+  opacity: 1;
+}
+
+/* Illustrative verifiable credential */
+body.theme-mas .mas-vc-card {
+  position: relative;
+  width: min(100%, 420px);
+  padding: 22px 22px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  background:
+    linear-gradient(135deg, rgba(52, 211, 153, 0.12), rgba(34, 211, 238, 0.04) 40%, rgba(124, 58, 237, 0.14)),
+    var(--mas-glass-strong);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45), 0 0 40px rgba(52, 211, 153, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transform: rotate(-2deg);
+  animation: mas-float 7s ease-in-out infinite;
+}
+
+body.theme-mas .mas-vc-card__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+body.theme-mas .mas-vc-card__seal {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(52, 211, 153, 0.14);
+  border: 1px solid rgba(52, 211, 153, 0.45);
+}
+
+body.theme-mas .mas-vc-card__seal svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: #6ee7b7;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+body.theme-mas .mas-vc-card__type {
+  margin: 0;
+  font-family: var(--mas-font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: #6ee7b7;
+}
+
+body.theme-mas .mas-vc-card__title {
+  margin: 2px 0 0;
+  font-family: var(--mas-font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+body.theme-mas .mas-vc-card__fields {
+  margin: 18px 0 0;
+  display: grid;
+  gap: 8px;
+  font-family: var(--mas-font-mono);
+  font-size: 0.75rem;
+}
+
+body.theme-mas .mas-vc-card__fields > div {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(6, 9, 20, 0.55);
+  border: 1px solid rgba(125, 211, 252, 0.1);
+}
+
+body.theme-mas .mas-vc-card__fields dt {
+  color: var(--mas-muted);
+}
+
+body.theme-mas .mas-vc-card__fields dd {
+  margin: 0;
+  color: var(--mas-ink);
+  overflow-wrap: anywhere;
+}
+
+body.theme-mas .mas-vc-card__status {
+  margin: 14px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mas-font-mono);
+  font-size: 0.75rem;
+  color: #6ee7b7;
+}
+
+body.theme-mas .mas-vc-card__led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--mas-green);
+  box-shadow: 0 0 10px var(--mas-green);
+}
+
+/* ===================================================================
+ * Badges and chips (agent cards, landing, offer pages)
+ * =================================================================== */
+body.theme-mas .mas-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--mas-line-strong);
+  font-family: var(--mas-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+body.theme-mas .mas-badge svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+body.theme-mas .mas-badge--protocol {
+  border-color: rgba(34, 211, 238, 0.5);
+  background: rgba(34, 211, 238, 0.1);
+  color: #a5f3fc;
+}
+
+body.theme-mas .mas-badge--vc {
+  border-color: rgba(52, 211, 153, 0.5);
+  background: rgba(52, 211, 153, 0.1);
+  color: #a7f3d0;
+}
+
+body.theme-mas .mas-badge--policy {
+  border-color: rgba(167, 139, 250, 0.5);
+  background: rgba(167, 139, 250, 0.1);
+  color: #ddd6fe;
+}
+
+body.theme-mas .mas-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  background: rgba(167, 139, 250, 0.08);
+  color: #e9e5ff;
+  font-family: var(--mas-font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.theme-mas .mas-chip::before {
+  content: "#";
+  margin-right: 2px;
+  color: var(--mas-violet);
+}
+
+body.theme-mas .mas-chip--more::before {
+  content: none;
+}
+
+/* ===================================================================
+ * Agent card (bae-off-card, grid view)
+ * =================================================================== */
+body.theme-mas .mas-agent-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  height: 430px;
+  padding: 18px;
+  overflow: hidden;
+  border-radius: var(--mas-radius-md);
+  border: 1px solid var(--mas-line);
+  background:
+    linear-gradient(160deg, rgba(124, 58, 237, 0.1), transparent 45%),
+    var(--mas-glass);
+  box-shadow: var(--mas-shadow-card);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+body.theme-mas .mas-agent-card:hover,
+body.theme-mas .mas-agent-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(34, 211, 238, 0.5);
+  box-shadow: var(--mas-shadow-glow);
+}
+
+body.theme-mas .mas-agent-card__glow {
+  position: absolute;
+  inset: -40% -40% auto auto;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.18), transparent 65%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+body.theme-mas .mas-agent-card:hover .mas-agent-card__glow {
+  opacity: 1;
+}
+
+body.theme-mas .mas-agent-card__head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+body.theme-mas .mas-agent-card__avatar {
+  position: relative;
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  padding: 1px;
+  background: var(--mas-gradient);
+  box-shadow: 0 0 22px rgba(124, 58, 237, 0.3);
+}
+
+body.theme-mas .mas-agent-card__avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  object-fit: cover;
+  background: #0b1124;
+}
+
+/* Small node on the avatar corner (decorative) */
+body.theme-mas .mas-agent-card__pulse {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #0b1124;
+  background: var(--mas-violet);
+  box-shadow: 0 0 10px rgba(167, 139, 250, 0.9);
+}
+
+body.theme-mas .mas-agent-card--agent .mas-agent-card__pulse {
+  background: var(--mas-cyan);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.9);
+}
+
+body.theme-mas .mas-agent-card__id {
+  min-width: 0;
+  flex: 1;
+}
+
+body.theme-mas .mas-agent-card__provider {
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-family: var(--mas-font-mono);
+  font-size: 0.75rem;
+  color: var(--mas-muted);
+}
+
+body.theme-mas .mas-agent-card__name {
+  margin: 0;
+  font-family: var(--mas-font-display);
+  font-size: 1.1875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--mas-ink);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+body.theme-mas .mas-agent-card__protocols {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+body.theme-mas .mas-agent-card__desc {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--mas-body);
+}
+
+body.theme-mas .mas-agent-card__desc p {
+  margin: 0;
+}
+
+body.theme-mas .mas-agent-card__skills {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 12px 0 0;
+  list-style: none;
+  border-top: 1px dashed var(--mas-line);
+  max-height: 72px;
+  overflow: hidden;
+}
+
+body.theme-mas .mas-agent-card__foot {
+  position: relative;
+}
+
+/* ===================================================================
+ * Catalogue list (bae-off-featured)
+ * =================================================================== */
+body.theme-mas .ft-item {
+  border-bottom-color: var(--mas-line);
+  border-radius: var(--mas-radius-sm);
+}
+
+body.theme-mas .ft-item:hover {
+  background: rgba(34, 211, 238, 0.05);
+}
+
+body.theme-mas .ft-index {
+  position: relative;
+  font-family: var(--mas-font-mono);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--mas-violet);
+  transition: color 0.4s ease, text-shadow 0.4s ease;
+}
+
+body.theme-mas .ft-index::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--mas-cyan);
+  box-shadow: 0 0 8px var(--mas-cyan);
+  transition: width 0.6s ease;
+}
+
+body.theme-mas .ft-item--lit .ft-index {
+  color: var(--mas-cyan);
+  text-shadow: 0 0 12px rgba(34, 211, 238, 0.7);
+}
+
+body.theme-mas .ft-item--lit .ft-index::after {
+  width: 28px;
+}
+
+body.theme-mas .ft-name {
+  font-family: var(--mas-font-display);
+  font-size: 1.125rem;
+  color: var(--mas-ink);
+}
+
+body.theme-mas .ft-desc {
+  color: var(--mas-body);
+}
+
+body.theme-mas .ft-arrow {
+  border-color: var(--mas-line-strong);
+  color: var(--mas-cyan-soft);
+}
+
+body.theme-mas .ft-item:hover .ft-arrow {
+  background: var(--mas-violet-strong);
+  border-color: var(--mas-violet);
+  color: #ffffff;
+  box-shadow: 0 0 18px rgba(124, 58, 237, 0.55);
+}
+
+body.theme-mas .ft-empty {
+  color: var(--mas-muted);
+}
+
+/* ===================================================================
+ * Marketplace pages: services, catalogues (mk-* in styles.css)
+ * =================================================================== */
+body.theme-mas .mk-page {
+  background: transparent;
+}
+
+body.theme-mas .mk-shell {
+  max-width: 1240px;
+}
+
+body.theme-mas .mk-page-hero {
+  padding: 36px 40px 32px;
+  border-radius: var(--mas-radius-md);
+  border: 1px solid var(--mas-line);
+  background:
+    radial-gradient(500px 220px at 90% 0%, rgba(34, 211, 238, 0.16), transparent 70%),
+    linear-gradient(135deg, rgba(124, 58, 237, 0.22), rgba(16, 22, 46, 0.7));
+  color: var(--mas-ink);
+  box-shadow: var(--mas-shadow-card);
+}
+
+body.theme-mas .mk-page-hero::before {
+  content: none;
+}
+
+body.theme-mas .mk-eyebrow {
+  font-family: var(--mas-font-mono);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--mas-cyan);
+}
+
+body.theme-mas .mk-title {
+  font-family: var(--mas-font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+body.theme-mas .mk-subtitle {
+  color: var(--mas-body);
+}
+
+body.theme-mas .mk-card {
+  border-color: var(--mas-line);
+  background: var(--mas-glass);
+  box-shadow: var(--mas-shadow-card);
+  color: var(--mas-body);
+}
+
+body.theme-mas .mk-card-hover:hover {
+  border-color: rgba(34, 211, 238, 0.45);
+  box-shadow: var(--mas-shadow-glow);
+}
+
+body.theme-mas .mk-chip {
+  border-color: rgba(167, 139, 250, 0.35);
+  background: rgba(167, 139, 250, 0.08);
+  color: #e9e5ff;
+  font-family: var(--mas-font-mono);
+}
+
+body.theme-mas .mk-btn-outline {
+  border-radius: 12px;
+  border-color: rgba(34, 211, 238, 0.45);
+  background: rgba(34, 211, 238, 0.05);
+  color: #cffafe;
+}
+
+body.theme-mas .mk-btn-outline:hover {
+  border-color: var(--mas-cyan);
+  background: rgba(34, 211, 238, 0.16);
+  color: #ffffff;
+}
+
+/* ===================================================================
+ * Signed-in area: profile, offerings, orders... (acc-* in styles.css)
+ * =================================================================== */
+body.theme-mas .acc-page {
+  background: transparent;
+  color: var(--mas-ink);
+}
+
+body.theme-mas .acc-head {
+  background: rgba(10, 15, 31, 0.7);
+  border-bottom-color: var(--mas-line);
+}
+
+body.theme-mas .acc-breadcrumb,
+body.theme-mas .acc-breadcrumb a,
+body.theme-mas .acc-session-label,
+body.theme-mas .acc-nav-label,
+body.theme-mas .acc-nav-icon {
+  color: var(--mas-muted);
+}
+
+body.theme-mas .acc-breadcrumb a:hover,
+body.theme-mas .acc-breadcrumb-current,
+body.theme-mas .acc-title {
+  color: var(--mas-ink);
+}
+
+body.theme-mas .acc-title {
+  font-family: var(--mas-font-display);
+  letter-spacing: -0.02em;
+}
+
+body.theme-mas .acc-subtitle,
+body.theme-mas .acc-help-steps {
+  color: var(--mas-body);
+}
+
+body.theme-mas .acc-session {
+  border-color: var(--mas-line);
+  background: rgba(125, 211, 252, 0.05);
+}
+
+body.theme-mas .acc-session-avatar {
+  background: var(--mas-btn-gradient);
+}
+
+body.theme-mas .acc-session-avatar--org {
+  background: linear-gradient(120deg, #059669, #0e7490);
+  color: #ffffff;
+}
+
+body.theme-mas .acc-nav,
+body.theme-mas .acc-help {
+  border-color: var(--mas-line);
+  background: var(--mas-glass);
+}
+
+body.theme-mas .acc-nav-item {
+  color: var(--mas-ink);
+}
+
+body.theme-mas .acc-nav-item.bg-primary-100,
+body.theme-mas .acc-nav-item.bg-primary-100 .acc-nav-icon {
+  color: #ffffff;
+}
+
+body.theme-mas .acc-nav-item:not(.bg-primary-100):hover {
+  background: rgba(34, 211, 238, 0.06);
+}
+
+body.theme-mas .acc-help-step {
+  background: rgba(34, 211, 238, 0.12);
+  color: var(--mas-cyan-soft);
+}
+
+body.theme-mas .acc-main .bg-secondary-50 {
+  background-color: var(--mas-glass);
+}
+
+body.theme-mas .acc-main .border-secondary-50 {
+  border-color: var(--mas-line);
+}
+
+body.theme-mas .acc-main table {
+  color: var(--mas-body);
+}
+
+body.theme-mas .acc-main table thead {
+  background: rgba(125, 211, 252, 0.06);
+  color: var(--mas-muted);
+}
+
+body.theme-mas .acc-main table tbody tr {
+  border-color: var(--mas-line);
+}
+
+body.theme-mas .acc-main table tbody tr:hover {
+  background-color: rgba(125, 211, 252, 0.04);
+}
+
+/* ---------------------------------------------------------------------------
+ * Ficodes-layout pages (offer detail, provider page, catalogues): boxes tinted
+ * with bg-secondary-50 become glass panels on the night background.
+ * ------------------------------------------------------------------------- */
+body.theme-mas :is(app-product-details, app-organization-details, app-catalogs, app-search-catalog) :is(.bg-secondary-50, .bg-offerings-page) {
+  background-color: var(--mas-glass);
+}
+
+body.theme-mas :is(app-product-details, app-organization-details, app-catalogs, app-search-catalog) .border-secondary-50 {
+  border-color: var(--mas-line);
+}
+
+/* Usage policies of an offering (ODRL + credentials): neon-edged panels */
+body.theme-mas .mas-policy-card {
+  border-color: rgba(52, 211, 153, 0.3);
+  background:
+    linear-gradient(135deg, rgba(52, 211, 153, 0.08), transparent 40%),
+    var(--mas-glass);
+}
+
+/* ===================================================================
+ * Footer (markup in footer.component.html, MAS branch)
+ * =================================================================== */
+.mas-footer {
+  position: relative;
+  background:
+    radial-gradient(700px 260px at 15% 0%, rgba(124, 58, 237, 0.14), transparent 70%),
+    #05070f;
+  border-top: 1px solid rgba(125, 211, 252, 0.16);
+  color: #c3cbe6;
+}
+
+.mas-footer::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #22d3ee, #a78bfa, transparent);
+}
+
+.mas-footer__shell {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 56px 32px 28px;
+}
+
+.mas-footer__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 40px;
+}
+
+.mas-footer__logo {
+  height: 48px;
+  width: auto;
+}
+
+.mas-footer__tagline {
+  margin: 18px 0 0;
+  max-width: 460px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.mas-footer__stack {
+  margin: 20px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.mas-footer__stack li {
+  padding: 3px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(125, 211, 252, 0.25);
+  background: rgba(34, 211, 238, 0.05);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: #a5f3fc;
+}
+
+.mas-footer__nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 24px;
+  align-content: start;
+}
+
+.mas-footer__nav-title {
+  grid-column: 1 / -1;
+  margin: 0 0 6px;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #22d3ee;
+}
+
+.mas-footer__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  color: #eef2ff;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.mas-footer__nav a:hover {
+  color: #67e8f9;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Funders' logos keep their colours, so they sit on a light strip */
+.mas-footer__logos {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  padding: 16px 22px;
+  border-radius: 14px;
+  background: #f4f6fb;
+}
+
+.mas-footer__logos a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.mas-footer__logos img {
+  height: 34px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+}
+
+.mas-footer__logos img.mas-footer__vrain {
+  height: 19px;
+}
+
+.mas-footer__funding {
+  margin: 14px 0 0;
+  font-size: 0.8125rem;
+  color: #94a0c4;
+}
+
+.mas-footer__bottom {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(125, 211, 252, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: #94a0c4;
+}
+
+/* ===================================================================
+ * Motion
+ * =================================================================== */
+@keyframes mas-scan {
+  from {
+    opacity: 0.35;
+    transform: scaleX(0.6);
+  }
+
+  to {
+    opacity: 0.9;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes mas-float {
+  0%,
+  100% {
+    transform: rotate(-2deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(-2deg) translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.theme-mas .ob-hero::after,
+  body.theme-mas .mas-vc-card {
+    animation: none;
+  }
+
+  body.theme-mas .mas-agent-card,
+  body.theme-mas .mas-layer,
+  body.theme-mas .ob-feat-card,
+  body.theme-mas .ob-btn {
+    transition: none;
+  }
+
+  body.theme-mas .mas-agent-card:hover,
+  body.theme-mas .mas-layer:hover,
+  body.theme-mas .ob-btn-accent:hover {
+    transform: none;
+  }
+}
+
+/* ===================================================================
+ * Responsive
+ * =================================================================== */
+@media (max-width: 1024px) {
+  body.theme-mas .mas-layers__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mas-footer__top {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  body.theme-mas .ob-shell,
+  .mas-footer__shell {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  body.theme-mas .ob-hero {
+    padding: 40px 0 64px;
+  }
+
+  body.theme-mas .ob-section {
+    padding: 64px 0;
+  }
+
+  body.theme-mas .mas-layers__grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.theme-mas .mk-page-hero {
+    padding: 24px 20px;
+  }
+
+  body.theme-mas .mas-vc-card {
+    transform: none;
+    animation: none;
+  }
+
+  .mas-footer__logos {
+    justify-content: center;
+  }
+
+  .mas-footer__nav {
+    grid-template-columns: 1fr;
+  }
+}

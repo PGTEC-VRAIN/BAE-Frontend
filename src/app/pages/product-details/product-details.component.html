@@ -259,6 +259,27 @@
         </div>
         }
 
+        @if(policyChars.length > 0){
+        <div class="mb-8">
+          <h2 class="text-[24px] font-bold text-secondary-100 mb-4">{{ 'PRODUCT_DETAILS._usage_policies' | translate }}</h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            @for (char of policyChars; track char.id || $index) {
+              <article class="mas-policy-card rounded-2xl bg-offerings-page border border-secondary-50 p-6 min-w-0">
+                <h3 [ngClass]="{'break-all': hasLongWord(char.name, 20), 'break-words': !hasLongWord(char.name, 20)}"
+                  class="text-[18px] font-bold text-secondary-100">{{ char.name }}</h3>
+                @if (char.description) {
+                  <markdown [ngClass]="{'break-all': hasLongWord(char.description, 20), 'break-words': !hasLongWord(char.description, 20)}"
+                    class="mt-2 block text-[13px] leading-[20px] text-offerings-description-text" [data]="char.description"></markdown>
+                }
+                <div class="mt-4">
+                  <app-policy-viewer [value]="getPolicyValue(char)"></app-policy-viewer>
+                </div>
+              </article>
+            }
+          </div>
+        </div>
+        }
+
         @if(keyFeatures.length > 0){
         <div class="mb-10">
           <h2 class="text-[24px] font-bold text-secondary-100 mb-6">{{ 'PRODUCT_DETAILS._key_features' | translate }}</h2>

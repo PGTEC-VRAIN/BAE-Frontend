@@ -1,0 +1,13 @@
+<div class="am-frame">
+  <div class="am-head" aria-hidden="true">
+    <span class="am-dot"></span>
+    <span class="am-title">agent-network://dataspace</span>
+    <span class="am-live">{{ 'MAS._mesh_live' | translate }}</span>
+  </div>
+  <canvas #canvas class="am-canvas" role="img" [attr.aria-label]="'MAS._mesh_aria' | translate"></canvas>
+  <ul class="am-legend" [attr.aria-label]="'MAS._protocols' | translate">
+    @for (protocol of legend; track protocol) {
+    <li><span class="am-swatch" [style.background]="colors[protocol]" aria-hidden="true"></span>{{ protocol }}</li>
+    }
+  </ul>
+</div>

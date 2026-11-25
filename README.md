@@ -247,3 +247,13 @@ proxy:
     - BAE_LP_THEME=galaxy
     # ... rest of the Logic Proxy configuration
 ```
+
+## ODRL policy suggestion (seller wizard)
+
+In the product specification wizard (step "Dataspace configuration", only when the dataspace is enabled) the button
+**Suggest ODRL policies** opens `app-odrl-suggest` (`src/app/shared/odrl-suggest`). The seller enters the agent card URL, their DID,
+the agent gateway host and, optionally, the MCP `tools/list` JSON; the component calls `POST {BASE_URL}/api/odrl/suggest`
+(`OdrlSuggestService`, served by the logic proxy, seller role only) and lists the proposed tiers with the reason for each tool and the
+generated policies. Accepting a tier adds one `authorizationPolicy` characteristic per policy (agent invocation, MCP tools) to the
+specification; the seller can still edit or delete them. Nothing is published until the specification is created. Limits: the DSP
+form (`policyConfig`) is not filled in, and one specification gets the policies of one tier.

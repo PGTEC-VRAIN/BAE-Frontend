@@ -440,6 +440,10 @@
               <h2 class="text-2xl font-bold text-offerings-text mb-1">{{ 'CREATE_PROD_SPEC._dataspace_configuration' | translate }}</h2>
               <p class="text-sm text-offerings-muted-text max-w-2xl">{{ 'CREATE_PROD_SPEC._dataspace_configuration_desc' | translate }}</p>
             </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button type="button" (click)="showOdrlSuggest=true" data-cy="odrlSuggestOpen" class="flex items-center gap-2 h-10 px-4 border border-primary-100 text-primary-100 rounded-lg text-sm font-semibold hover:bg-secondary-50/50">
+                {{ 'ODRL_SUGGEST._open' | translate }}
+              </button>
             @if(currentCharacteristics().length > 0){
               <button type="button" (click)="openCreateChar()" class="flex items-center gap-2 h-10 px-4 border border-primary-100 text-primary-100 rounded-lg text-sm font-semibold hover:bg-secondary-50/50 shrink-0">
                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
@@ -448,6 +452,7 @@
                 {{ 'CREATE_PROD_SPEC._add_dataspace_config' | translate }}
               </button>
             }
+            </div>
           </div>
 
           @if(currentCharacteristics().length === 0){
@@ -972,6 +977,10 @@
       </div>
     </div>
   </div>
+}
+
+@if(showOdrlSuggest){
+  <app-odrl-suggest (accepted)="onOdrlTierAccepted($event)" (closed)="showOdrlSuggest=false"></app-odrl-suggest>
 }
 
 @if(showCreateChar){

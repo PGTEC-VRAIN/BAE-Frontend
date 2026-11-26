@@ -3,6 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { of, throwError } from 'rxjs';
 import { OdrlSuggestComponent } from './odrl-suggest.component';
 import { OdrlSuggestService, OdrlSuggestResponse } from 'src/app/services/odrl-suggest.service';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 const RESPONSE: OdrlSuggestResponse = {
   tiers: [{
@@ -17,11 +18,17 @@ describe('OdrlSuggestComponent', () => {
   let fixture: ComponentFixture<OdrlSuggestComponent>;
   let service: jasmine.SpyObj<OdrlSuggestService>;
 
+  let login: any;
+
   beforeEach(async () => {
+    login = {};
     service = jasmine.createSpyObj('OdrlSuggestService', ['suggest']);
     await TestBed.configureTestingModule({
       imports: [OdrlSuggestComponent, TranslateModule.forRoot()],
-      providers: [{ provide: OdrlSuggestService, useValue: service }]
+      providers: [
+        { provide: OdrlSuggestService, useValue: service },
+        { provide: LocalStorageService, useValue: { getObject: () => login } }
+      ]
     }).compileComponents();
     fixture = TestBed.createComponent(OdrlSuggestComponent);
     component = fixture.componentInstance;
@@ -31,6 +38,37 @@ describe('OdrlSuggestComponent', () => {
   const fill = (tools = '') => component.form.setValue({
     cardUrl: 'http://a.avamet.svc.cluster.local/c.json', sellerDid: 'did:web:avamet.ts.net',
     gateway: 'a-gw.avamet.svc.cluster.local', mcpTools: tools
+  });
+
+  const createWith = (info: any) => {
+    login = info;
+    fixture = TestBed.createComponent(OdrlSuggestComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    return fixture.nativeElement.querySelector('[data-cy="odrlSellerDid"]') as HTMLInputElement;
+  };
+
+  it('takes the seller DID from the organization in use and locks the field', () => {
+    const input = createWith({
+      id: 'user-1', logged_as: 'did:web:b.example.org',
+      organizations: [{ id: 'did:web:a.example.org' }, { id: 'did:web:b.example.org' }]
+    });
+    expect(component.form.value.sellerDid).toBe('did:web:b.example.org');
+    expect(input.readOnly).toBeTrue();
+  });
+
+  it('uses the only organization of the profile, also when its DID is in the name', () => {
+    createWith({ id: 'user-1', logged_as: 'user-1', organizations: [{ id: 'org-1', name: 'did:web:a.example.org' }] });
+    expect(component.form.value.sellerDid).toBe('did:web:a.example.org');
+  });
+
+  it('leaves the field editable when no DID can be determined', () => {
+    const input = createWith({
+      id: 'user-1', logged_as: 'user-1',
+      organizations: [{ id: 'did:web:a.example.org' }, { id: 'did:web:b.example.org' }]
+    });
+    expect(component.form.value.sellerDid).toBe('');
+    expect(input.readOnly).toBeFalse();
   });
 
   it('does not call the service with an invalid form', () => {

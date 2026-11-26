@@ -279,7 +279,8 @@
           @if(creatingChars.length > 0 && !booleanCharSelected){
             <div class="flex flex-wrap gap-2 mb-3">
               @for (char of creatingChars; track char; let idx = $index) {
-                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium" style="background-color: rgb(var(--theme-secondary-50)); color: rgb(var(--theme-secondary-100));">
+                <span class="inline-flex max-w-full items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-offerings-page text-offerings-text border border-offerings-border-strong">
+                  <span class="min-w-0 break-all">
                   @if(rangeCharSelected){
                     {{char.valueFrom}} - {{char.valueTo}} <i>{{char?.unitOfMeasure}}</i>
                   } @else if(numberCharSelected){
@@ -287,7 +288,8 @@
                   } @else {
                     {{char.value}}
                   }
-                  <button type="button" (click)="removeCharValue(char,idx)" class="hover:text-status-danger-border">
+                  </span>
+                  <button type="button" (click)="removeCharValue(char,idx)" class="shrink-0 hover:text-status-danger-border">
                     <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                     </svg>

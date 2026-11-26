@@ -21,7 +21,11 @@
         <div>
           <label class="block text-sm font-semibold text-offerings-text mb-2">{{ 'ODRL_SUGGEST._seller_did' | translate }}<span class="text-status-danger-border ml-0.5">*</span></label>
           <input formControlName="sellerDid" data-cy="odrlSellerDid" placeholder="did:web:vendedor.example.org"
+            [readOnly]="sellerDidFromProfile" [class.opacity-70]="sellerDidFromProfile" [class.cursor-default]="sellerDidFromProfile"
             class="bg-offerings-surface border border-offerings-border-strong text-offerings-text text-sm rounded-lg block w-full p-2.5"/>
+          @if(sellerDidFromProfile){
+            <p class="mt-1 text-xs text-offerings-muted-text">{{ 'ODRL_SUGGEST._seller_did_from_profile' | translate }}</p>
+          }
           @if(form.get('sellerDid')?.touched && form.get('sellerDid')?.invalid){
             <p class="mt-1 text-xs text-status-danger-border">{{ 'ODRL_SUGGEST._invalid_did' | translate }}</p>
           }

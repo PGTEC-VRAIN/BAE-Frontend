@@ -4,6 +4,10 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OdrlSuggestedTier, OdrlSuggestResponse, OdrlSuggestService } from 'src/app/services/odrl-suggest.service';
 import { PolicyViewerComponent } from '../policy-viewer/policy-viewer.component';
 import { jsonValidator } from 'src/app/validators/validators';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { LoginInfo } from 'src/app/models/interfaces';
+
+const DID_PATTERN = /^did:[a-z0-9]+:[A-Za-z0-9._:%-]+$/;
 
 /**
  * Panel del asistente de vendedor: pide la agent card (y opcionalmente las herramientas MCP), obtiene niveles de
@@ -21,7 +25,7 @@ export class OdrlSuggestComponent {
 
   form = new FormGroup({
     cardUrl: new FormControl('', [Validators.required, Validators.pattern(/^https?:\/\/\S+$/)]),
-    sellerDid: new FormControl('', [Validators.required, Validators.pattern(/^did:[a-z0-9]+:[A-Za-z0-9._:%-]+$/)]),
+    sellerDid: new FormControl('', [Validators.required, Validators.pattern(DID_PATTERN)]),
     gateway: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z0-9]([A-Za-z0-9.-]*[A-Za-z0-9])?$/)]),
     mcpTools: new FormControl('', [jsonValidator]),
   });
@@ -30,8 +34,25 @@ export class OdrlSuggestComponent {
   error = '';
   result: OdrlSuggestResponse | null = null;
   selectedId: string | null = null;
+  /** true si el DID del vendedor se ha tomado de la organizacion de la sesion (campo de solo lectura). */
+  sellerDidFromProfile = false;
 
-  constructor(private odrl: OdrlSuggestService, private translate: TranslateService, private cdr: ChangeDetectorRef) {}
+  constructor(private odrl: OdrlSuggestService, private translate: TranslateService, private cdr: ChangeDetectorRef,
+              private localStorage: LocalStorageService) {
+    const did = this.profileDid();
+    if (did) {
+      this.form.controls.sellerDid.setValue(did);
+      this.sellerDidFromProfile = true;
+    }
+  }
+
+  /** DID de la organizacion con la que se actua (o de la unica del perfil); undefined si no tiene. */
+  private profileDid(): string | undefined {
+    const login = this.localStorage.getObject('login_items') as LoginInfo | null;
+    const orgs: any[] = login?.organizations ?? [];
+    const org = orgs.find(o => o?.id === login?.logged_as) ?? (orgs.length === 1 ? orgs[0] : undefined);
+    return [org?.id, org?.name].find(v => typeof v === 'string' && DID_PATTERN.test(v));
+  }
 
   get selected(): OdrlSuggestedTier | undefined {
     return this.result?.tiers.find(t => t.id === this.selectedId);

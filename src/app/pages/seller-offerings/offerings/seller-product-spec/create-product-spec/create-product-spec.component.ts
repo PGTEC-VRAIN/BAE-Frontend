@@ -17,6 +17,7 @@ import { POPULAR_ICON_CATEGORIES, findIconByName, IconCategory } from 'src/app/c
 import { TranslateService } from '@ngx-translate/core';
 import {components} from "src/app/models/product-catalog";
 import { environment } from 'src/environments/environment';
+import { OdrlSuggestedTier } from 'src/app/services/odrl-suggest.service';
 type ProductSpecification_Create = components["schemas"]["ProductSpecification_Create"];
 type ProductSpecification_Update = components["schemas"]["ProductSpecification_Update"];
 type CharacteristicValueSpecification = components["schemas"]["CharacteristicValueSpecification"];
@@ -194,6 +195,7 @@ export class CreateProductSpecComponent implements OnInit, OnDestroy, DoCheck {
   dataspaceChars:ProductSpecificationCharacteristic[]=[];
   creatingChars:CharacteristicValueSpecification[]=[];
   showCreateChar:boolean=false;
+  showOdrlSuggest:boolean=false;
 
   errorMessage:any='';
   showError:boolean=false;
@@ -1110,6 +1112,34 @@ export class CreateProductSpecComponent implements OnInit, OnDestroy, DoCheck {
       }
     });
     this.dspConfigForm.patchValue(patch);
+  }
+
+  /** Rellena las caracteristicas authorizationPolicy a partir del nivel aceptado en el asistente de sugerencia ODRL. */
+  onOdrlTierAccepted(tier: OdrlSuggestedTier): void {
+    const list = this.dataspaceChars as any[];
+    tier.policies.forEach(p => {
+      const name = `${this.translate.instant('ODRL_SUGGEST._policy_name')} - ${tier.name} (${p.kind})`;
+      const char: any = {
+        id: 'urn:ngsi-ld:characteristic:' + uuidv4(),
+        name,
+        description: tier.description,
+        valueType: 'authorizationPolicy',
+        '@schemaLocation': this.getSchemaLocationForType('authorizationPolicy'),
+        productSpecCharacteristicValue: [{ isDefault: true, value: p.policy }],
+        _lastUpdate: new Date(),
+        _isOptional: false
+      };
+      const idx = list.findIndex(c => c.name === name);
+      if (idx >= 0) {
+        char.id = list[idx].id;
+        list[idx] = char;
+      } else {
+        list.push(char);
+      }
+    });
+    this.showOdrlSuggest = false;
+    this.refreshChars();
+    this.cdr.detectChanges();
   }
 
   createProduct(){
